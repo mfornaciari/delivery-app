@@ -9,6 +9,7 @@
     <tr id='table_header'>
       <th><strong>Nome fantasia</strong></th>
       <th><strong>Razão social</strong></th>
+      <th><strong>Domínio de e-mail</strong></th>
       <th><strong>CNPJ</strong></th>
       <th><strong>Endereço</strong></th>
     </tr>
@@ -17,6 +18,7 @@
       <tr id=<%= company.brand_name.gsub(/\s/, '_') %>>
         <td><%= company.brand_name %></td>
         <td><%= company.corporate_name %></td>
+        <td><%= company.email_domain %></td>
         <% number = company.registration_number.to_s %>
         <td><%= "#{number[0..1]}.#{number[2..4]}.#{number[5..7]}/#{number[8..11]}-#{number[12..-1]}" %></td>
         <td><%= "#{company.address} - #{company.city}/#{company.state}" %></td>
