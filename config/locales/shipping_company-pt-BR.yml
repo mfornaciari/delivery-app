@@ -1,0 +1,13 @@
+pt-BR:
+  activerecord:
+    models:
+      shipping_company: Transportadora
+    attributes:
+      shipping_company:
+        brand_name: Nome fantasia
+        corporate_name: Razão social
+        email_domain: Domínio de e-mail
+        registration_number: CNPJ
+        address: Endereço
+        city: Cidade
+        state: Estado
