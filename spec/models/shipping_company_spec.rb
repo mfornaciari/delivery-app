@@ -120,7 +120,7 @@ RSpec.describe ShippingCompany, type: :model do
       end
     end
 
-    context 'singularidade'do
+    context 'singularidade' do
       it 'falso quando CNPJ é repetido' do
         ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                 email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
