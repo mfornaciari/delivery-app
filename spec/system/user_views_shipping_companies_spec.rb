@@ -10,7 +10,7 @@ describe 'Visitante acessa o índice de transportadoras' do
                             address: 'Avenida B, 23', city: 'Natal', state: 'RN')
 
     visit root_path
-    find('nav').click_on 'Transportadoras'
+    click_on 'Transportadoras'
 
     within_table('shipping_companies') do
       within('#table_header') do
@@ -35,5 +35,10 @@ describe 'Visitante acessa o índice de transportadoras' do
   end
 
   it 'e não há transportadoras cadastradas' do
+    visit root_path
+    click_on 'Transportadoras'
+
+    expect(page).to have_content 'Não existem transportadoras cadastradas.'
+    expect(page).not_to have_table 'shipping_companies'
   end
 end
