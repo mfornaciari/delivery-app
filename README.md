@@ -14,11 +14,16 @@ Aplicação desenvolvida para gerenciar entregas de produtos. Permite:
 - [capybara 3.37.1 +](https://rubydoc.info/github/teamcapybara/capybara/master)
 
 ## Executando a aplicação
-1. Clone o repositório.
-2. Mude de diretório para a pasta principal do repositório.
-3. Execute o comando `rails server` no terminal.
-4. Acesse o endereço `localhost:3000` no navegador de sua preferência.
+1. Certifique-se de ter a versão correta do Ruby (3.1.2 +) instalada.
+2. Clone o repositório.
+3. Mude de diretório para a pasta principal do repositório.
+4. Execute o comando `bundle install` no terminal para instalar as dependências.
+5. Execute o comando `rails server` no terminal para iniciar a aplicação.
+6. Acesse o endereço `localhost:3000` no navegador de sua preferência.
 
 ## Executando testes
-1. Mude de diretório para a pasta principal do repositório.
-2. Execute o comando `rspec` no terminal.
+1. Certifique-se de ter a versão correta do Ruby (3.1.2 +) instalada.
+2. Clone o repositório.
+3. Mude de diretório para a pasta principal do repositório.
+4. Execute o comando `bundle install` no terminal para instalar as dependências.
+5. Execute o comando `rspec` no terminal para iniciar os testes.
