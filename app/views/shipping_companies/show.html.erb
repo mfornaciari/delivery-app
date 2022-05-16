@@ -1,0 +1,27 @@
+<div id='page_title', align='center'>
+  <h1><%= @shipping_company.brand_name %></h1>
+</div>
+
+<div id='company_details'>
+  <dl>
+    <dt><strong>Nome fantasia: </strong></dt>
+    <dd><%= @shipping_company.brand_name %></dd>
+
+    <dt><strong>Razão social: </strong></dt>
+    <dd><%= @shipping_company.corporate_name %></dd>
+
+    <% number = @shipping_company.registration_number.to_s %>
+    <dt><strong>CNPJ: </strong></dt>
+    <dd><%= "#{number[0..1]}.#{number[2..4]}.#{number[5..7]}/#{number[8..11]}-#{number[12..-1]}" %></dd>
+
+    <dt><strong>Domínio de e-mail: </strong></dt>
+    <dd><%= @shipping_company.email_domain %></dd>
+
+    <dt><strong>Endereço: </strong></dt>
+    <dd><%= "#{@shipping_company.address} - #{@shipping_company.city}/#{@shipping_company.state}" %></dd>
+  </dl>
+</div>
+
+<div id ='back_link', align='center'>
+  <strong><%= link_to 'Voltar', shipping_companies_path %></strong>
+</div>
