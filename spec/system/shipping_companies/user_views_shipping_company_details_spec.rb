@@ -30,7 +30,7 @@ describe 'Visitante acessa a tela de detalhes da transportadora' do
     visit root_path
     click_on 'Transportadoras'
     click_on 'Express'
-    find('footer').click_on 'Voltar'
+    find('div#back_link').click_on 'Voltar'
 
     expect(current_path).to eq shipping_companies_path
   end
