@@ -19,6 +19,12 @@
         </p>
       </nav>
     </header>
-    <%= yield %>
+    <main>
+      <div id='flash_messages', align='center'>
+        <strong><%= alert %></strong>
+        <strong><%= notice %></strong>
+      </div>
+      <%= yield %>
+    </main>
   </body>
 </html>

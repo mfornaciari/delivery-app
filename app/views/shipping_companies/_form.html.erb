@@ -1,0 +1,47 @@
+<%= form_with model: @shipping_company do |f| %>
+  <div id='brand_name'>
+    <p><strong><%= f.label :brand_name %></strong>
+    <%= f.text_field :brand_name %>
+    <%= @shipping_company.errors.full_messages_for(:brand_name)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='corporate_name'>
+    <p><strong><%= f.label :corporate_name %></strong>
+    <%= f.text_field :corporate_name %>
+    <%= @shipping_company.errors.full_messages_for(:corporate_name)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='registration_number'>
+    <p><strong><%= f.label :registration_number %></strong>
+    <%= f.number_field :registration_number %>
+    <%= @shipping_company.errors.full_messages_for(:registration_number)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='email_domain'>
+    <p><strong><%= f.label :email_domain %></strong>
+    <%= f.text_field :email_domain %> 
+    <%= @shipping_company.errors.full_messages_for(:email_domain)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='address'>
+    <p><strong><%= f.label :address %></strong>
+    <%= f.text_field :address %>
+    <%= @shipping_company.errors.full_messages_for(:address)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='city'>
+    <p><strong><%= f.label :city %></strong>
+    <%= f.text_field :city %>
+    <%= @shipping_company.errors.full_messages_for(:city)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='state'>
+    <p><strong><%= f.label :state %></strong>
+    <%= f.select :state, @states, include_blank: true %>
+    <%= @shipping_company.errors.full_messages_for(:state)[0] if @shipping_company.errors %></p>
+  </div>
+
+  <div id='submit_button'>
+    <%= f.submit %>
+  </div>
+<% end %>
