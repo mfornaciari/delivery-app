@@ -1,5 +1,6 @@
 <div id='page_title', align='center'>
-<h1>Transportadoras</h1>
+  <h1>Transportadoras</h1>
+</div>
 
 <% if @shipping_companies.empty? %>
   <p>Não existem transportadoras cadastradas.</p>
@@ -16,7 +17,7 @@
 
     <% @shipping_companies.each do |company| %>
       <tr id=<%= company.brand_name.gsub(/\s/, '_') %>>
-        <td><%= company.brand_name %></td>
+        <td><%= link_to company.brand_name, company %></td>
         <td><%= company.corporate_name %></td>
         <td><%= company.email_domain %></td>
         <% number = company.registration_number.to_s %>
