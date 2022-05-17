@@ -4,5 +4,6 @@ class ShippingCompany < ApplicationRecord
   validates :registration_number, format: { with: /\A\d{14}\z/ }
   validates :registration_number, uniqueness: true
 
+  has_many :vehicles
   STATES = %w[AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO].freeze
 end
