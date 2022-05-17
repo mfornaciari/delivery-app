@@ -5,9 +5,9 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: '1992',
+    Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
                     maximum_load: 100_000, shipping_company: express)
-    Vehicle.create!(license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: '1971',
+    Vehicle.create!(license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: 1971,
                     maximum_load: 40_000, shipping_company: express)
 
     visit root_path
