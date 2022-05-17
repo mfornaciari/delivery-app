@@ -1,0 +1,13 @@
+pt-BR:
+  activerecord:
+    models:
+      vehicle: Veículo
+    attributes:
+      vehicle:
+        license_plate: Placa de identificação
+        model: Modelo
+        brand: Marca
+        production_year: Ano de produção
+        maximum_load: Carga máxima
+        shipping_company: Transportadora
+
