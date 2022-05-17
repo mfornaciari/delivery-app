@@ -26,10 +26,7 @@
   <h2>Veículos cadastrados</h2>
 </div>
 
-<% if @shipping_company.vehicles.empty? %>
-  <p align='center'>Não existem veículos cadastrados.</p>
-
-<% else %>
+<% if @vehicles %>
   <table id='vehicles', align='center'>
     <tr id='table_header'>
       <th><strong>Placa de identificação</strong></th>
@@ -39,7 +36,7 @@
       <th><strong>Carga máxima</strong></th>
     </tr>
 
-    <% @shipping_company.vehicles.each do |vehicle| %>
+    <% @vehicles.each do |vehicle| %>
       <tr id=<%= vehicle.license_plate %>>
         <td><%= vehicle.license_plate %></td>
         <td><%= vehicle.model %></td>
@@ -48,8 +45,9 @@
         <td><%= "#{vehicle.maximum_load / 1000} kg" %></td>
       </tr>
     <% end %>
-
   </table>
+<% else %>
+  <p align='center'>Não existem veículos cadastrados.</p>
 <% end %>
 
 <div id ='back_link', align='center'>
