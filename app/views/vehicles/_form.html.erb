@@ -1,0 +1,35 @@
+<%= form_with model: [:shipping_company, @vehicle] do |f| %>
+  <div id='license_plate'>
+    <p><strong><%= f.label :license_plate %></strong>
+    <%= f.text_field :license_plate %>
+    <%= @vehicle.errors.full_messages_for(:license_plate)[0] if @vehicle.errors %></p>
+  </div>
+
+  <div id='model'>
+    <p><strong><%= f.label :model %></strong>
+    <%= f.text_field :model %>
+    <%= @vehicle.errors.full_messages_for(:model)[0] if @vehicle.errors %></p>
+  </div>
+
+  <div id='brand'>
+    <p><strong><%= f.label :brand %></strong>
+    <%= f.text_field :brand %>
+    <%= @vehicle.errors.full_messages_for(:brand)[0] if @vehicle.errors %></p>
+  </div>
+
+  <div id='production_year'>
+    <p><strong><%= f.label :production_year %></strong>
+    <%= f.number_field :production_year %> 
+    <%= @vehicle.errors.full_messages_for(:production_year)[0] if @vehicle.errors %></p>
+  </div>
+
+  <div id='maximum_load'>
+    <p><strong><%= f.label :maximum_load %></strong>
+    <%= f.number_field :maximum_load %>
+    <%= @vehicle.errors.full_messages_for(:maximum_load)[0] if @vehicle.errors %></p>
+  </div>
+
+  <div id='submit_button'>
+    <%= f.submit %>
+  </div>
+<% end %>

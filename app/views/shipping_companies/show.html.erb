@@ -26,6 +26,10 @@
   <h2>Veículos cadastrados</h2>
 </div>
 
+<div id='vehicle_register_link', align='center'>
+  <p><strong><%= link_to 'Cadastrar veículo', new_shipping_company_vehicle_path(@shipping_company) %></strong></p>
+</div>
+
 <% if @vehicles %>
   <table id='vehicles', align='center'>
     <tr id='table_header'>
