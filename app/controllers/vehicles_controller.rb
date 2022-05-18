@@ -24,6 +24,6 @@ class VehiclesController < ApplicationController
 
   def vehicle_params
     params.require(:vehicle).permit(:license_plate, :model, :brand, :production_year,
-                                    :maximum_load, :shipping_company)
+                                    :maximum_load)
   end
 end
