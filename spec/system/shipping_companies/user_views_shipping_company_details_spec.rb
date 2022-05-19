@@ -13,7 +13,7 @@ describe 'Visitante acessa a tela de detalhes da transportadora' do
     within('div#page_title') do
       expect(page).to have_content 'Express'
     end
-    within('div#company_details') do
+    within('section#company_details') do
       expect(page).to have_content 'Nome fantasia: Express'
       expect(page).to have_content 'Razão social: Express Transportes Ltda.'
       expect(page).to have_content 'CNPJ: 28.891.540/0001-21'

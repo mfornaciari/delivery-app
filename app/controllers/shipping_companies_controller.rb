@@ -21,7 +21,8 @@ class ShippingCompaniesController < ApplicationController
 
   def show
     @shipping_company = ShippingCompany.find(params[:id])
-    @vehicles = @shipping_company.vehicles if @shipping_company.vehicles.any?
+    @vehicles = @shipping_company.vehicles unless @shipping_company.vehicles.empty?
+    @volume_ranges = @shipping_company.volume_ranges unless @shipping_company.volume_ranges.empty?
   end
 
   private

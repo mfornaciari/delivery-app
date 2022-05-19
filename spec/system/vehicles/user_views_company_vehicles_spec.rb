@@ -15,7 +15,7 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
     click_on 'Express'
 
     expect(page).to have_content 'Veículos cadastrados'
-    within_table('vehicles') do
+    within_table('vehicles_table') do
       within('#table_header') do
         expect(page).to have_content 'Placa de identificação'
         expect(page).to have_content 'Modelo'
