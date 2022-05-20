@@ -1,6 +1,6 @@
 class VolumeRange < ApplicationRecord
   validates :min_volume, comparison: { greater_than_or_equal_to: 0 }
-  validates :max_volume, comparison: { greater_than_or_equal_to: 1 }
+  validates :max_volume, comparison: { greater_than: 0 }
   validate :not_previously_registered
 
   belongs_to :shipping_company

@@ -33,7 +33,7 @@ RSpec.describe VolumeRange, type: :model do
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
         expect(empty_range.errors[:max_volume]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:max_volume]).to include 'deve ser maior ou igual a 1'
+        expect(invalid_range.errors[:max_volume]).to include 'deve ser maior que 0'
         expect(valid_range.errors.include?(:max_volume)).to be false
       end
     end
