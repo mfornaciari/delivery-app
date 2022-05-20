@@ -14,12 +14,9 @@ RSpec.describe VolumeRange, type: :model do
 
     context 'Valor:' do
       it 'Falso quando volume mínimo está em branco ou é < 0' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
         empty_range = VolumeRange.new(min_volume: '')
         invalid_range = VolumeRange.new(min_volume: -1)
-        valid_range = VolumeRange.new(shipping_company: express, min_volume: 0, max_volume: 20)
+        valid_range = VolumeRange.new(min_volume: 0)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -29,12 +26,9 @@ RSpec.describe VolumeRange, type: :model do
       end
 
       it 'Falso quando volume máximo está em branco ou é < 1' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
         empty_range = VolumeRange.new(max_volume: '')
         invalid_range = VolumeRange.new(max_volume: 0)
-        valid_range = VolumeRange.new(shipping_company: express, min_volume: 0, max_volume: 20)
+        valid_range = VolumeRange.new(max_volume: 1)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -51,7 +45,7 @@ RSpec.describe VolumeRange, type: :model do
                                           address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
         VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
         invalid_range = VolumeRange.new(shipping_company: express, min_volume: 0)
-        valid_range = VolumeRange.new(shipping_company: express, min_volume: 21, max_volume: 40)
+        valid_range = VolumeRange.new(shipping_company: express, min_volume: 21)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)
@@ -66,7 +60,7 @@ RSpec.describe VolumeRange, type: :model do
                                           address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
         VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
         invalid_range = VolumeRange.new(shipping_company: express, max_volume: 20)
-        valid_range = VolumeRange.new(shipping_company: express, min_volume: 21, max_volume: 40)
+        valid_range = VolumeRange.new(shipping_company: express, max_volume: 40)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)
