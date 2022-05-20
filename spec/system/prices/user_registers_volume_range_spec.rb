@@ -65,4 +65,23 @@ describe 'Usuário registra um novo intervalo de volume' do
     expect(page).to have_content 'Volume mínimo não pode estar contido em intervalos já registrados'
     expect(page).to have_content 'Volume máximo deve ser maior que 0'
   end
+
+  it 'com volume/peso mínimos >= volume/peso máximos' do
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+
+    visit root_path
+    click_on 'Transportadoras'
+    click_on 'Express'
+    click_on 'Cadastrar intervalo de volume'
+    fill_in 'Volume mínimo', with: '2'
+    fill_in 'Volume máximo', with: '1'
+    fill_in 'Peso mínimo', with: '2'
+    fill_in 'Peso máximo', with: '2'
+    click_on 'Criar Intervalo de volume'
+
+    expect(page).to have_content 'Volume mínimo deve ser menor que o volume máximo'
+    expect(page).to have_content 'Peso mínimo deve ser menor que o peso máximo'
+  end
 end
