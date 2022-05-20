@@ -44,6 +44,16 @@ RSpec.describe WeightRange, type: :model do
         expect(invalid_range.errors[:max_weight]).to include 'deve ser maior que 0'
         expect(valid_range.errors.include?(:max_weight)).to be false
       end
+
+      it 'Falso quando peso mínimo >= peso máximo' do
+        first_invalid_range = WeightRange.new(min_weight: 5, max_weight: 5)
+        second_invalid_range = WeightRange.new(min_weight: 6, max_weight: 5)
+
+        [first_invalid_range, second_invalid_range].each(&:valid?)
+
+        expect(first_invalid_range.errors[:min_weight]).to include 'deve ser menor que o peso máximo'
+        expect(second_invalid_range.errors[:min_weight]).to include 'deve ser menor que o peso máximo'
+      end
     end
 
     context 'Singularidade:' do

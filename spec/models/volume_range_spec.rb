@@ -36,6 +36,16 @@ RSpec.describe VolumeRange, type: :model do
         expect(invalid_range.errors[:max_volume]).to include 'deve ser maior que 0'
         expect(valid_range.errors.include?(:max_volume)).to be false
       end
+
+      it 'Falso quando volume mínimo >= volume máximo' do
+        first_invalid_range = VolumeRange.new(min_volume: 5, max_volume: 5)
+        second_invalid_range = VolumeRange.new(min_volume: 6, max_volume: 5)
+
+        [first_invalid_range, second_invalid_range].each(&:valid?)
+
+        expect(first_invalid_range.errors[:min_volume]).to include 'deve ser menor que o volume máximo'
+        expect(second_invalid_range.errors[:min_volume]).to include 'deve ser menor que o volume máximo'
+      end
     end
 
     context 'Singularidade:' do
