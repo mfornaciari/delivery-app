@@ -42,7 +42,7 @@ describe 'Visitante cadastra veículo' do
     expect(page).to have_content 'Veículo não cadastrado.'
     expect(page).to have_content 'Placa de identificação não é válido'
     expect(page).to have_content 'Marca não pode ficar em branco'
-    expect(page).to have_content 'Ano de produção deve estar entre 1908 e o ano atual'
+    expect(page).to have_content 'Ano de produção não pode ficar em branco'
     expect(page).to have_content 'Carga máxima não pode ficar em branco'
     expect(page).to have_field 'Modelo', with: 'Uno'
   end

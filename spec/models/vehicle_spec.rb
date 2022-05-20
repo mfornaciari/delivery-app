@@ -19,6 +19,14 @@ RSpec.describe Vehicle, type: :model do
         expect(vehicle.errors[:brand]).to include 'não pode ficar em branco'
       end
 
+      it 'Falso quando ano de produção está em branco' do
+        vehicle = Vehicle.new(production_year: '')
+
+        vehicle.valid?
+
+        expect(vehicle.errors[:production_year]).to include 'não pode ficar em branco'
+      end
+
       it 'Falso quando transportadora está em branco' do
         vehicle = Vehicle.new(shipping_company: nil)
 
@@ -65,15 +73,13 @@ RSpec.describe Vehicle, type: :model do
     end
 
     context 'Valor:' do
-      it 'Falso quando ano de produção está vazio, é < 1908 ou > ano atual' do
-        empty_vehicle = Vehicle.new(production_year: '')
+      it 'Falso quando ano de produção é < 1908 ou > ano atual' do
         first_invalid_vehicle = Vehicle.new(production_year: 1907)
         second_invalid_vehicle = Vehicle.new(production_year: 2023)
-        valid_vehicle = Vehicle.new(license_plate: 'BRA3R52')
+        valid_vehicle = Vehicle.new(production_year: 2022)
 
-        [empty_vehicle, first_invalid_vehicle, second_invalid_vehicle, valid_vehicle].each(&:valid?)
+        [first_invalid_vehicle, second_invalid_vehicle, valid_vehicle].each(&:valid?)
 
-        expect(empty_vehicle.errors[:production_year]).to include('deve estar entre 1908 e o ano atual')
         expect(first_invalid_vehicle.errors[:production_year]).to include('deve estar entre 1908 e o ano atual')
         expect(second_invalid_vehicle.errors[:production_year]).to include('deve estar entre 1908 e o ano atual')
         expect(valid_vehicle.errors.include?(:production_year)).to be false
