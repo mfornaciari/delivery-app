@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      volume_range: Intervalo de volume
+    attributes:
+      volume_range:
+        shipping_company: Transportadora
+        min_volume: Volume mínimo
+        max_volume: Volume máximo
