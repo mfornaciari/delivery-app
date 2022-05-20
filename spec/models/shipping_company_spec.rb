@@ -2,137 +2,93 @@ require 'rails_helper'
 
 RSpec.describe ShippingCompany, type: :model do
   describe '#valid?' do
-    context 'presença' do
-      it 'falso quando nome fantasia está em branco' do
-        company = ShippingCompany.new(brand_name: '', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    context 'Presença:' do
+      it 'Falso quando nome fantasia está em branco' do
+        company = ShippingCompany.new(brand_name: '')
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'Nome fantasia não pode ficar em branco'
+        expect(company.errors[:brand_name]).to include 'não pode ficar em branco'
       end
 
-      it 'falso quando razão social está em branco' do
-        company = ShippingCompany.new(brand_name: 'Express', corporate_name: '', email_domain: 'express.com.br',
-                                      registration_number: 28_891_540_000_121, address: 'Avenida A, 10',
-                                      city: 'Rio de Janeiro', state: 'RJ')
+      it 'Falso quando razão social está em branco' do
+        company = ShippingCompany.new(corporate_name: '')
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'Razão social não pode ficar em branco'
+        expect(company.errors[:corporate_name]).to include 'não pode ficar em branco'
       end
 
-      it 'falso quando endereço está em branco' do
-        company = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: '', city: 'Rio de Janeiro', state: 'RJ')
+      it 'Falso quando endereço está em branco' do
+        company = ShippingCompany.new(address: '')
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'Endereço não pode ficar em branco'
+        expect(company.errors[:address]).to include 'não pode ficar em branco'
       end
 
-      it 'falso quando cidade está em branco' do
-        company = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: '', state: 'RJ')
+      it 'Falso quando cidade está em branco' do
+        company = ShippingCompany.new(city: '')
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'Cidade não pode ficar em branco'
+        expect(company.errors[:city]).to include 'não pode ficar em branco'
       end
 
-      it 'falso quando estado está em branco' do
-        company = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: '')
+      it 'Falso quando estado está em branco' do
+        company = ShippingCompany.new(state: '')
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'Estado não pode ficar em branco'
+        expect(company.errors[:state]).to include 'não pode ficar em branco'
       end
     end
 
-    context 'formato' do
-      it 'falso quando domínio do e-mail está vazio/em formato incorreto' do
-        first_invalid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                            email_domain: 'express', registration_number: 28_891_540_000_121,
-                                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        second_invalid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                             email_domain: '-express.com.br', registration_number: 28_891_540_000_121,
-                                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        third_invalid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                            email_domain: 'express.com.br-', registration_number: 28_891_540_000_121,
-                                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        empty = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                    email_domain: '', registration_number: 28_891_540_000_121,
-                                    address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        first_valid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        second_valid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                           email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                           address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    context 'Formato:' do
+      it 'Falso quando domínio do e-mail está vazio/em formato incorreto' do
+        empty_company = ShippingCompany.new(email_domain: '')
+        first_invalid_company = ShippingCompany.new(email_domain: 'express')
+        second_invalid_company = ShippingCompany.new(email_domain: '-express.com.br')
+        third_invalid_company = ShippingCompany.new(email_domain: 'express.com.br-')
+        first_valid_company = ShippingCompany.new(email_domain: 'express.com')
+        second_valid_company = ShippingCompany.new(email_domain: 'express.com.br')
 
-        [first_invalid, second_invalid, third_invalid, empty].each(&:valid?)
+        [empty_company, first_invalid_company, second_invalid_company, third_invalid_company,
+         first_valid_company, second_valid_company].each(&:valid?)
 
-        expect(first_invalid.errors.full_messages.length).to eq 1
-        expect(first_invalid.errors.full_messages[0]).to eq 'Domínio de e-mail não é válido'
-        expect(second_invalid.errors.full_messages.length).to eq 1
-        expect(second_invalid.errors.full_messages[0]).to eq 'Domínio de e-mail não é válido'
-        expect(third_invalid.errors.full_messages.length).to eq 1
-        expect(third_invalid.errors.full_messages[0]).to eq 'Domínio de e-mail não é válido'
-        expect(empty.errors.full_messages.length).to eq 1
-        expect(empty.errors.full_messages[0]).to eq 'Domínio de e-mail não é válido'
-        expect(first_valid).to be_valid
-        expect(second_valid).to be_valid
+        expect(empty_company.errors[:email_domain]).to include 'não é válido'
+        expect(first_invalid_company.errors[:email_domain]).to include 'não é válido'
+        expect(second_invalid_company.errors[:email_domain]).to include 'não é válido'
+        expect(third_invalid_company.errors[:email_domain]).to include 'não é válido'
+        expect(first_valid_company.errors.include?(:email_domain)).to be false
+        expect(second_valid_company.errors.include?(:email_domain)).to be false
       end
 
-      it 'falso quando CNPJ está vazio/em formato incorreto' do
-        first_invalid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                            email_domain: 'express.com.br', registration_number: 8_891_540_000_121,
-                                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        second_invalid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                             email_domain: 'express.com.br', registration_number: 128_891_540_000_121,
-                                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        empty = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                    email_domain: 'express.com.br', registration_number: '',
-                                    address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        valid = ShippingCompany.new(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                    email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                    address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+      it 'Falso quando CNPJ está vazio/em formato incorreto' do
+        empty_company = ShippingCompany.new(registration_number: '')
+        first_invalid_company = ShippingCompany.new(registration_number: 8_891_540_000_121)
+        second_invalid_company = ShippingCompany.new(registration_number: 128_891_540_000_121)
+        valid_company = ShippingCompany.new(registration_number: 28_891_540_000_121)
 
-        [first_invalid, second_invalid, empty].each(&:valid?)
+        [empty_company, first_invalid_company, second_invalid_company, valid_company].each(&:valid?)
 
-        expect(first_invalid.errors.full_messages.length).to eq 1
-        expect(first_invalid.errors.full_messages[0]).to eq 'CNPJ não é válido'
-        expect(second_invalid.errors.full_messages.length).to eq 1
-        expect(second_invalid.errors.full_messages[0]).to eq 'CNPJ não é válido'
-        expect(empty.errors.full_messages.length).to eq 1
-        expect(empty.errors.full_messages[0]).to eq 'CNPJ não é válido'
-        expect(valid).to be_valid
+        expect(empty_company.errors[:registration_number]).to include 'não é válido'
+        expect(first_invalid_company.errors[:registration_number]).to include 'não é válido'
+        expect(second_invalid_company.errors[:registration_number]).to include 'não é válido'
+        expect(valid_company.errors.include?(:registration_number)).to be false
       end
     end
 
-    context 'singularidade' do
-      it 'falso quando CNPJ é repetido' do
+    context 'Singularidade:' do
+      it 'Falso quando CNPJ é repetido' do
         ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                 email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                                 address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        company = ShippingCompany.new(brand_name: 'A Jato', corporate_name: 'A Jato S/A', email_domain: 'ajato.com',
-                                      registration_number: 28_891_540_000_121, address: 'Avenida B, 23',
-                                      city: 'Natal', state: 'RN')
+        company = ShippingCompany.new(registration_number: 28_891_540_000_121)
 
         company.valid?
 
-        expect(company.errors.full_messages.length).to eq 1
-        expect(company.errors.full_messages[0]).to eq 'CNPJ já está em uso'
+        expect(company.errors[:registration_number]).to include 'já está em uso'
       end
     end
   end
