@@ -12,12 +12,12 @@ class WeightRange < ApplicationRecord
     return unless volume_range
 
     volume_range.weight_ranges.each do |wrange|
-      if (wrange.min_weight..wrange.max_weight).include? min_weight
-        errors.add :min_weight, 'não pode estar contido em intervalos já registrados'
-      end
-      if (wrange.min_weight..wrange.max_weight).include? max_weight
-        errors.add :max_weight, 'não pode estar contido em intervalos já registrados'
-      end
+      next if wrange == self
+
+      interval = (wrange.min_weight..wrange.max_weight)
+      message = 'não pode estar contido em intervalos já registrados'
+      errors.add(:min_weight, message) if interval.include? min_weight
+      errors.add(:max_weight, message) if interval.include? max_weight
     end
   end
 end

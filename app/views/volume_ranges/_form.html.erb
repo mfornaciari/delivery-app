@@ -1,0 +1,41 @@
+<%= form_with model: [:shipping_company, @volume_range] do |f| %>
+  <section id='volume_range_attributes'>
+    <div id='min_volume', align='center'>
+      <p><strong><%= f.label :min_volume %></strong>
+      <%= f.number_field :min_volume %>
+      <%= @volume_range.errors.full_messages_for(:min_volume)[0] if @volume_range.errors %></p>
+    </div>
+
+    <div id='max_volume', align='center'>
+      <p><strong><%= f.label :max_volume %></strong>
+      <%= f.number_field :max_volume %>
+      <%= @volume_range.errors.full_messages_for(:max_volume)[0] if @volume_range.errors %></p>
+    </div>
+  </section>
+
+  <section id='weight_range_attributes'>
+    <%= f.fields_for :weight_ranges do |wrange_f| %>
+      <div id='min_weight', align='center'>
+        <p><strong><%= wrange_f.label :min_weight %></strong>
+        <%= wrange_f.number_field :min_weight %>
+        <%= @weight_range.errors.full_messages_for(:min_weight)[0] if @weight_range.errors %></p>
+      </div>
+
+      <div id='max_weight', align='center'>
+        <p><strong><%= wrange_f.label :max_weight %></strong>
+        <%= wrange_f.number_field :max_weight %> 
+        <%= @weight_range.errors.full_messages_for(:max_weight)[0] if @weight_range.errors %></p>
+      </div>
+
+      <div id='value', align='center'>
+        <p><strong><%= wrange_f.label :value %></strong>
+        <%= wrange_f.number_field :value %>
+        <%= @weight_range.errors.full_messages_for(:value)[0] if @weight_range.errors %></p>
+      </div>
+    <% end %>
+  </section>
+
+  <div id='submit_button', align='center'>
+    <%= f.submit %>
+  </div>
+<% end %>

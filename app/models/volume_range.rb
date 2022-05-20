@@ -5,6 +5,7 @@ class VolumeRange < ApplicationRecord
 
   belongs_to :shipping_company
   has_many :weight_ranges
+  accepts_nested_attributes_for :weight_ranges
 
   private
 
@@ -12,12 +13,12 @@ class VolumeRange < ApplicationRecord
     return unless shipping_company
 
     shipping_company.volume_ranges.each do |vrange|
-      if (vrange.min_volume..vrange.max_volume).include? min_volume
-        errors.add :min_volume, 'não pode estar contido em intervalos já registrados'
-      end
-      if (vrange.min_volume..vrange.max_volume).include? max_volume
-        errors.add :max_volume, 'não pode estar contido em intervalos já registrados'
-      end
+      next if vrange == self
+
+      interval = (vrange.min_volume..vrange.max_volume)
+      message = 'não pode estar contido em intervalos já registrados'
+      errors.add(:min_volume, message) if interval.include? min_volume
+      errors.add(:max_volume, message) if interval.include? max_volume
     end
   end
 end

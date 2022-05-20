@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      weight_range: Intervalo de peso
+    attributes:
+      weight_range:
+        volume_range: Intervalo de peso
+        min_weight: Peso mínimo
+        max_weight: Peso máximo
+        value: Valor
