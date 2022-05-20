@@ -10,19 +10,13 @@ RSpec.describe WeightRange, type: :model do
 
         expect(wrange.errors[:volume_range]).to include 'é obrigatório(a)'
       end
-    end
 
-    context 'Formato:' do
-      it 'Falso quando valor está em branco ou não é numérico' do
-        first_invalid_range = WeightRange.new(value: '')
-        second_invalid_range = WeightRange.new(value: 'A')
-        valid_range = WeightRange.new(value: '50')
+      it 'Falso quando valor está em branco' do
+        wrange = WeightRange.new(value: '')
 
-        [first_invalid_range, second_invalid_range, valid_range].each(&:valid?)
+        wrange.valid?
 
-        expect(first_invalid_range.errors[:value]).to include 'não é um número'
-        expect(second_invalid_range.errors[:value]).to include 'não é um número'
-        expect(valid_range.errors.include?(:value)).to be false
+        expect(wrange.errors[:value]).to include 'não pode ficar em branco'
       end
     end
 

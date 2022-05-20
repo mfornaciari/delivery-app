@@ -1,7 +1,7 @@
 class WeightRange < ApplicationRecord
+  validates :value, presence: true
   validates :min_weight, comparison: { greater_than_or_equal_to: 0 }
   validates :max_weight, comparison: { greater_than: 0 }
-  validates :value, numericality: true
   validate :not_previously_registered
 
   belongs_to :volume_range

@@ -44,7 +44,7 @@ describe 'Usuário registra um novo intervalo de volume' do
     expect(page).to have_content 'Volume máximo não pode ficar em branco'
     expect(page).to have_content 'Peso mínimo não pode ficar em branco'
     expect(page).to have_content 'Peso máximo não pode ficar em branco'
-    expect(page).to have_content 'Valor não é um número'
+    expect(page).to have_content 'Valor não pode ficar em branco'
   end
 
   it 'com dados inválidos' do
