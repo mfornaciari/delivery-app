@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     resources :volume_ranges, only: %i[new create edit update] do
       resources :weight_ranges, only: %i[new create]
     end
+    resources :distance_ranges, only: %i[new create]
   end
 
   # Defines the root path route ("/")

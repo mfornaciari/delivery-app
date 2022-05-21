@@ -62,7 +62,7 @@
 </section>
 
 <section id='prices'>
-  <div id= prices_title', align='center'>
+  <div id=prices_title', align='center'>
     <h2>Tabela de preços</h2>
   </div>
 
@@ -115,6 +115,40 @@
 
   <% else %>
     <p align='center'>Não existem intervalos de volume cadastrados.</p>
+  <% end %>
+
+  <div id=minimum_prices_title', align='center'>
+    <h3>Preços mínimos por distância</h3>
+  </div>
+
+  <div id='distance_range_register_link', align='center'>
+    <p><strong>
+      <%= link_to('Cadastrar intervalo de distância',
+                  new_shipping_company_distance_range_path(@shipping_company)) %>
+    </strong></p>
+  </div>
+
+  <% if @distance_ranges %>
+    <table id='min_prices_table', align='center'>
+      <tr id='table_header'>
+        <th></th>
+        <th align='left'>Distância</th>
+        <th align='left'>Valor mínimo</th>
+      </tr>
+
+      <% @distance_ranges.each do |drange| %>
+        <tr id=<%= "#{drange.min_distance}_#{drange.max_distance}" %>>
+          <td>
+            <%= "#{drange.min_distance}-#{drange.max_distance} km" %>
+          </td>
+          <td>
+            <%= number_to_currency(drange.value / 100.to_f, separator: ',', delimiter: '.', unit: 'R$') %>
+          </td>
+        </tr>
+      <% end %>
+
+  <% else %>
+    <p align='center'>Não existem intervalos de distância cadastrados.</p>
   <% end %>
 </section>
 
