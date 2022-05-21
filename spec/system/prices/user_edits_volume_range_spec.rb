@@ -67,4 +67,69 @@ describe 'Usuário edita intervalo de volume' do
       end
     end
   end
+
+  it 'com dados incompletos/inválidos' do
+    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+
+    visit root_path
+    click_on 'Transportadoras'
+    click_on 'Express'
+    click_on 'Editar intervalo'
+    fill_in 'Volume mínimo', with: ''
+    fill_in 'Volume máximo', with: '0'
+    within('section#weight_range_1') do
+      fill_in 'Peso mínimo', with: '0'
+      fill_in 'Peso máximo', with: '0'
+      fill_in 'Valor', with: ''
+    end
+    click_on 'Atualizar Intervalo de volume'
+
+    expect(page).to have_content 'Intervalo não atualizado.'
+    expect(page).to have_content 'Volume mínimo não pode ficar em branco'
+    expect(page).to have_content 'Volume máximo deve ser maior que 0'
+    expect(page).to have_content 'Peso mínimo deve ser menor que o peso máximo'
+    expect(page).to have_content 'Peso máximo deve ser maior que 0'
+    expect(page).to have_content 'Valor não pode ficar em branco'
+    expect(page).to have_field 'Peso máximo', with: '0'
+    expect(page).to have_field 'Peso mínimo', with: '21'
+  end
+
+  it 'com dados repetidos' do
+    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    first_vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    WeightRange.create!(volume_range: first_vrange, min_weight: 0, max_weight: 20, value: 50)
+    WeightRange.create!(volume_range: first_vrange, min_weight: 21, max_weight: 40, value: 75)
+    second_vrange = VolumeRange.create!(shipping_company: express, min_volume: 31, max_volume: 60)
+    WeightRange.create!(volume_range: second_vrange, min_weight: 0, max_weight: 20, value: 75)
+
+    visit root_path
+    click_on 'Transportadoras'
+    click_on 'Express'
+    find('#0_30_1').click_on 'Editar intervalo'
+    fill_in 'Volume mínimo', with: '31'
+    fill_in 'Volume máximo', with: '40'
+    within('section#weight_range_1') do
+      fill_in 'Peso mínimo', with: '41'
+      fill_in 'Peso máximo', with: '60'
+    end
+    within('section#weight_range_2') do
+      fill_in 'Peso mínimo', with: '45'
+      fill_in 'Peso máximo', with: '55'
+    end
+    click_on 'Atualizar Intervalo de volume'
+
+    expect(page).to have_content 'Volume mínimo não pode estar contido em intervalos já registrados'
+    expect(page).to have_content 'Volume máximo não pode estar contido em intervalos já registrados'
+    within('section#weight_range_2') do
+      expect(page).to have_content 'Peso mínimo não pode estar contido em intervalos já registrados'
+      expect(page).to have_content 'Peso máximo não pode estar contido em intervalos já registrados'
+    end
+  end
 end
