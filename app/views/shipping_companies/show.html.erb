@@ -38,11 +38,11 @@
   <% if @vehicles %>
     <table id='vehicles_table', align='center'>
       <tr id='table_header'>
-        <th><strong>Placa de identificação</strong></th>
-        <th><strong>Modelo</strong></th>
-        <th><strong>Marca</strong></th>
-        <th><strong>Ano de produção</strong></th>
-        <th><strong>Carga máxima</strong></th>
+        <th align='left'>Placa de identificação</th>
+        <th align='left'>Modelo</th>
+        <th align='left'>Marca</th>
+        <th align='left'>Ano de produção</th>
+        <th align='left'>Carga máxima</th>
       </tr>
 
       <% @vehicles.each do |vehicle| %>
@@ -76,9 +76,10 @@
   <% if @volume_ranges %>
     <table id='prices_table', align='center'>
       <tr id='table_header'>
-        <th>Volume</th>
-        <th>Peso</th>
-        <th>Valor por km</th>
+        <th></th>
+        <th align='left'>Volume</th>
+        <th align='left'>Peso</th>
+        <th align='left'>Valor por km</th>
       </tr>
 
       <% @volume_ranges.each do |vrange| %>
