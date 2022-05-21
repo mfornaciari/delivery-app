@@ -4,7 +4,7 @@ pt-BR:
       weight_range: Intervalo de peso
     attributes:
       weight_range:
-        volume_range: Intervalo de peso
+        volume_range: Intervalo de volume
         min_weight: Peso mínimo
         max_weight: Peso máximo
         value: Valor
