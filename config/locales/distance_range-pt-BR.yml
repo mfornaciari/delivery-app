@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      distance_range: Intervalo de distância
+    attributes:
+      distance_range:
+        shipping_company: Transportadora
+        min_distance: Distância mínima
+        max_distance: Distância máxima
+        value: Valor

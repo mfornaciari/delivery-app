@@ -1,0 +1,23 @@
+<%= form_with model: [:shipping_company, @distance_range] do |f| %>
+  <div id='min_distance', align='center'>
+    <p><strong><%= f.label :min_distance %></strong>
+    <%= f.number_field :min_distance %>
+    <%= @distance_range.errors.full_messages_for(:min_distance)[0] if @distance_range.errors %></p>
+  </div>
+
+  <div id='max_distance', align='center'>
+    <p><strong><%= f.label :max_distance %></strong>
+    <%= f.number_field :max_distance %>
+    <%= @distance_range.errors.full_messages_for(:max_distance)[0] if @distance_range.errors %></p>
+  </div>
+
+  <div id='value', align='center'>
+    <p><strong><%= f.label :value %></strong>
+    <%= f.number_field :value %>
+    <%= @distance_range.errors.full_messages_for(:value)[0] if @distance_range.errors %></p>
+  </div>
+
+  <div id='submit_button', align='center'>
+    <%= f.submit %>
+  </div>
+<% end %>

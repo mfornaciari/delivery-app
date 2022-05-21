@@ -2,8 +2,8 @@ class DistanceRange < ApplicationRecord
   validates :value, presence: true
   validates :min_distance, comparison: { greater_than_or_equal_to: 0 }
   validates :max_distance, comparison: { greater_than: 0 }
-  validate :min_distance_less_than_max_distance
   validate :not_previously_registered
+  validate :min_distance_less_than_max_distance
 
   belongs_to :shipping_company
 
