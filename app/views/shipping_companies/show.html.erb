@@ -86,6 +86,9 @@
 
         <tr id=<%= "#{vrange.min_volume}_#{vrange.max_volume}_1" %>>
           <td rowspan=<%= vrange.weight_ranges.length %>>
+            <%= link_to 'Editar intervalo', edit_volume_range_path(vrange) %>
+          </td>
+          <td rowspan=<%= vrange.weight_ranges.length %>>
             <%= "#{vrange.min_volume}-#{vrange.max_volume} m3" %>
           </td>
           <td>

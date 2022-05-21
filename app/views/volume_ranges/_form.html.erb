@@ -1,5 +1,5 @@
-<%= form_with model: [:shipping_company, @volume_range] do |f| %>
-  <section id='volume_range_attributes'>
+<%= form_with model: @form_model_attributes do |f| %>
+  <section id='volume_range'>
     <div id='min_volume', align='center'>
       <p><strong><%= f.label :min_volume %></strong>
       <%= f.number_field :min_volume %>
@@ -13,27 +13,31 @@
     </div>
   </section>
 
-  <section id='weight_range_attributes'>
-    <%= f.fields_for :weight_ranges do |wrange_f| %>
-      <div id='min_weight', align='center'>
-        <p><strong><%= wrange_f.label :min_weight %></strong>
-        <%= wrange_f.number_field :min_weight %>
-        <%= @weight_range.errors.full_messages_for(:min_weight)[0] if @weight_range.errors %></p>
-      </div>
+  <% @weight_ranges.each_with_index do |wrange, index| %>
+    <section id=<%= "weight_range_#{index + 1}" %>>
+      <h2 align='center'><%= "Intervalo de peso #{index + 1}" %></h2>
 
-      <div id='max_weight', align='center'>
-        <p><strong><%= wrange_f.label :max_weight %></strong>
-        <%= wrange_f.number_field :max_weight %> 
-        <%= @weight_range.errors.full_messages_for(:max_weight)[0] if @weight_range.errors %></p>
-      </div>
+      <%= f.fields_for :weight_ranges, wrange do |wrange_f| %>
+        <div id='min_weight', align='center'>
+          <p><strong><%= wrange_f.label :min_weight %></strong>
+          <%= wrange_f.number_field :min_weight %>
+          <%= wrange.errors.full_messages_for(:min_weight)[0] if wrange.errors %></p>
+        </div>
 
-      <div id='value', align='center'>
-        <p><strong><%= wrange_f.label :value %></strong>
-        <%= wrange_f.number_field :value %>
-        <%= @weight_range.errors.full_messages_for(:value)[0] if @weight_range.errors %></p>
-      </div>
-    <% end %>
-  </section>
+        <div id='max_weight', align='center'>
+          <p><strong><%= wrange_f.label :max_weight %></strong>
+          <%= wrange_f.number_field :max_weight %> 
+          <%= wrange.errors.full_messages_for(:max_weight)[0] if wrange.errors %></p>
+        </div>
+
+        <div id='value', align='center'>
+          <p><strong><%= wrange_f.label :value %></strong>
+          <%= wrange_f.number_field :value %>
+          <%= wrange.errors.full_messages_for(:value)[0] if wrange.errors %></p>
+        </div>
+      <% end %>
+    </section>
+  <% end %>
 
   <div id='submit_button', align='center'>
     <%= f.submit %>
