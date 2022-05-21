@@ -1,0 +1,36 @@
+<section id='vehicles'>
+  <div id ='vehicles_title', align='center'>
+    <h2>Veículos cadastrados</h2>
+  </div>
+
+  <div id='vehicle_register_link', align='center'>
+    <p><strong>
+      <%= link_to 'Cadastrar veículo', new_shipping_company_vehicle_path(@shipping_company) %>
+    </strong></p>
+  </div>
+
+  <% if @vehicles %>
+    <table id='vehicles_table', align='center'>
+      <tr id='table_header'>
+        <th align='left'>Placa de identificação</th>
+        <th align='left'>Modelo</th>
+        <th align='left'>Marca</th>
+        <th align='left'>Ano de produção</th>
+        <th align='left'>Carga máxima</th>
+      </tr>
+
+      <% @vehicles.each do |vehicle| %>
+        <tr id=<%= vehicle.license_plate %>>
+          <td><%= vehicle.license_plate %></td>
+          <td><%= vehicle.model %></td>
+          <td><%= vehicle.brand %></td>
+          <td><%= vehicle.production_year %></td>
+          <td><%= "#{vehicle.maximum_load / 1000} kg" %></td>
+        </tr>
+      <% end %>
+    </table>
+
+  <% else %>
+    <p align='center'>Não existem veículos cadastrados.</p>
+  <% end %>
+</section>
