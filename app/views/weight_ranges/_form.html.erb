@@ -1,0 +1,23 @@
+<%= form_with model: [:volume_range, @weight_range] do |f| %>
+  <div id='min_weight', align='center'>
+    <p><strong><%= f.label :min_weight %></strong>
+    <%= f.number_field :min_weight %>
+    <%= @weight_range.errors.full_messages_for(:min_weight)[0] if @weight_range.errors %></p>
+  </div>
+
+  <div id='max_weight', align='center'>
+    <p><strong><%= f.label :max_weight %></strong>
+    <%= f.number_field :max_weight %>
+    <%= @weight_range.errors.full_messages_for(:max_weight)[0] if @weight_range.errors %></p>
+  </div>
+
+  <div id='value', align='center'>
+    <p><strong><%= f.label :value %></strong>
+    <%= f.number_field :value %>
+    <%= @weight_range.errors.full_messages_for(:value)[0] if @weight_range.errors %></p>
+  </div>
+
+  <div id='submit_button', align='center'>
+    <%= f.submit %>
+  </div>
+<% end %>

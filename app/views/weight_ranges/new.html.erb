@@ -1,0 +1,10 @@
+<div id='page_title', align='center'>
+  <h1>Cadastrar intervalo de peso</h1>
+  <h2>Associado ao intervalo <%= "#{@volume_range.min_volume}-#{@volume_range.max_volume}"%> m3</h2>
+</div>
+
+<%= render 'form' %>
+
+<div id ='back_link', align='center'>
+  <%= link_to 'Voltar', @shipping_company %>
+</div>

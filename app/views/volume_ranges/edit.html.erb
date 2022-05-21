@@ -2,6 +2,12 @@
   <h1>Editar intervalo de volume</h1>
 </div>
 
+<div id='new_weight_range_link', align='center'>
+  <p><strong>
+    <%= link_to 'Cadastrar intervalo de peso', new_volume_range_weight_range_path(@volume_range) %>
+  </strong></p>
+</div>
+
 <%= render 'form' %>
 
 <div id ='back_link', align='center'>
