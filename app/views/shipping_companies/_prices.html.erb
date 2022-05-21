@@ -58,21 +58,21 @@
     <h3>Preços mínimos por distância</h3>
   </div>
 
-  <div id='distance_range_register_link', align='center'>
+  <div id='price_distance_range_register_link', align='center'>
     <p><strong>
       <%= link_to('Cadastrar intervalo de distância',
-                  new_shipping_company_distance_range_path(@shipping_company)) %>
+                  new_shipping_company_price_distance_range_path(@shipping_company)) %>
     </strong></p>
   </div>
 
-  <% if @distance_ranges %>
+  <% if @price_distance_ranges %>
     <table id='min_prices_table', align='center'>
       <tr id='table_header'>
         <th align='left'>Distância</th>
         <th align='left'>Valor mínimo</th>
       </tr>
 
-      <% @distance_ranges.each do |drange| %>
+      <% @price_distance_ranges.each do |drange| %>
         <tr id=<%= "#{drange.min_distance}_#{drange.max_distance}" %>>
           <td>
             <%= "#{drange.min_distance}-#{drange.max_distance} km" %>

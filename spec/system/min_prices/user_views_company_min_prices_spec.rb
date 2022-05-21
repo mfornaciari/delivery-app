@@ -19,8 +19,8 @@ describe 'Usuário vê tabela de preços mínimos da transportadora' do
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    DistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
-    DistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, value: 10000)
+    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
+    PriceDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, value: 10000)
 
     visit root_path
     click_on 'Transportadoras'

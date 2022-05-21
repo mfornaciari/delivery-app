@@ -1,4 +1,4 @@
-class DistanceRange < ApplicationRecord
+class PriceDistanceRange < ApplicationRecord
   validates :value, presence: true
   validates :min_distance, comparison: { greater_than_or_equal_to: 0 }
   validates :max_distance, comparison: { greater_than: 0 }
@@ -18,7 +18,7 @@ class DistanceRange < ApplicationRecord
   def not_previously_registered
     return unless shipping_company
 
-    shipping_company.distance_ranges.each do |drange|
+    shipping_company.price_distance_ranges.each do |drange|
       next if drange == self
 
       interval = (drange.min_distance..drange.max_distance)

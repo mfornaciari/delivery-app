@@ -23,7 +23,7 @@ class ShippingCompaniesController < ApplicationController
     @shipping_company = ShippingCompany.find(params[:id])
     @vehicles = @shipping_company.vehicles unless @shipping_company.vehicles.empty?
     @volume_ranges = @shipping_company.volume_ranges unless @shipping_company.volume_ranges.empty?
-    @distance_ranges = @shipping_company.distance_ranges unless @shipping_company.distance_ranges.empty?
+    @price_distance_ranges = @shipping_company.price_distance_ranges unless @shipping_company.price_distance_ranges.empty?
   end
 
   private
