@@ -9,7 +9,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     visit root_path
     click_on 'Transportadoras'
     click_on 'Express'
-    click_on 'Cadastrar intervalo de distância'
+    find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
     fill_in 'Valor', with: '5000'
@@ -30,7 +30,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     visit root_path
     click_on 'Transportadoras'
     click_on 'Express'
-    click_on 'Cadastrar intervalo de distância'
+    find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
 
@@ -49,7 +49,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     visit root_path
     click_on 'Transportadoras'
     click_on 'Express'
-    click_on 'Cadastrar intervalo de distância'
+    find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -66,7 +66,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     visit root_path
     click_on 'Transportadoras'
     click_on 'Express'
-    click_on 'Cadastrar intervalo de distância'
+    find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'
     click_on 'Criar Intervalo de distância'

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :shipping_companies, only: %i[index new create show], shallow: true do
     resources :vehicles, only: %i[new create]
     resources :price_distance_ranges, only: %i[new create]
+    resources :time_distance_ranges, only: %i[new create]
     resources :volume_ranges, only: %i[new create edit update] do
       resources :weight_ranges, only: %i[new create]
     end

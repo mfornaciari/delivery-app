@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_21_222008) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_22_141743) do
   create_table "price_distance_ranges", force: :cascade do |t|
     t.integer "min_distance"
     t.integer "max_distance"
@@ -31,6 +31,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_222008) do
     t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "time_distance_ranges", force: :cascade do |t|
+    t.integer "min_distance"
+    t.integer "max_distance"
+    t.integer "days"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "shipping_company_id", null: false
+    t.index ["shipping_company_id"], name: "index_time_distance_ranges_on_shipping_company_id"
   end
 
   create_table "vehicles", force: :cascade do |t|
@@ -65,6 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_21_222008) do
   end
 
   add_foreign_key "price_distance_ranges", "shipping_companies"
+  add_foreign_key "time_distance_ranges", "shipping_companies"
   add_foreign_key "vehicles", "shipping_companies"
   add_foreign_key "volume_ranges", "shipping_companies"
   add_foreign_key "weight_ranges", "volume_ranges"

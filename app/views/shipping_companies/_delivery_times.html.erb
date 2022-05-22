@@ -1,0 +1,35 @@
+<section id='delivery_times'>
+  <div id=delivery_times_title', align='center'>
+    <h2>Tabela de prazos</h2>
+  </div>
+
+  <div id='time_distance_range_register_link', align='center'>
+    <p><strong>
+      <%= link_to('Cadastrar intervalo de distância',
+                  new_shipping_company_time_distance_range_path(@shipping_company)) %>
+    </strong></p>
+  </div>
+
+  <% if @time_distance_ranges %>
+    <table id='delivery_times_table', align='center'>
+      <tr id='table_header'>
+        <th align='left'>Distância</th>
+        <th align='left'>Prazo</th>
+      </tr>
+
+      <% @time_distance_ranges.each do |trange| %>
+        <tr id=<%= "#{trange.min_distance}_#{trange.max_distance}" %>>
+          <td>
+            <%= "#{trange.min_distance}-#{trange.max_distance} km" %>
+          </td>
+          <td>
+            <%= trange.days %> dias
+          </td>
+        </tr>
+      <% end %>
+    </table>
+
+  <% else %>
+    <p align='center'>Não existem intervalos de distância cadastrados.</p>
+  <% end %>
+</section>
