@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_22_141743) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_22_143334) do
   create_table "price_distance_ranges", force: :cascade do |t|
     t.integer "min_distance"
     t.integer "max_distance"
@@ -36,7 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_22_141743) do
   create_table "time_distance_ranges", force: :cascade do |t|
     t.integer "min_distance"
     t.integer "max_distance"
-    t.integer "days"
+    t.integer "delivery_time"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "shipping_company_id", null: false

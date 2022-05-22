@@ -21,8 +21,8 @@ describe 'Usuário vê tabela de prazos da transportadora' do
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, days: 2)
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, days: 3)
+    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
+    TimeDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3)
 
     visit root_path
     click_on 'Transportadoras'
