@@ -7,8 +7,9 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
 
     within('div#page_title') do
       expect(page).to have_content 'Express'
@@ -28,8 +29,9 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Voltar'
 
     expect(current_path).to eq root_path

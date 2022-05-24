@@ -7,8 +7,9 @@ describe 'Usuário registra um novo intervalo de volume' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '50'
@@ -33,8 +34,9 @@ describe 'Usuário registra um novo intervalo de volume' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     click_on 'Criar Intervalo de volume'
@@ -55,8 +57,9 @@ describe 'Usuário registra um novo intervalo de volume' do
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 10, value: 25)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '0'
@@ -72,8 +75,9 @@ describe 'Usuário registra um novo intervalo de volume' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '2'
     fill_in 'Volume máximo', with: '1'

@@ -1,11 +1,12 @@
 require 'rails_helper'
 
-describe 'Visitante cadastra transportadora' do
+describe 'Administrador cadastra transportadora' do
   it 'com sucesso' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
+    login_as admin, scope: :admin
     visit root_path
-    login_admin(admin)
+    click_on 'Transportadoras'
     click_on 'Cadastrar transportadora'
     fill_in 'Nome fantasia', with: 'Express'
     fill_in 'Razão social', with: 'Express Transportes Ltda.'
@@ -33,8 +34,9 @@ describe 'Visitante cadastra transportadora' do
   it 'com dados incompletos ou inválidos' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
+    login_as admin, scope: :admin
     visit root_path
-    login_admin(admin)
+    click_on 'Transportadoras'
     click_on 'Cadastrar transportadora'
     fill_in 'Nome fantasia', with: 'Express'
     click_on 'Criar Transportadora'

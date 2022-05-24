@@ -10,8 +10,9 @@ describe 'Administrador acessa o índice de transportadoras' do
                             email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
                             address: 'Avenida B, 23', city: 'Natal', state: 'RN')
 
+    login_as admin, scope: :admin
     visit root_path
-    login_admin(admin)
+    click_on 'Transportadoras'
 
     within_table('shipping_companies') do
       within('#table_header') do
@@ -41,8 +42,9 @@ describe 'Administrador acessa o índice de transportadoras' do
   it 'e não há transportadoras cadastradas' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
+    login_as admin, scope: :admin
     visit root_path
-    login_admin(admin)
+    click_on 'Transportadoras'
 
     expect(page).to have_content 'Não existem transportadoras cadastradas.'
     expect(page).not_to have_table 'shipping_companies'

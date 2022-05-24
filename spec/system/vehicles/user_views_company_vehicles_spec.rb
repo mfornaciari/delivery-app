@@ -11,8 +11,9 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
                     maximum_load: 40_000, shipping_company: express)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
 
     expect(page).to have_content 'Veículos cadastrados'
     within_table('vehicles_table') do
@@ -46,8 +47,9 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as(user, scope: :user)
     visit root_path
-    login_user(user)
+    click_on 'Express'
 
     expect(page).to have_content 'Não existem veículos cadastrados.'
   end

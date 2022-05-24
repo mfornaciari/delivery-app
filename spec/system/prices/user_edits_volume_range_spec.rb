@@ -10,8 +10,9 @@ describe 'Usuário edita intervalo de volume' do
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('table#prices_table').find('#0_30_1').click_on 'Editar intervalo'
 
     expect(page).to have_content 'Editar intervalo de volume'
@@ -37,8 +38,9 @@ describe 'Usuário edita intervalo de volume' do
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: '10'
     fill_in 'Volume máximo', with: '40'
@@ -77,8 +79,9 @@ describe 'Usuário edita intervalo de volume' do
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: ''
     fill_in 'Volume máximo', with: '0'
@@ -110,8 +113,9 @@ describe 'Usuário edita intervalo de volume' do
     WeightRange.create!(volume_range: second_vrange, min_weight: 0, max_weight: 20, value: 75)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('#0_30_1').click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: '31'
     fill_in 'Volume máximo', with: '40'

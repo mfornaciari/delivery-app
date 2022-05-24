@@ -7,8 +7,9 @@ describe 'Usuário registra um novo intervalo de distância' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
@@ -28,8 +29,9 @@ describe 'Usuário registra um novo intervalo de distância' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -47,8 +49,9 @@ describe 'Usuário registra um novo intervalo de distância' do
     PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
@@ -64,8 +67,9 @@ describe 'Usuário registra um novo intervalo de distância' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'

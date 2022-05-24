@@ -7,8 +7,9 @@ describe 'Visitante cadastra veículo' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as(user)
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar veículo'
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Modelo', with: 'Uno'
@@ -31,8 +32,9 @@ describe 'Visitante cadastra veículo' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as(user, scope: :user)
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar veículo'
     fill_in 'Modelo', with: 'Uno'
     click_on 'Criar Veículo'
@@ -53,8 +55,9 @@ describe 'Visitante cadastra veículo' do
                     maximum_load: 100_000, shipping_company: express)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as(user, scope: :user)
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Cadastrar veículo'
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Ano de produção', with: '2023'

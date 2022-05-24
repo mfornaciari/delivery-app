@@ -7,8 +7,9 @@ describe 'Usuário vê tabela de preços da transportadora' do
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
 
     expect(page).to have_content 'Tabela de preços'
     expect(page).to have_link 'Cadastrar intervalo de volume'
@@ -26,8 +27,9 @@ describe 'Usuário vê tabela de preços da transportadora' do
     WeightRange.create!(volume_range: second_volume_range, min_weight: 1, max_weight: 20, value: 75)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
 
     expect(page).not_to have_content 'Não existem intervalos de volume cadastrados.'
     within_table('prices_table') do

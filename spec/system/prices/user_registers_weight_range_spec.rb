@@ -9,8 +9,9 @@ describe 'Usuário registra um novo intervalo de peso' do
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '21'
@@ -32,8 +33,9 @@ describe 'Usuário registra um novo intervalo de peso' do
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '21'
@@ -53,8 +55,9 @@ describe 'Usuário registra um novo intervalo de peso' do
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '0'
@@ -73,8 +76,9 @@ describe 'Usuário registra um novo intervalo de peso' do
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
+    login_as user, scope: :user
     visit root_path
-    login_user(user)
+    click_on 'Express'
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '30'
