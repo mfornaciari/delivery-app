@@ -5,10 +5,10 @@ describe 'Visitante acessa a tela de detalhes da transportadora' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    find('table#shipping_companies').find('tr#Express').click_on 'Express'
+    login_user(user)
 
     within('div#page_title') do
       expect(page).to have_content 'Express'
@@ -26,12 +26,12 @@ describe 'Visitante acessa a tela de detalhes da transportadora' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
-    find('div#back_link').click_on 'Voltar'
+    login_user(user)
+    click_on 'Voltar'
 
-    expect(current_path).to eq shipping_companies_path
+    expect(current_path).to eq root_path
   end
 end

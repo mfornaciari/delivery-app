@@ -5,10 +5,10 @@ describe 'Usuário vê tabela de preços da transportadora' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     expect(page).to have_content 'Tabela de preços'
     expect(page).to have_link 'Cadastrar intervalo de volume'
@@ -24,10 +24,10 @@ describe 'Usuário vê tabela de preços da transportadora' do
     WeightRange.create!(volume_range: first_volume_range, min_weight: 1, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: first_volume_range, min_weight: 21, max_weight: 40, value: 75)
     WeightRange.create!(volume_range: second_volume_range, min_weight: 1, max_weight: 20, value: 75)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     expect(page).not_to have_content 'Não existem intervalos de volume cadastrados.'
     within_table('prices_table') do

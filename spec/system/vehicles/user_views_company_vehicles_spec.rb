@@ -9,10 +9,10 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
                     maximum_load: 100_000, shipping_company: express)
     Vehicle.create!(license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: 1971,
                     maximum_load: 40_000, shipping_company: express)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     expect(page).to have_content 'Veículos cadastrados'
     within_table('vehicles_table') do
@@ -44,10 +44,10 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     expect(page).to have_content 'Não existem veículos cadastrados.'
   end

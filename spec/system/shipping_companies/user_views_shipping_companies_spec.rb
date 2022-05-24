@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'Visitante acessa o índice de transportadoras' do
   it 'e vê as transportadoras cadastradas' do
+    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
@@ -10,7 +11,7 @@ describe 'Visitante acessa o índice de transportadoras' do
                             address: 'Avenida B, 23', city: 'Natal', state: 'RN')
 
     visit root_path
-    click_on 'Transportadoras'
+    login_admin(admin)
 
     within_table('shipping_companies') do
       within('#table_header') do
@@ -38,8 +39,10 @@ describe 'Visitante acessa o índice de transportadoras' do
   end
 
   it 'e não há transportadoras cadastradas' do
+    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+
     visit root_path
-    click_on 'Transportadoras'
+    login_admin(admin)
 
     expect(page).to have_content 'Não existem transportadoras cadastradas.'
     expect(page).not_to have_table 'shipping_companies'

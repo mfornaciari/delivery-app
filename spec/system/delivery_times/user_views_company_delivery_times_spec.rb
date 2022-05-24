@@ -5,10 +5,10 @@ describe 'Usuário vê tabela de prazos da transportadora' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     expect(page).to have_content 'Tabela de prazos'
     within('section#delivery_times') do
@@ -23,10 +23,10 @@ describe 'Usuário vê tabela de prazos da transportadora' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     TimeDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
 
     within('section#delivery_times') do
       expect(page).not_to have_content 'Não existem intervalos de distância cadastrados.'

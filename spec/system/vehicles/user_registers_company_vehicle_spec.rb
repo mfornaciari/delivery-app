@@ -5,19 +5,17 @@ describe 'Visitante cadastra veículo' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
-    find('div#vehicle_register_link').click_on 'Cadastrar veículo'
-    within('form') do
-      fill_in 'Placa de identificação', with: 'BRA3R52'
-      fill_in 'Modelo', with: 'Uno'
-      fill_in 'Marca', with: 'Fiat'
-      fill_in 'Ano de produção', with: '1992'
-      fill_in 'Carga máxima', with: '100000'
-      click_on 'Criar Veículo'
-    end
+    login_user(user)
+    click_on 'Cadastrar veículo'
+    fill_in 'Placa de identificação', with: 'BRA3R52'
+    fill_in 'Modelo', with: 'Uno'
+    fill_in 'Marca', with: 'Fiat'
+    fill_in 'Ano de produção', with: '1992'
+    fill_in 'Carga máxima', with: '100000'
+    click_on 'Criar Veículo'
 
     expect(page).to have_content 'Veículo cadastrado com sucesso.'
     expect(page).to have_content 'BRA3R52'
@@ -31,10 +29,10 @@ describe 'Visitante cadastra veículo' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Cadastrar veículo'
     fill_in 'Modelo', with: 'Uno'
     click_on 'Criar Veículo'
@@ -53,10 +51,10 @@ describe 'Visitante cadastra veículo' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
                     maximum_load: 100_000, shipping_company: express)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Cadastrar veículo'
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Ano de produção', with: '2023'

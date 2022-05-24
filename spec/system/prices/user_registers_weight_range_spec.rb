@@ -7,10 +7,10 @@ describe 'Usuário registra um novo intervalo de peso' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '21'
@@ -30,10 +30,10 @@ describe 'Usuário registra um novo intervalo de peso' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '21'
@@ -51,10 +51,10 @@ describe 'Usuário registra um novo intervalo de peso' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '0'
@@ -71,10 +71,10 @@ describe 'Usuário registra um novo intervalo de peso' do
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     click_on 'Cadastrar intervalo de peso'
     fill_in 'Peso mínimo', with: '30'

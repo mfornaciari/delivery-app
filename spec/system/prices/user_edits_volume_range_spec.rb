@@ -8,10 +8,10 @@ describe 'Usuário edita intervalo de volume' do
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('table#prices_table').find('#0_30_1').click_on 'Editar intervalo'
 
     expect(page).to have_content 'Editar intervalo de volume'
@@ -35,10 +35,10 @@ describe 'Usuário edita intervalo de volume' do
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: '10'
     fill_in 'Volume máximo', with: '40'
@@ -75,10 +75,10 @@ describe 'Usuário edita intervalo de volume' do
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: ''
     fill_in 'Volume máximo', with: '0'
@@ -108,10 +108,10 @@ describe 'Usuário edita intervalo de volume' do
     WeightRange.create!(volume_range: first_vrange, min_weight: 21, max_weight: 40, value: 75)
     second_vrange = VolumeRange.create!(shipping_company: express, min_volume: 31, max_volume: 60)
     WeightRange.create!(volume_range: second_vrange, min_weight: 0, max_weight: 20, value: 75)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('#0_30_1').click_on 'Editar intervalo'
     fill_in 'Volume mínimo', with: '31'
     fill_in 'Volume máximo', with: '40'

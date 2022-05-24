@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users, path: 'users'
+  devise_for :admins, path: 'admins'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   resources :shipping_companies, only: %i[index new create show], shallow: true do
     resources :vehicles, only: %i[new create]

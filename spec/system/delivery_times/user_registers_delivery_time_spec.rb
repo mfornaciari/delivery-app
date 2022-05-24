@@ -5,10 +5,10 @@ describe 'Usuário registra um novo intervalo de distância' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('section#delivery_times').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
@@ -26,10 +26,10 @@ describe 'Usuário registra um novo intervalo de distância' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('section#delivery_times').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -45,10 +45,10 @@ describe 'Usuário registra um novo intervalo de distância' do
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                                       address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('section#delivery_times').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
@@ -62,10 +62,10 @@ describe 'Usuário registra um novo intervalo de distância' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
-    click_on 'Transportadoras'
-    click_on 'Express'
+    login_user(user)
     find('section#delivery_times').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'

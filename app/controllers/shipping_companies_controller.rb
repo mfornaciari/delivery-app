@@ -25,6 +25,7 @@ class ShippingCompaniesController < ApplicationController
     @volume_ranges = @shipping_company.volume_ranges unless @shipping_company.volume_ranges.empty?
     @price_distance_ranges = @shipping_company.price_distance_ranges if @shipping_company.price_distance_ranges.any?
     @time_distance_ranges = @shipping_company.time_distance_ranges if @shipping_company.time_distance_ranges.any?
+    @back_path = admin_signed_in? ? shipping_companies_path : root_path
   end
 
   private
