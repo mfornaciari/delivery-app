@@ -6,7 +6,6 @@ describe 'Visitante cadastra transportadora' do
 
     visit root_path
     login_admin(admin)
-    click_on 'Transportadoras'
     click_on 'Cadastrar transportadora'
     fill_in 'Nome fantasia', with: 'Express'
     fill_in 'Razão social', with: 'Express Transportes Ltda.'
@@ -18,9 +17,7 @@ describe 'Visitante cadastra transportadora' do
     click_on 'Criar Transportadora'
 
     expect(current_path).to eq shipping_company_path(1)
-    within('div#flash_messages') do
-      expect(page).to have_content 'Transportadora cadastrada com sucesso.'
-    end
+    expect(page).to have_content 'Transportadora cadastrada com sucesso.'
     within('div#page_title') do
       expect(page).to have_content 'Express'
     end
@@ -38,7 +35,6 @@ describe 'Visitante cadastra transportadora' do
 
     visit root_path
     login_admin(admin)
-    click_on 'Transportadoras'
     click_on 'Cadastrar transportadora'
     fill_in 'Nome fantasia', with: 'Express'
     click_on 'Criar Transportadora'

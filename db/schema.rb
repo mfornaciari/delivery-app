@@ -116,6 +116,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_211736) do
 
   add_foreign_key "price_distance_ranges", "shipping_companies"
   add_foreign_key "time_distance_ranges", "shipping_companies"
+  add_foreign_key "users", "shipping_companies"
   add_foreign_key "vehicles", "shipping_companies"
   add_foreign_key "volume_ranges", "shipping_companies"
   add_foreign_key "weight_ranges", "volume_ranges"

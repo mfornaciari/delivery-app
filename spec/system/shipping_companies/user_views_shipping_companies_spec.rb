@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Visitante acessa o índice de transportadoras' do
+describe 'Administrador acessa o índice de transportadoras' do
   it 'e vê as transportadoras cadastradas' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',

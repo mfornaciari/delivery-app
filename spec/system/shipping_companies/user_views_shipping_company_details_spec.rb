@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Visitante acessa a tela de detalhes da transportadora' do
+describe 'Usuário acessa a tela de detalhes da sua transportadora' do
   it 'e vê detalhes completos' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
@@ -22,7 +22,7 @@ describe 'Visitante acessa a tela de detalhes da transportadora' do
     end
   end
 
-  it 'e volta para o índice de transportadoras' do
+  it 'e volta para a tela inicial' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
