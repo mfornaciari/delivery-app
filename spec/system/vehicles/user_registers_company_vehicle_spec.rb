@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Visitante cadastra veículo' do
+describe 'Usuário cadastra veículo' do
   it 'com sucesso' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
