@@ -1,5 +1,5 @@
 class VehiclesController < ApplicationController
-  before_action :check_user_login
+  before_action :authenticate_user_or_admin
   before_action :set_shipping_company
 
   def new
@@ -19,16 +19,8 @@ class VehiclesController < ApplicationController
 
   private
 
-  def set_shipping_company
-    @shipping_company = ShippingCompany.find(params[:shipping_company_id])
-  end
-
   def vehicle_params
     params.require(:vehicle).permit(:license_plate, :model, :brand, :production_year,
                                     :maximum_load)
-  end
-
-  def check_user_login
-    authenticate_user! unless admin_signed_in?
   end
 end

@@ -1,5 +1,5 @@
 class ShippingCompaniesController < ApplicationController
-  before_action :check_user_login, only: [:show]
+  before_action :authenticate_user_or_admin, only: [:show]
   before_action :authenticate_admin!, only: %i[index new]
 
   def index
@@ -36,9 +36,5 @@ class ShippingCompaniesController < ApplicationController
   def shipping_company_params
     params.require(:shipping_company).permit(:brand_name, :corporate_name, :registration_number, :email_domain,
                                              :address, :city, :state)
-  end
-
-  def check_user_login
-    authenticate_user! unless admin_signed_in?
   end
 end
