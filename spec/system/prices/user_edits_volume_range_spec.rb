@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe 'Usuário edita intervalo de volume' do
+  it 'sem se autenticar' do
+    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+
+    visit edit_volume_range_path(1)
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'e vê o formulário de edição' do
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,

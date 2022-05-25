@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de distância' do
+  it 'sem se autenticar' do
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+
+    visit new_shipping_company_time_distance_range_path(1)
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'com sucesso' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,

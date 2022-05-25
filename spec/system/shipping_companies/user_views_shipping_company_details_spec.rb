@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 describe 'Usuário acessa a tela de detalhes da sua transportadora' do
+  it 'sem se autenticar' do
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+
+    visit shipping_company_path(1)
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'e vê detalhes completos' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,

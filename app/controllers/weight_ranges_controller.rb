@@ -1,4 +1,5 @@
 class WeightRangesController < ApplicationController
+  before_action :check_user_login
   before_action :set_volume_range, only: %i[new create]
 
   def new
@@ -24,5 +25,9 @@ class WeightRangesController < ApplicationController
 
   def weight_range_params
     params.require(:weight_range).permit(:min_weight, :max_weight, :value)
+  end
+
+  def check_user_login
+    authenticate_user! unless admin_signed_in?
   end
 end

@@ -1,4 +1,5 @@
 class VolumeRangesController < ApplicationController
+  before_action :check_user_login
   before_action :set_shipping_company, only: %i[new create]
   before_action :set_volume_range, only: %i[edit update]
 
@@ -51,5 +52,9 @@ class VolumeRangesController < ApplicationController
   def volume_range_params
     params.require(:volume_range).permit(:min_volume, :max_volume,
                                          weight_ranges_attributes: %i[id min_weight max_weight value])
+  end
+
+  def check_user_login
+    authenticate_user! unless admin_signed_in?
   end
 end

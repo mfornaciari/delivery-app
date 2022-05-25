@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 describe 'Administrador acessa o índice de transportadoras' do
+
+  it 'sem se autenticar' do
+    visit shipping_companies_path
+
+    expect(current_path).to eq new_admin_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'e vê as transportadoras cadastradas' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',

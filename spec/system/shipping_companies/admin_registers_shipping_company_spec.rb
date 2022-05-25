@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 describe 'Administrador cadastra transportadora' do
+  it 'sem se autenticar' do
+    visit new_shipping_company_path
+
+    expect(current_path).to eq new_admin_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'com sucesso' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 

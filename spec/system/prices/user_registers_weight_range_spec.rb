@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de peso' do
+  it 'sem se autenticar' do
+    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+
+    visit new_volume_range_weight_range_path(vrange)
+
+    expect(current_path).to eq new_user_session_path
+    expect(page).to have_content 'Para continuar, faça login ou registre-se.'
+  end
+
   it 'com sucesso' do
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                                       email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
