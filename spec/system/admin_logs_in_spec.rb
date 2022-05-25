@@ -17,6 +17,16 @@ describe 'Administrador se autentica' do
     expect(page).to have_link 'Transportadoras'
   end
 
+  it 'e não vê mais links de autenticação' do
+    admin = Admin.create!(email: 'usuario@sistemadefrete.com.br', password: 'password')
+
+    login_as(admin, scope: :admin)
+    visit root_path
+
+    expect(page).not_to have_link 'Entrar (administrador)'
+    expect(page).not_to have_link 'Entrar (usuário)'
+  end
+
   it 'e faz logout' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 

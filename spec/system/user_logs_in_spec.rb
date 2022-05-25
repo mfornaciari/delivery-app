@@ -21,6 +21,19 @@ describe 'Usuário de transportadora se autentica' do
     expect(page).not_to have_link 'Transportadoras'
   end
 
+  it 'e não vê mais links de autenticação' do
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+
+    login_as(user, scope: :user)
+    visit root_path
+
+    expect(page).not_to have_link 'Entrar (administrador)'
+    expect(page).not_to have_link 'Entrar (usuário)'
+  end
+
   it 'e faz logout' do
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,

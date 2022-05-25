@@ -1,2 +1,4 @@
-<h2 align='center'><%= link_to 'Entrar (usuário)', new_user_session_path %></h2>
-<p align='center'><%= link_to 'Entrar (administrador)', new_admin_session_path %></p>
+<% unless admin_signed_in? || user_signed_in? %>
+  <h3 align='center'><%= link_to 'Entrar (usuário)', new_user_session_path %></h3>
+  <p align='center'><%= link_to 'Entrar (administrador)', new_admin_session_path %></p>
+<% end %>
