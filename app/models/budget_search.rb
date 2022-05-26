@@ -1,7 +1,9 @@
 class BudgetSearch < ApplicationRecord
   belongs_to :admin
 
-  before_validation :set_volume_in_cubic_meters
+  validates :height, :width, :depth, :weight, :distance, comparison: { greater_than: 0 }
+
+  before_create :set_volume_in_cubic_meters
 
   private
 
