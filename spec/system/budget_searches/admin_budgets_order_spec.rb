@@ -115,4 +115,40 @@ describe 'Administrador consulta preço de pedido' do
     expect(page).to have_content 'Distância a percorrer: 20 km'
     expect(page).to have_content 'Não foram encontradas transportadoras para esse pedido.'
   end
+
+  it 'com dados incompletos' do
+    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+
+    login_as(admin, scope: :admin)
+    visit new_budget_search_path
+    fill_in 'Altura', with: '100'
+    click_on 'Consultar'
+
+    expect(page).to have_content 'Sua busca não pôde ser realizada.'
+    expect(page).to have_field 'Altura', with: '100'
+    expect(page).to have_content 'Largura não pode ficar em branco'
+    expect(page).to have_content 'Profundidade não pode ficar em branco'
+    expect(page).to have_content 'Peso não pode ficar em branco'
+    expect(page).to have_content 'Distância não pode ficar em branco'
+  end
+
+  it 'com dados inválidos' do
+    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+
+    login_as(admin, scope: :admin)
+    visit new_budget_search_path
+    fill_in 'Altura', with: '0'
+    fill_in 'Largura', with: '0'
+    fill_in 'Profundidade', with: '-1'
+    fill_in 'Peso', with: 'Z'
+    fill_in 'Distância', with: '0'
+    click_on 'Consultar'
+
+    expect(page).to have_content 'Sua busca não pôde ser realizada.'
+    expect(page).to have_content 'Altura deve ser maior que 0'
+    expect(page).to have_content 'Largura deve ser maior que 0'
+    expect(page).to have_content 'Profundidade deve ser maior que 0'
+    expect(page).to have_content 'Peso deve ser maior que 0'
+    expect(page).to have_content 'Distância deve ser maior que 0'
+  end
 end

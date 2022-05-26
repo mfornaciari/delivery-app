@@ -8,7 +8,12 @@ class BudgetSearchesController < ApplicationController
   def create
     @budget_search = BudgetSearch.new(budget_search_params)
     @budget_search.admin = current_admin
-    redirect_to @budget_search, notice: 'Resultado da sua busca:' if @budget_search.save!
+    if @budget_search.save
+      redirect_to @budget_search, notice: 'Resultado da sua busca:'
+    else
+      flash.now[:notice] = 'Sua busca não pôde ser realizada.'
+      render 'new'
+    end
   end
 
   def show
