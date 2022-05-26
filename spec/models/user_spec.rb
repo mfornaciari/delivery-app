@@ -22,4 +22,20 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
+  describe '#set_shipping_company' do
+    it 'Deve atribuir transportadora com base no domínio de e-mail' do
+      ShippingCompany.create!(brand_name: 'A Jato', corporate_name: 'A Jato S.A.',
+                              email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
+                              address: 'Avenida B, 23', city: 'Natal', state: 'RN')
+      express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                        email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                        address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+      user = User.new(email: 'usuario@express.com.br', password: 'password')
+
+      user.valid?
+
+      expect(user.shipping_company).to eq express
+    end
+  end
 end
