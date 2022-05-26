@@ -18,6 +18,7 @@
           <strong><%= link_to 'Início', root_path %></strong> | 
           <% if admin_signed_in? %>
             <strong><%= link_to 'Transportadoras', shipping_companies_path %></strong> | 
+            <strong><%= link_to 'Consultar preços', new_budget_search_path %></strong> | 
             <%= current_admin.email %> | 
             <%= button_to 'Sair', destroy_admin_session_path, method: :delete %>
           <% elsif user_signed_in? %>

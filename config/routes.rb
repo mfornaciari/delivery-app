@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :weight_ranges, only: %i[new create]
     end
   end
+  resources :budget_searches, only: %i[new create show]
 
   # Defines the root path route ("/")
   root 'home#index'

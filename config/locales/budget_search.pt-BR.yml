@@ -1,0 +1,12 @@
+pt-BR:
+  activerecord:
+    models:
+      budget_search: Busca de preços
+    attributes:
+      budget_search:
+        height: Altura
+        width: Largura
+        depth: Profundidade
+        weight: Peso
+        distance: Distância
+        admin: Administrador

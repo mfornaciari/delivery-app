@@ -1,0 +1,33 @@
+<h1 align='center'><%= "Busca no. #{@budget_search.id} (#{I18n.l(@budget_search.created_at.to_date)})" %></h1>
+
+<div align='center'>
+  <dl>
+    <dt>Realizada por:</dt>
+    <dd><%= @budget_search.admin.email %></dd>
+
+    <dt>Volume:</dt>
+    <dd><%= @budget_search.volume %> m³</dd>
+
+    <dt>Peso:</dt>
+    <dd><%= @budget_search.weight %> kg</dd>
+
+    <dt>Distância a percorrer:</dt>
+    <dd><%= @budget_search.distance %> km</dd>
+  </dl>
+</div>
+
+<table id='search_details', align='center'>
+  <tr id='table_header'>
+    <th align='left'>Transportadora</th>
+    <th align='left'>Prazo</th>
+    <th align='left'>Valor</th>
+  </tr>
+
+  <% @prices_and_times.each_pair do |company, price_and_time| %>
+    <tr id=<%= company.brand_name.gsub(/\s/, '_').downcase %>>
+      <td><%= company.brand_name %></td>
+      <td><%= number_to_currency(price_and_time[0] / 100, separator: ',', delimiter: '.', unit: 'R$') %></td>
+      <td><%= price_and_time[1] %> dias</td>
+    </tr>
+  <% end %>
+</table>
