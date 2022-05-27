@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de volume' do
   it 'sem se autenticar' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
 
-    visit new_shipping_company_volume_range_path(express)
+    visit new_shipping_company_volume_range_path(1)
 
     expect(current_path).to eq new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
@@ -19,8 +19,7 @@ describe 'Usuário registra um novo intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '50'
@@ -46,9 +45,7 @@ describe 'Usuário registra um novo intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    click_on 'Cadastrar intervalo de volume'
+    visit new_shipping_company_volume_range_path(1)
     fill_in 'Volume mínimo', with: '0'
     click_on 'Criar Intervalo de volume'
 
@@ -69,9 +66,7 @@ describe 'Usuário registra um novo intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    click_on 'Cadastrar intervalo de volume'
+    visit new_shipping_company_volume_range_path(1)
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '0'
     click_on 'Criar Intervalo de volume'
@@ -87,9 +82,7 @@ describe 'Usuário registra um novo intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    click_on 'Cadastrar intervalo de volume'
+    visit new_shipping_company_volume_range_path(1)
     fill_in 'Volume mínimo', with: '2'
     fill_in 'Volume máximo', with: '1'
     fill_in 'Peso mínimo', with: '2'

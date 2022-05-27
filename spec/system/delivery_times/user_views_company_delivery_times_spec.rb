@@ -8,8 +8,7 @@ describe 'Usuário vê tabela de prazos da transportadora' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
 
     expect(page).to have_content 'Tabela de prazos'
     within('section#delivery_times') do
@@ -27,8 +26,7 @@ describe 'Usuário vê tabela de prazos da transportadora' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
 
     within('section#delivery_times') do
       expect(page).not_to have_content 'Não existem intervalos de distância cadastrados.'

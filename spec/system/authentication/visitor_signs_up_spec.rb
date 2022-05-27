@@ -6,8 +6,7 @@ describe 'Visitante cria uma conta' do
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
 
-    visit root_path
-    click_on 'Entrar (usuário)'
+    visit new_user_session_path
     click_on 'Inscrever-se'
     fill_in 'E-mail', with: 'usuario@express.com.br'
     fill_in 'Senha', with: 'password'
@@ -25,8 +24,7 @@ describe 'Visitante cria uma conta' do
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
 
-    visit root_path
-    click_on 'Entrar (usuário)'
+    visit new_user_session_path
     click_on 'Inscrever-se'
     fill_in 'E-mail', with: 'usuario@email.com'
     click_on 'Inscrever-se'
@@ -38,8 +36,7 @@ describe 'Visitante cria uma conta' do
   end
 
   it 'como administrador' do
-    visit root_path
-    click_on 'Entrar (administrador)'
+    visit new_admin_session_path
 
     expect(page).not_to have_link 'Sign up'
   end

@@ -8,8 +8,7 @@ describe 'Usuário vê tabela de preços mínimos da transportadora' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
 
     within('section#prices') do
       expect(page).to have_content 'Preços mínimos por distância'
@@ -27,8 +26,7 @@ describe 'Usuário vê tabela de preços mínimos da transportadora' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
 
     within('section#prices') do
       expect(page).not_to have_content 'Não existem intervalos de distância cadastrados.'

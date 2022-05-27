@@ -24,8 +24,7 @@ describe 'Usuário edita intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
     find('table#prices_table').find('#0_30_1').click_on 'Editar intervalo'
 
     expect(page).to have_content 'Editar intervalo de volume'
@@ -52,9 +51,7 @@ describe 'Usuário edita intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    click_on 'Editar intervalo'
+    visit edit_volume_range_path(vrange)
     fill_in 'Volume mínimo', with: '10'
     fill_in 'Volume máximo', with: '40'
     within('section#weight_range_1') do
@@ -93,9 +90,7 @@ describe 'Usuário edita intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    click_on 'Editar intervalo'
+    visit edit_volume_range_path(vrange)
     fill_in 'Volume mínimo', with: ''
     fill_in 'Volume máximo', with: '0'
     within('section#weight_range_1') do
@@ -127,9 +122,7 @@ describe 'Usuário edita intervalo de volume' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    find('#0_30_1').click_on 'Editar intervalo'
+    visit edit_volume_range_path(first_vrange)
     fill_in 'Volume mínimo', with: '31'
     fill_in 'Volume máximo', with: '40'
     within('section#weight_range_1') do

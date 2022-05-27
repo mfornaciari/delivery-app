@@ -19,8 +19,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
@@ -41,9 +40,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    find('section#prices').click_on 'Cadastrar intervalo de distância'
+    visit new_shipping_company_price_distance_range_path(1)
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
 
@@ -61,9 +58,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    find('section#prices').click_on 'Cadastrar intervalo de distância'
+    visit new_shipping_company_price_distance_range_path(1)
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -79,9 +74,7 @@ describe 'Usuário registra um novo intervalo de distância' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
-    find('section#prices').click_on 'Cadastrar intervalo de distância'
+    visit new_shipping_company_price_distance_range_path(1)
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'
     click_on 'Criar Intervalo de distância'

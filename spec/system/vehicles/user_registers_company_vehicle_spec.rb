@@ -2,11 +2,11 @@ require 'rails_helper'
 
 describe 'Usuário cadastra veículo' do
   it 'sem se autenticar' do
-    company = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
 
-    visit new_shipping_company_vehicle_path(company)
+    visit new_shipping_company_vehicle_path(1)
 
     expect(current_path).to eq new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
@@ -19,8 +19,7 @@ describe 'Usuário cadastra veículo' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as(user)
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
     click_on 'Cadastrar veículo'
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Modelo', with: 'Uno'
@@ -44,9 +43,7 @@ describe 'Usuário cadastra veículo' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as(user, scope: :user)
-    visit root_path
-    click_on 'Express'
-    click_on 'Cadastrar veículo'
+    visit new_shipping_company_vehicle_path(1)
     fill_in 'Modelo', with: 'Uno'
     click_on 'Criar Veículo'
 
@@ -67,9 +64,7 @@ describe 'Usuário cadastra veículo' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as(user, scope: :user)
-    visit root_path
-    click_on 'Express'
-    click_on 'Cadastrar veículo'
+    visit new_shipping_company_vehicle_path(1)
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Ano de produção', with: '2023'
     fill_in 'Carga máxima', with: '0'

@@ -41,8 +41,7 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
     user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit root_path
-    click_on 'Express'
+    visit shipping_company_path(1)
     click_on 'Voltar'
 
     expect(current_path).to eq root_path

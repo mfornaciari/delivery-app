@@ -51,8 +51,7 @@ describe 'Administrador acessa o índice de transportadoras' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
     login_as admin, scope: :admin
-    visit root_path
-    click_on 'Transportadoras'
+    visit shipping_companies_path
 
     expect(page).to have_content 'Não existem transportadoras cadastradas.'
     expect(page).not_to have_table 'shipping_companies'

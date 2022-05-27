@@ -12,8 +12,7 @@ describe 'Administrador cadastra transportadora' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
     login_as admin, scope: :admin
-    visit root_path
-    click_on 'Transportadoras'
+    visit shipping_companies_path
     click_on 'Cadastrar transportadora'
     fill_in 'Nome fantasia', with: 'Express'
     fill_in 'Razão social', with: 'Express Transportes Ltda.'
@@ -42,9 +41,7 @@ describe 'Administrador cadastra transportadora' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 
     login_as admin, scope: :admin
-    visit root_path
-    click_on 'Transportadoras'
-    click_on 'Cadastrar transportadora'
+    visit new_shipping_company_path
     fill_in 'Nome fantasia', with: 'Express'
     click_on 'Criar Transportadora'
 
