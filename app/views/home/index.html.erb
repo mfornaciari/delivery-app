@@ -2,3 +2,27 @@
   <h3 align='center'><%= link_to 'Entrar (usuário)', new_user_session_path %></h3>
   <p align='center'><%= link_to 'Entrar (administrador)', new_admin_session_path %></p>
 <% end %>
+
+<% if admin_signed_in? %>
+  <% if @budget_searches.empty?%>
+    <p align='center'>Não há buscas registradas.</p>
+  <% else %>
+    <h1 align='center'>Buscas realizadas:</h1>
+
+    <table id='budget_searches', align='center'>
+      <tr id='table_header'>
+        <th>No. da busca</th>
+        <th>Data</th>
+        <th>Administrador</th>
+      </tr>
+
+    <% @budget_searches.each do |search| %>
+      <tr id=<%= search.id %>>
+        <td><%= link_to search.id, search %></td>
+        <td><%= I18n.l(search.created_at.to_date) %></td>
+        <td><%= search.admin.email %></td>
+      </tr>
+    <% end %>
+    </table>
+  <% end %>
+<% end %>
