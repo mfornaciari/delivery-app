@@ -12,8 +12,8 @@ Rails.application.routes.draw do
     end
   end
 
+    resources :orders, only: %i[index new create show]
   resources :budget_searches, only: %i[new create show]
-  resources :orders, only: %i[new create show]
 
   # Defines the root path route ("/")
   root 'home#index'

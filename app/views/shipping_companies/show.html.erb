@@ -24,6 +24,8 @@
   </div>
 </section>
 
+<p align='center'><%= link_to 'Pedidos', orders_path(shipping_company: @shipping_company) %></p>
+
 <%= render 'vehicles_table' %>
 
 <%= render 'prices' %>

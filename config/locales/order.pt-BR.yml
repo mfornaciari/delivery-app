@@ -1,5 +1,6 @@
 pt-BR:
   pending: Pendente
+  accepted: Aceito
   activerecord:
     models:
       order: Pedido

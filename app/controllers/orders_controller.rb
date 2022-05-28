@@ -1,4 +1,11 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user_or_admin, only: :index
+
+  def index
+    @company = user_signed_in? ? current_user.shipping_company : ShippingCompany.find(params[:shipping_company])
+    @orders = @company.orders
+  end
+
   def new
     if params[:search_id].nil?
       return redirect_to root_path, notice: 'Antes de criar um pedido, faça uma consulta de preços.'

@@ -1,0 +1,29 @@
+<h1 align='center'>Pedidos de <%= @company.corporate_name %></h1>
+
+<% if @orders.empty? %>
+  <p align='center'>Esta transportadora não recebeu nenhum pedido.</p>
+<% else %>
+  <table id='orders', align='center'>
+    <tr id='table_header'>
+      <th>Código</th>
+      <th>Data de criação</th>
+      <th>Tempo de entrega previsto</th>
+      <th>Valor</th>
+      <th>Status</th>
+    </tr>
+
+  <% @orders.each do |order| %>
+    <tr id=<%= order.code %>>
+      <td><%= link_to order.code, order %></td>
+      <td><%= I18n.l(order.created_at.to_date) %></td>
+      <td><%= order.estimated_delivery_time %> dias</td>
+      <td><%= number_to_currency(order.value / 100, separator: ',', delimiter: '.', unit: 'R$') %></td>
+      <td><%= t(order.status) %></td>
+    </tr>
+  <% end %>
+  </table>
+<% end %>
+
+<div align='center'>
+  <%= link_to 'Voltar', @company %>
+</div>
