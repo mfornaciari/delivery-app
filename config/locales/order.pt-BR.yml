@@ -1,0 +1,21 @@
+pt-BR:
+  pending: Pendente
+  activerecord:
+    models:
+      order: Pedido
+    attributes:
+      order:
+        volume: Volume
+        weight: Peso
+        distance: Distância a percorrer
+        pickup_address: Endereço de retirada
+        pickup_city: Cidade de retirada
+        pickup_state: Estado de retirada
+        delivery_address: Endereço de entrega
+        delivery_city: Cidade de entrega
+        delivery_state: Estado de entrega
+        recipient_name: Nome do destinatário(a)
+        product_code: Código do produto a transportar
+        code: Código
+        shipping_company: Transportadora
+        vehicle: Veículo

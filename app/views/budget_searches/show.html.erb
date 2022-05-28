@@ -1,18 +1,18 @@
-<h1 align='center'><%= "Busca no. #{@budget_search.id} (#{I18n.l(@budget_search.created_at.to_date)})" %></h1>
+<h1 align='center'><%= "Busca no. #{@search.id} (#{I18n.l(@search.created_at.to_date)})" %></h1>
 
 <div align='center'>
   <dl>
     <dt>Realizada por:</dt>
-    <dd><%= @budget_search.admin.email %></dd>
+    <dd><%= @search.admin.email %></dd>
 
     <dt>Volume:</dt>
-    <dd><%= @budget_search.volume %> m³</dd>
+    <dd><%= @search.volume %> m³</dd>
 
     <dt>Peso:</dt>
-    <dd><%= @budget_search.weight %> kg</dd>
+    <dd><%= @search.weight %> kg</dd>
 
     <dt>Distância a percorrer:</dt>
-    <dd><%= @budget_search.distance %> km</dd>
+    <dd><%= @search.distance %> km</dd>
   </dl>
 </div>
 
@@ -36,3 +36,13 @@
     <% end %>
   </table>
 <% end %>
+
+<div align='center'>
+  <%= form_with url: new_order_path, method: :get do |form| %>
+    <%= form.hidden_field :search_id, value: @search.id %>
+
+    <%= form.label :shipping_company_id, 'Enviar pedido para a transportadora' %>
+    <%= form.collection_select :shipping_company_id, @shipping_companies, :id, :brand_name, include_blank: true %>
+    <%= form.submit 'Enviar' %>
+  <% end %>
+</div>

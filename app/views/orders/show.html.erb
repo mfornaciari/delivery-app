@@ -1,0 +1,37 @@
+<h1 align='center'>Pedido <%= @order.code %></h1>
+<h2 align='center'>Transportadora: <%= @order.shipping_company.corporate_name %></h2>
+
+<div align='center'>
+  <dl>
+    <dt>Volume:</dt>
+    <dd><%= @order.volume %> m³</dd>
+
+    <dt>Peso:</dt>
+    <dd><%= @order.weight %> kg</dd>
+
+    <dt>Distância a percorrer:</dt>
+    <dd><%= @order.distance %> km</dd>
+
+    <dt>Endereço de retirada:</dt>
+    <dd><%= "#{@order.pickup_address} - #{@order.pickup_city}/#{@order.pickup_state}" %></dd>
+
+    <dt>Endereço de entrega:</dt>
+    <dd><%= "#{@order.delivery_address} - #{@order.delivery_city}/#{@order.delivery_state}" %></dd>
+
+    <dt>Destinado a:</dt>
+    <dd><%= @order.recipient_name %></dd>
+
+    <dt>Código do produto:</dt>
+    <dd><%= @order.product_code %></dd>
+
+    <dt>Tempo de entrega previsto:</dt>
+    <dd><%= @order.estimated_delivery_time %> dias</dd>
+
+    <dt>Valor:</dt>
+    <dd><%= number_to_currency(@order.value / 100, separator: ',', delimiter: '.', unit: 'R$') %></dd>
+
+    <dt>Status:</dt>
+    <dd><%= t(@order.status) %></dd>
+
+  </dl>
+</div>

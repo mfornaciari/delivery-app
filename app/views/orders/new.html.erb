@@ -1,0 +1,73 @@
+<h2 align='center'>Enviando pedido para <%= @shipping_company.corporate_name %></h2>
+
+<div align='center'>
+  <dl>
+    <dd>Volume:</dd>
+    <dt><%= @search.volume %> m³</dt>
+
+    <dd>Peso:</dd>
+    <dt><%= @search.weight %> kg</dt>
+
+    <dd>Distância a percorrer:</dd>
+    <dt><%= @search.distance %> km</dt>
+
+    <dd>Tempo de entrega previsto:</dd>
+    <dt><%= @delivery_time %> dias</dt>
+
+    <dd>Valor:</dd>
+    <dt><%= number_to_currency(@price / 100, separator: ',', delimiter: '.', unit: 'R$') %></dt>
+  </dl>
+</div>
+
+<div align='center'>
+  <%= form_with model: @order do |form| %>
+    <%= form.hidden_field :shipping_company_id, value: @shipping_company.id %>
+    <%= form.hidden_field :volume, value: @search.volume %>
+    <%= form.hidden_field :weight, value: @search.weight %>
+    <%= form.hidden_field :distance, value: @search.distance %>
+    <%= form.hidden_field :estimated_delivery_time, value: @delivery_time %>
+    <%= form.hidden_field :value, value: @price %>
+
+    <div id='pickup_address'>
+      <p><strong>Retirada:</strong></p>
+
+      <p><strong><%= form.label :pickup_address %></strong>
+      <%= form.text_area :pickup_address %>
+      <%= @order.errors.full_messages_for(:pickup_address).first if @order.errors %></p>
+
+      <p><strong><%= form.label :pickup_city %></strong>
+      <%= form.text_area :pickup_city %>
+      <%= @order.errors.full_messages_for(:pickup_city).first if @order.errors %></p>
+
+      <p><strong><%= form.label :pickup_state %></strong>
+      <%= form.select :pickup_state, @states, include_blank: true %>
+      <%= @order.errors.full_messages_for(:pickup_state).first if @order.errors %></p>
+    </div>
+
+    <div id='delivery_address'>
+      <p><strong>Entrega:</strong></p>
+
+      <p><strong><%= form.label :delivery_address %></strong>
+      <%= form.text_area :delivery_address %>
+      <%= @order.errors.full_messages_for(:delivery_address).first if @order.errors %></p>
+
+      <p><strong><%= form.label :delivery_city %></strong>
+      <%= form.text_area :delivery_city %>
+      <%= @order.errors.full_messages_for(:delivery_city).first if @order.errors %></p>
+
+      <p><strong><%= form.label :delivery_state %></strong>
+      <%= form.select :delivery_state, @states, include_blank: true %>
+      <%= @order.errors.full_messages_for(:delivery_state).first if @order.errors %></p>
+    </div>
+
+    <p><strong><%= form.label :recipient_name, 'Destinado a' %></strong>
+    <%= form.text_field :recipient_name %>
+    <%= @order.errors.full_messages_for(:recipient_name).first if @order.errors %></p>
+
+    <p><strong><%= form.label :product_code %></strong>
+    <%= form.text_field :product_code %>
+    <%= @order.errors.full_messages_for(:product_code).first if @order.errors %></p>
+
+    <%= form.submit 'Enviar pedido' %>
+  <% end %>
+</div>

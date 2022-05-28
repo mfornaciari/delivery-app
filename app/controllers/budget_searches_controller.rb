@@ -17,8 +17,9 @@ class BudgetSearchesController < ApplicationController
   end
 
   def show
-    @budget_search = BudgetSearch.find params[:id]
-    @prices_and_times = prices_and_times(@budget_search)
+    @search = BudgetSearch.find params[:id]
+    @prices_and_times = prices_and_times(@search)
+    @shipping_companies = @prices_and_times.keys.sort_by(&:brand_name)
   end
 
   private
