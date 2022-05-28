@@ -1,6 +1,74 @@
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
+  describe '#valid?' do
+    context 'Presença:' do
+      it 'Falso quando endereço de retirada está em branco' do
+        order = Order.new(pickup_address: '')
+
+        order.valid?
+
+        expect(order.errors[:pickup_address]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando cidade de retirada está em branco' do
+        order = Order.new(pickup_city: '')
+
+        order.valid?
+
+        expect(order.errors[:pickup_city]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando estado de retirada está em branco' do
+        order = Order.new(pickup_state: '')
+
+        order.valid?
+
+        expect(order.errors[:pickup_state]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando endereço de entrega está em branco' do
+        order = Order.new(delivery_address: '')
+
+        order.valid?
+
+        expect(order.errors[:delivery_address]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando cidade de entrega está em branco' do
+        order = Order.new(delivery_city: '')
+
+        order.valid?
+
+        expect(order.errors[:delivery_city]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando estado de entrega está em branco' do
+        order = Order.new(delivery_state: '')
+
+        order.valid?
+
+        expect(order.errors[:delivery_state]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando destinatário(a) está em branco' do
+        order = Order.new(recipient_name: '')
+
+        order.valid?
+
+        expect(order.errors[:recipient_name]).to include 'não pode ficar em branco'
+      end
+
+      it 'Falso quando código do produto está em branco' do
+        order = Order.new(product_code: '')
+
+        order.valid?
+
+        expect(order.errors[:product_code]).to include 'não pode ficar em branco'
+      end
+    end
+  end
+
   describe 'Gera um código aleatório' do
     it 'ao criar um novo pedido' do
       express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',

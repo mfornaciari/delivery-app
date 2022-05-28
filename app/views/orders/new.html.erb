@@ -64,7 +64,7 @@
     <%= form.text_field :recipient_name %>
     <%= @order.errors.full_messages_for(:recipient_name).first if @order.errors %></p>
 
-    <p><strong><%= form.label :product_code %></strong>
+    <p><strong><%= form.label :product_code, 'Código do produto a transportar' %></strong>
     <%= form.text_field :product_code %>
     <%= @order.errors.full_messages_for(:product_code).first if @order.errors %></p>
 
