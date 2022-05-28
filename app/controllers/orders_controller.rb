@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
-  before_action :authenticate_user_or_admin, only: :index
+  before_action :authenticate_admin!, only: :new
+  before_action :authenticate_user_or_admin, only: %i[index show]
 
   def index
     @company = user_signed_in? ? current_user.shipping_company : ShippingCompany.find(params[:shipping_company])
