@@ -1,5 +1,6 @@
 class Order < ApplicationRecord
   belongs_to :shipping_company
+  belongs_to :vehicle, optional: true
 
   validates :pickup_address, :pickup_city, :pickup_state, :delivery_address, :delivery_city, :delivery_state,
             :recipient_name, :product_code, presence: true

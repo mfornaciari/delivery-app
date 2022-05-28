@@ -41,6 +41,30 @@ class OrdersController < ApplicationController
     @order = Order.find params[:id]
   end
 
+  def accepted
+    @order = Order.find params[:id]
+    if params[:vehicle_id].empty?
+      return redirect_to @order, notice: 'Status não atualizado: atribua o pedido a um veículo.'
+    end
+
+    @order.accepted!
+    vehicle = Vehicle.find params[:vehicle_id]
+    @order.update vehicle: vehicle
+    redirect_to @order, notice: 'Pedido aceito.'
+  end
+
+  def rejected
+    @order = Order.find params[:id]
+    @order.rejected!
+    redirect_to @order, notice: 'Pedido rejeitado.'
+  end
+
+  def finished
+    @order = Order.find params[:id]
+    @order.finished!
+    redirect_to @order, notice: 'Pedido finalizado.'
+  end
+
   private
 
   def order_params

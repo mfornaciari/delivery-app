@@ -1,7 +1,7 @@
 <h1 align='center'>Pedido <%= @order.code %></h1>
 <h2 align='center'>Transportadora: <%= @order.shipping_company.corporate_name %></h2>
 
-<div align='center'>
+<div id='order_details', align='center'>
   <dl>
     <dt>Volume:</dt>
     <dd><%= @order.volume %> m³</dd>
@@ -33,5 +33,25 @@
     <dt>Status:</dt>
     <dd><%= t(@order.status) %></dd>
 
+    <% if @order.accepted? || @order.finished? %>
+      <dt>Veículo responsável:</dt>
+      <dd><%= @order.vehicle.license_plate %></dd>
+    <% end %>
   </dl>
 </div>
+
+
+<div align='center'>
+  <% if @order.pending? %>
+    <%= form_with url: accepted_order_path(@order), method: :post do |form| %>
+      <%= form.label :vehicle_id, 'Veículo responsável' %>
+      <%= form.collection_select(:vehicle_id, @order.shipping_company.vehicles, 
+                                :id, :license_plate, include_blank: true) %>
+      <%= form.submit 'Aceitar pedido' %>
+    <% end %>
+    <%= button_to 'Rejeitar pedido', rejected_order_path(@order) %>
+  <% elsif @order.accepted? %>
+    <%= button_to 'Finalizar pedido', finished_order_path(@order) %>
+  <% end %>
+</div>
+
