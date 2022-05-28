@@ -19,7 +19,11 @@ class OrdersController < ApplicationController
     if @order.save
       redirect_to @order, notice: 'Pedido cadastrado com sucesso.'
     else
-      @search = BudgetSearch.find params[:search_id]
+      @search = BudgetSearch.find order_params[:search_id]
+      @shipping_company = ShippingCompany.find order_params[:shipping_company_id]
+      @price = price(@shipping_company, @search.volume, @search.weight, @search.distance)
+      @delivery_time = delivery_time(@shipping_company, @search.distance)
+      @states = Order::STATES
       flash.now[:notice] = 'Pedido não cadastrado.'
       render 'new'
     end
@@ -34,7 +38,7 @@ class OrdersController < ApplicationController
   def order_params
     params.require(:order).permit(%i[volume weight distance pickup_address pickup_city pickup_state
                                      delivery_address delivery_city delivery_state recipient_name product_code
-                                     estimated_delivery_time value shipping_company_id])
+                                     estimated_delivery_time value shipping_company_id search_id])
   end
 
   def delivery_time(company, distance)

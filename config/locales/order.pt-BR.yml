@@ -14,7 +14,7 @@ pt-BR:
         delivery_address: Endereço de entrega
         delivery_city: Cidade de entrega
         delivery_state: Estado de entrega
-        recipient_name: Nome do destinatário(a)
+        recipient_name: Nome(a) do destinatário(a)
         product_code: Código do produto
         code: Código
         shipping_company: Transportadora

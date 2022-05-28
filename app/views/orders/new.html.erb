@@ -22,6 +22,7 @@
 <div align='center'>
   <%= form_with model: @order do |form| %>
     <%= form.hidden_field :shipping_company_id, value: @shipping_company.id %>
+    <%= form.hidden_field :search_id, value: @search.id %>
     <%= form.hidden_field :volume, value: @search.volume %>
     <%= form.hidden_field :weight, value: @search.weight %>
     <%= form.hidden_field :distance, value: @search.distance %>

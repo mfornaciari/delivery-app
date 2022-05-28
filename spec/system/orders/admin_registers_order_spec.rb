@@ -126,11 +126,32 @@ describe 'Administrador cria um novo pedido' do
     expect(page).to have_content 'Status: Pendente'
   end
 
-  # it 'com dados incompletos' do
+  it 'com dados incompletos' do
+    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
+    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
+    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
+    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
+    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
+    allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
 
-  # end
+    login_as admin, scope: :admin
+    visit budget_search_path 1
+    select 'Express', from: 'Enviar pedido para a transportadora'
+    click_on 'Enviar'
+    click_on 'Enviar pedido'
 
-  # it 'com dados inválidos' do
-
-  # end
+    expect(page).to have_content 'Pedido não cadastrado.'
+    expect(page).to have_content 'Endereço de retirada não pode ficar em branco'
+    expect(page).to have_content 'Cidade de retirada não pode ficar em branco'
+    expect(page).to have_content 'Estado de retirada não pode ficar em branco'
+    expect(page).to have_content 'Endereço de entrega não pode ficar em branco'
+    expect(page).to have_content 'Cidade de entrega não pode ficar em branco'
+    expect(page).to have_content 'Estado de entrega não pode ficar em branco'
+    expect(page).to have_content 'Nome(a) do destinatário(a) não pode ficar em branco'
+    expect(page).to have_content 'Código do produto não pode ficar em branco'
+  end
 end
