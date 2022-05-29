@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_28_182049) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_28_224506) do
   create_table "admins", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -69,6 +69,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_28_182049) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shipping_company_id"], name: "index_price_distance_ranges_on_shipping_company_id"
+  end
+
+  create_table "route_updates", force: :cascade do |t|
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "date_and_time"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "order_id", null: false
+    t.index ["order_id"], name: "index_route_updates_on_order_id"
   end
 
   create_table "shipping_companies", force: :cascade do |t|
@@ -142,6 +152,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_28_182049) do
   add_foreign_key "orders", "shipping_companies"
   add_foreign_key "orders", "vehicles"
   add_foreign_key "price_distance_ranges", "shipping_companies"
+  add_foreign_key "route_updates", "orders"
   add_foreign_key "time_distance_ranges", "shipping_companies"
   add_foreign_key "vehicles", "shipping_companies"
   add_foreign_key "volume_ranges", "shipping_companies"

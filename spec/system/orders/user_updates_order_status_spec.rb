@@ -102,5 +102,6 @@ describe 'Usuário atualiza o status de um pedido' do
     expect(page).to have_content 'Pedido finalizado.'
     expect(page).to have_content 'Status: Finalizado'
     expect(page).not_to have_button 'Finalizar pedido'
+    expect(page).not_to have_button 'Atualizar rota de entrega'
   end
 end

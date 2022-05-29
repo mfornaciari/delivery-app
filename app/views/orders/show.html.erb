@@ -49,9 +49,48 @@
                                 :id, :license_plate, include_blank: true) %>
       <%= form.submit 'Aceitar pedido' %>
     <% end %>
+
     <%= button_to 'Rejeitar pedido', rejected_order_path(@order) %>
+
   <% elsif @order.accepted? %>
+    <% unless @route_updates.empty? %>
+      <h3>Rota de entrega:</h3>
+
+      <table id='route'>
+        <tr id='table_header'>
+          <th>Data e hora</th>
+          <th>Latitude</th>
+          <th>Longitude</th>
+        </tr>
+
+        <% @route_updates.each_with_index do |route_update, index| %>
+          <tr id=<%= "update_#{index + 1}" %>>
+            <td><%= I18n.l(route_update.date_and_time) %></td>
+            <td><%= route_update.latitude %></td>
+            <td><%= route_update.longitude %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+    
+    <div id='route_update'>
+      <%= form_with model: [@order, @route_update] do |form| %>
+        <%= form.label :latitude %>
+        <%= form.number_field :latitude, step: :any %>
+        <%= @route_update.errors.full_messages_for(:latitude).first if @route_update.errors %></p>
+
+        <%= form.label :longitude %>
+        <%= form.number_field :longitude, step: :any %>
+        <%= @route_update.errors.full_messages_for(:longitude).first if @route_update.errors %></p>
+
+        <%= form.label :date_and_time %>
+        <%= form.datetime_field :date_and_time %>
+        <%= @route_update.errors.full_messages_for(:date_and_time).first if @route_update.errors %></p>
+
+        <%= form.submit 'Atualizar rota de entrega' %>
+      <% end %>
+    </div>
+
     <%= button_to 'Finalizar pedido', finished_order_path(@order) %>
   <% end %>
 </div>
-

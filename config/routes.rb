@@ -12,12 +12,13 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :budget_searches, only: %i[new create show]
   resources :orders, only: %i[index new create show] do
+    resources :route_updates, only: :create
     post 'accepted', on: :member
     post 'rejected', on: :member
     post 'finished', on: :member
   end
-  resources :budget_searches, only: %i[new create show]
 
   # Defines the root path route ("/")
   root 'home#index'

@@ -39,6 +39,8 @@ class OrdersController < ApplicationController
 
   def show
     @order = Order.find params[:id]
+    @route_updates = @order.route_updates
+    @route_update = RouteUpdate.new
   end
 
   def accepted
