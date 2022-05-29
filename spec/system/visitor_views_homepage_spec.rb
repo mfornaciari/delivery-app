@@ -23,4 +23,12 @@ describe 'Visitante acessa a página inicial' do
       expect(page).not_to have_button 'Sair'
     end
   end
+
+  it 'e vê a busca de pedidos' do
+    visit root_path
+
+    expect(page).to have_content 'Consultar status de entrega'
+    expect(page).to have_field 'Código do pedido'
+    expect(page).to have_button 'Consultar'
+  end
 end

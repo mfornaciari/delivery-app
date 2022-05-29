@@ -30,7 +30,7 @@ describe 'Administrador vê as buscas de preço realizadas' do
     login_as admin, scope: :admin
     visit root_path
 
-    expect(page).not_to have_content 'Não há buscas registradas.'
+    expect(page).not_to have_content 'Não há buscas de orçamento registradas.'
     expect(page).to have_content 'Buscas realizadas:'
     within_table('budget_searches') do
       within('#table_header') do
@@ -57,7 +57,7 @@ describe 'Administrador vê as buscas de preço realizadas' do
     login_as admin, scope: :admin
     visit root_path
 
-    expect(page).to have_content 'Não há buscas registradas.'
+    expect(page).to have_content 'Não há buscas de orçamento registradas.'
   end
 
   it 'e acessa os detalhes de uma' do

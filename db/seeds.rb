@@ -4,8 +4,8 @@ express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Expres
                                   address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
 
 # VEÍCULOS da Express
-Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                maximum_load: 100_000, shipping_company: express)
+vehicle = Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
+                          maximum_load: 100_000, shipping_company: express)
 Vehicle.create!(license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: 1971,
                 maximum_load: 40_000, shipping_company: express)
 
@@ -49,6 +49,25 @@ ShippingCompany.create!(brand_name: 'Carroça & Cia.', corporate_name: 'Carroça
                         email_domain: 'carrocaecia.com.br', registration_number: 10_659_266_000_102,
                         address: 'Avenida C, 155', city: 'Tanguá', state: 'RJ')
 
-# Usuários
-Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+# USUÁRIOS
+admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
 User.create!(email: 'usuario@express.com.br', password: 'password')
+
+# CONSULTAS DE PREÇO cadastradas
+BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 10, distance: 10, admin:)
+BudgetSearch.create!(height: 1000, width: 100, depth: 100, weight: 20, distance: 40, admin:)
+
+# PEDIDOS cadastrados
+order = Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
+                      delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
+                      recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 1, weight: 10, distance: 10,
+                      estimated_delivery_time: 2, value: 500, shipping_company: express, status: :accepted,
+                      vehicle:)
+Order.create!(pickup_address: 'Av. Rio Azul, n. 310', pickup_city: 'Fortaleza', pickup_state: 'CE',
+              delivery_address: 'Rua Mar Roxo, n. 210', delivery_city: 'São Luís', delivery_state: 'MA',
+              recipient_name: 'Maria das Dores', product_code: 'ABCD1234', volume: 10, weight: 20, distance: 40,
+              estimated_delivery_time: 2, value: 2000, shipping_company: express)
+
+# ATUALIZAÇÕES DE TRAJETO do primeiro pedido
+RouteUpdate.create!(date_and_time: 5.days.ago, latitude: 45.0, longitude: 90.0, order:)
+RouteUpdate.create!(date_and_time: 1.day.ago, latitude: 50.0, longitude: 130.5, order:)

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
 
   resources :budget_searches, only: %i[new create show]
   resources :orders, only: %i[index new create show] do
+    get 'search', on: :collection
+
     resources :route_updates, only: :create
     post 'accepted', on: :member
     post 'rejected', on: :member

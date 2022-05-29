@@ -67,6 +67,11 @@ class OrdersController < ApplicationController
     redirect_to @order, notice: 'Pedido finalizado.'
   end
 
+  def search
+    @order = Order.find_by(code: params[:query], status: :accepted || :finished)
+    redirect_to root_path, notice: 'Não há pedidos aceitos com esse código.' if @order.nil?
+  end
+
   private
 
   def order_params

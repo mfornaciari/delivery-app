@@ -1,3 +1,12 @@
+<div align='center'>
+  <h1>Consultar status de entrega</h1>
+  <%= form_with url: search_orders_path, method: :get do |form| %>
+    <%= form.label :query, 'Código do pedido' %>
+    <%= form.text_field :query %>
+    <%= form.submit 'Consultar' %>
+  <% end %>
+</div>
+
 <% unless admin_signed_in? || user_signed_in? %>
   <h3 align='center'><%= link_to 'Entrar (usuário)', new_user_session_path %></h3>
   <p align='center'><%= link_to 'Entrar (administrador)', new_admin_session_path %></p>
@@ -5,7 +14,7 @@
 
 <% if admin_signed_in? %>
   <% if @budget_searches.empty?%>
-    <p align='center'>Não há buscas registradas.</p>
+    <p align='center'>Não há buscas de orçamento registradas.</p>
   <% else %>
     <h1 align='center'>Buscas realizadas:</h1>
 
