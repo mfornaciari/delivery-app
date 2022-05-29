@@ -32,17 +32,11 @@
         <td><%= company.brand_name %></td>
         <td><%= number_to_currency(price_and_time[0] / 100, separator: ',', delimiter: '.', unit: 'R$') %></td>
         <td><%= price_and_time[1] %> dias</td>
+        <%= link_to'Enviar pedido', new_order_path(
+          shipping_company_id: company.id, volume: @search.volume, weight: @search.weight,
+          distance: @search.distance, value: price_and_time[0], estimated_delivery_time: price_and_time[1]
+        ) %>
       </tr>
     <% end %>
   </table>
 <% end %>
-
-<div align='center'>
-  <%= form_with url: new_order_path, method: :get do |form| %>
-    <%= form.hidden_field :search_id, value: @search.id %>
-
-    <%= form.label :shipping_company_id, 'Enviar pedido para a transportadora' %>
-    <%= form.collection_select :shipping_company_id, @shipping_companies, :id, :brand_name, include_blank: true %>
-    <%= form.submit 'Enviar' %>
-  <% end %>
-</div>
