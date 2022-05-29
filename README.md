@@ -12,18 +12,21 @@ Aplicação desenvolvida para gerenciar entregas de produtos. Permite:
 - [Rails 7.0.3 +](https://api.rubyonrails.org/)
 - [rspec-rails 5.1.2 +](https://relishapp.com/rspec/rspec-rails/docs)
 - [capybara 3.37.1 +](https://rubydoc.info/github/teamcapybara/capybara/master)
+- [devise 4.8.1 +](https://github.com/heartcombo/devise)
 
 ## Executando a aplicação
 1. Certifique-se de ter a versão correta do Ruby (3.1.2 +) instalada.
-2. Clone o repositório.
-3. Mude de diretório para a pasta principal do repositório.
-4. Execute o comando `bundle install` no terminal para instalar as dependências.
-5. Execute o comando `rails server` no terminal para iniciar a aplicação.
-6. Acesse o endereço `localhost:3000` no navegador de sua preferência.
+2. Clone o repositório ou baixe o arquivo .zip e descompacte-o.
+3. Mude de diretório para a pasta principal do projeto.
+4. Execute `bundle install` no terminal para instalar as dependências.
+5. Execute `rails db:migrate db:seed` no terminal para preparar o banco de dados.
+6. Execute `rails server` no terminal para iniciar a aplicação.
+7. Acesse o endereço `localhost:3000` no navegador de sua preferência.
 
 ## Executando testes
 1. Certifique-se de ter a versão correta do Ruby (3.1.2 +) instalada.
-2. Clone o repositório.
-3. Mude de diretório para a pasta principal do repositório.
-4. Execute o comando `bundle install` no terminal para instalar as dependências.
-5. Execute o comando `rspec` no terminal para iniciar os testes.
+2. Clone o repositório ou baixe o arquivo .zip e descompacte-o.
+3. Mude de diretório para a pasta principal do projeto.
+4. Execute `bundle install` no terminal para instalar as dependências.
+5. Execute `rails db:migrate` no terminal para preparar o banco de dados.
+6. Execute `rspec` no terminal para iniciar os testes.
