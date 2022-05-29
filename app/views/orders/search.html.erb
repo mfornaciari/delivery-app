@@ -21,5 +21,8 @@
       <dd><%= "Latitude #{update.latitude}, Longitude #{update.longitude}" %></dd>
     <% end %>
     
+    <% if @order.finished? %>
+      <p><strong>Pedido entregue.</strong></p>
+    <% end %>
   </dl>
 </div>
