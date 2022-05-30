@@ -6,17 +6,17 @@
     <dd><%= @search.admin.email %></dd>
 
     <dt>Volume:</dt>
-    <dd><%= @search.volume %> m³</dd>
+    <dd><%= @volume %> m³</dd>
 
     <dt>Peso:</dt>
-    <dd><%= @search.weight %> kg</dd>
+    <dd><%= @weight %> kg</dd>
 
     <dt>Distância a percorrer:</dt>
-    <dd><%= @search.distance %> km</dd>
+    <dd><%= @distance %> km</dd>
   </dl>
 </div>
 
-<% if @prices_and_times.empty? %>
+<% if @company_info.empty? %>
   <p>Não foram encontradas transportadoras para esse pedido.</p>
 
 <% else %>
@@ -27,16 +27,16 @@
       <th align='left'>Prazo</th>
     </tr>
 
-    <% @prices_and_times.each_pair do |company, price_and_time| %>
+    <% @company_info.each_pair do |company, info| %>
       <tr id=<%= company.brand_name.gsub(/\s/, '_').downcase %>>
         <td><%= company.brand_name %></td>
-        <td><%= number_to_currency(price_and_time[0] / 100, separator: ',', delimiter: '.', unit: 'R$') %></td>
-        <td><%= price_and_time[1] %> dias</td>
+        <td><%= number_to_currency(info[:value], separator: ',', delimiter: '.', unit: 'R$') %></td>
+        <td><%= info[:delivery_time] %> dias</td>
         <td>
-          <%= link_to'Enviar pedido', new_order_path(shipping_company_id: company.id, volume: @search.volume,
-                                                     weight: @search.weight, distance: @search.distance,
-                                                     value: price_and_time[0], 
-                                                     estimated_delivery_time: price_and_time[1]) %>
+          <%= link_to'Enviar pedido', new_order_path(shipping_company_id: company.id, volume: @volume,
+                                                     weight: @weight, distance: @distance,
+                                                     value: info[:value],
+                                                     estimated_delivery_time: info[:delivery_time]) %>
         </td>
       </tr>
     <% end %>

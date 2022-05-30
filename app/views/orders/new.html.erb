@@ -15,7 +15,7 @@
     <dt><%= @order.estimated_delivery_time %> dias</dt>
 
     <dd>Valor:</dd>
-    <dt><%= number_to_currency(@order.value / 100, separator: ',', delimiter: '.', unit: 'R$') %></dt>
+    <dt><%= number_to_currency(@order.value, separator: ',', delimiter: '.', unit: 'R$') %></dt>
   </dl>
 </div>
 

@@ -18,46 +18,24 @@ class BudgetSearchesController < ApplicationController
 
   def show
     @search = BudgetSearch.find params[:id]
-    @prices_and_times = prices_and_times(@search)
-    @shipping_companies = @prices_and_times.keys.sort_by(&:brand_name)
+    @distance = @search.distance
+    @volume = @search.volume
+    @weight = @search.weight
+    @company_info = {}
+    ShippingCompany.all.each do |company|
+      delivery_time = company.delivery_time(distance: @distance)
+      next if delivery_time.nil?
+
+      value = company.value(volume: @volume, weight: @weight, distance: @distance)
+      value.nil? ? next : value /= 100
+
+      @company_info[company] = { value:, delivery_time: }
+    end
   end
 
   private
 
   def budget_search_params
     params.require(:budget_search).permit(:height, :width, :depth, :weight, :distance)
-  end
-
-  def prices_and_times(search)
-    price_time_hash = {}
-    valid_weight_ranges(search).each do |wrange|
-      company = wrange.volume_range.shipping_company
-      delivery_time = company_delivery_time(company, search)
-      next unless delivery_time
-
-      min_price = company_min_price(company, search)
-      price = wrange.value * search.distance
-      price = min_price && price < min_price ? min_price : price
-      price_time_hash[company] = [price, delivery_time]
-    end
-    price_time_hash
-  end
-
-  def valid_weight_ranges(search)
-    WeightRange.joins(:volume_range).where(
-      'min_weight <= :weight AND max_weight >= :weight AND
-      volume_ranges.min_volume <= :volume AND volume_ranges.max_volume >= :volume',
-      weight: search.weight, volume: search.volume
-    )
-  end
-
-  def company_delivery_time(company, search)
-    company.time_distance_ranges.find_by('min_distance <= :distance AND max_distance >= :distance',
-                                         distance: search.distance)&.delivery_time
-  end
-
-  def company_min_price(company, search)
-    company.price_distance_ranges.find_by('min_distance <= :distance AND max_distance >= :distance',
-                                          distance: search.distance)&.value
   end
 end
