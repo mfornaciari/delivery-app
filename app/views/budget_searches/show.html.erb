@@ -32,10 +32,12 @@
         <td><%= company.brand_name %></td>
         <td><%= number_to_currency(price_and_time[0] / 100, separator: ',', delimiter: '.', unit: 'R$') %></td>
         <td><%= price_and_time[1] %> dias</td>
-        <%= link_to'Enviar pedido', new_order_path(
-          shipping_company_id: company.id, volume: @search.volume, weight: @search.weight,
-          distance: @search.distance, value: price_and_time[0], estimated_delivery_time: price_and_time[1]
-        ) %>
+        <td>
+          <%= link_to'Enviar pedido', new_order_path(shipping_company_id: company.id, volume: @search.volume,
+                                                     weight: @search.weight, distance: @search.distance,
+                                                     value: price_and_time[0], 
+                                                     estimated_delivery_time: price_and_time[1]) %>
+        </td>
       </tr>
     <% end %>
   </table>

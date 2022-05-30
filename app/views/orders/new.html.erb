@@ -29,7 +29,7 @@
     <%= form.hidden_field :value, value: @order.value %>
 
     <div id='pickup_address'>
-      <p><strong>Retirada:</strong></p>
+      <h3>Retirada:</h3>
 
       <p><strong><%= form.label :pickup_address %></strong>
       <%= form.text_area :pickup_address %>
@@ -45,7 +45,7 @@
     </div>
 
     <div id='delivery_address'>
-      <p><strong>Entrega:</strong></p>
+      <h3>Entrega:</h3>
 
       <p><strong><%= form.label :delivery_address %></strong>
       <%= form.text_area :delivery_address %>
