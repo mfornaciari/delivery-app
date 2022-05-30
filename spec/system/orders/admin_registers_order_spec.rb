@@ -21,8 +21,7 @@ describe 'Administrador cria um novo pedido' do
 
     login_as admin, scope: :admin
     visit budget_search_path 1
-    select 'Express', from: 'Enviar pedido para a transportadora'
-    click_on 'Enviar'
+    find('#express').click_on 'Enviar pedido'
 
     expect(page).to have_content 'Enviando pedido para Express Transportes Ltda.'
     expect(page).to have_content 'Volume: 1 m³'
@@ -47,25 +46,6 @@ describe 'Administrador cria um novo pedido' do
     expect(page).to have_button 'Enviar pedido'
   end
 
-  it 'sem selecionar transportadora' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
-    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
-
-    login_as admin, scope: :admin
-    visit budget_search_path 1
-    click_on 'Enviar'
-
-    expect(current_path).to eq budget_search_path 1
-    expect(page).to have_content 'Selecione uma transportadora.'
-  end
-
   it 'sem realizar busca' do
     admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
     express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
@@ -81,7 +61,7 @@ describe 'Administrador cria um novo pedido' do
     visit new_order_path
 
     expect(current_path).to eq root_path
-    expect(page).to have_content 'Antes de criar um pedido, faça uma consulta de preços.'
+    expect(page).to have_content 'Crie um pedido a partir de uma consulta de preços.'
   end
 
   it 'com sucesso' do
@@ -98,8 +78,7 @@ describe 'Administrador cria um novo pedido' do
 
     login_as admin, scope: :admin
     visit budget_search_path 1
-    select 'Express', from: 'Enviar pedido para a transportadora'
-    click_on 'Enviar'
+    find('#express').click_on 'Enviar pedido'
     fill_in 'Endereço de retirada', with: 'Rua Rio Vermelho, n. 10'
     fill_in 'Cidade de retirada', with: 'Natal'
     select 'RN', from: 'Estado de retirada'
@@ -140,8 +119,7 @@ describe 'Administrador cria um novo pedido' do
 
     login_as admin, scope: :admin
     visit budget_search_path 1
-    select 'Express', from: 'Enviar pedido para a transportadora'
-    click_on 'Enviar'
+    find('#express').click_on 'Enviar pedido'
     click_on 'Enviar pedido'
 
     expect(page).to have_content 'Pedido não cadastrado.'

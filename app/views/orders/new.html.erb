@@ -1,36 +1,35 @@
-<h2 align='center'>Enviando pedido para <%= @shipping_company.corporate_name %></h2>
+<h2 align='center'>Enviando pedido para <%= @order.shipping_company.corporate_name %></h2>
 
 <div align='center'>
   <dl>
     <dd>Volume:</dd>
-    <dt><%= @search.volume %> m³</dt>
+    <dt><%= @order.volume %> m³</dt>
 
     <dd>Peso:</dd>
-    <dt><%= @search.weight %> kg</dt>
+    <dt><%= @order.weight %> kg</dt>
 
     <dd>Distância a percorrer:</dd>
-    <dt><%= @search.distance %> km</dt>
+    <dt><%= @order.distance %> km</dt>
 
     <dd>Tempo de entrega previsto:</dd>
-    <dt><%= @delivery_time %> dias</dt>
+    <dt><%= @order.estimated_delivery_time %> dias</dt>
 
     <dd>Valor:</dd>
-    <dt><%= number_to_currency(@price / 100, separator: ',', delimiter: '.', unit: 'R$') %></dt>
+    <dt><%= number_to_currency(@order.value, separator: ',', delimiter: '.', unit: 'R$') %></dt>
   </dl>
 </div>
 
 <div align='center'>
   <%= form_with model: @order do |form| %>
-    <%= form.hidden_field :shipping_company_id, value: @shipping_company.id %>
-    <%= form.hidden_field :search_id, value: @search.id %>
-    <%= form.hidden_field :volume, value: @search.volume %>
-    <%= form.hidden_field :weight, value: @search.weight %>
-    <%= form.hidden_field :distance, value: @search.distance %>
-    <%= form.hidden_field :estimated_delivery_time, value: @delivery_time %>
-    <%= form.hidden_field :value, value: @price %>
+    <%= form.hidden_field :shipping_company_id, value: @order.shipping_company.id %>
+    <%= form.hidden_field :volume, value: @order.volume %>
+    <%= form.hidden_field :weight, value: @order.weight %>
+    <%= form.hidden_field :distance, value: @order.distance %>
+    <%= form.hidden_field :estimated_delivery_time, value: @order.estimated_delivery_time %>
+    <%= form.hidden_field :value, value: @order.value %>
 
     <div id='pickup_address'>
-      <p><strong>Retirada:</strong></p>
+      <h3>Retirada:</h3>
 
       <p><strong><%= form.label :pickup_address %></strong>
       <%= form.text_area :pickup_address %>
@@ -46,7 +45,7 @@
     </div>
 
     <div id='delivery_address'>
-      <p><strong>Entrega:</strong></p>
+      <h3>Entrega:</h3>
 
       <p><strong><%= form.label :delivery_address %></strong>
       <%= form.text_area :delivery_address %>
