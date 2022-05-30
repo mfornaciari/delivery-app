@@ -6,7 +6,7 @@ class Order < ApplicationRecord
   validates :pickup_address, :pickup_city, :pickup_state, :delivery_address, :delivery_city, :delivery_state,
             :recipient_name, :product_code, presence: true
 
-  before_validation :generate_code
+  before_create :generate_code
 
   enum status: { pending: 0, rejected: 5, accepted: 10, finished: 15 }
 
