@@ -5,22 +5,21 @@ require:
 
 AllCops:
   TargetRubyVersion: 3.1
+  TargeRailsVersion: 7.0
+  NewCops: enable
   Exclude:
   - 'bin/**/*'
   - 'vendor/**/*'
   - 'db/**/*'
-  - 'config/**/*'
-  - 'script/**/*'
-  - 'spec/rails_helper.rb'
 
 Documentation:
   Enabled: false
 
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context', 'feature', 'scenario', 'let']
+  ExcludedMethods: ['describe', 'context']
 
 RSpec/ExampleLength:
-  Enabled: false
+  Max: 40
 
 RSpec/MultipleExpectations:
   Enabled: false

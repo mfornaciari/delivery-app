@@ -4,17 +4,10 @@ require 'rails_helper'
 
 describe 'Usuário atualiza rota do pedido' do
   it 'com sucesso' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
-    vehicle = Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                              maximum_load: 100_000, shipping_company: express)
-    order = Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                          delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                          recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                          distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express,
-                          status: :accepted, vehicle:)
+    express = create :express, email_domain: 'express.com.br'
+    user = create :user, email: 'usuario@express.com.br'
+    vehicle = create :vehicle, shipping_company: express
+    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
     current_time = Time.current
 
     login_as user, scope: :user
@@ -45,17 +38,10 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados incompletos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
-    vehicle = Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                              maximum_load: 100_000, shipping_company: express)
-    Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                  delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                  recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                  distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express,
-                  status: :accepted, vehicle:)
+    express = create :express, email_domain: 'express.com.br'
+    user = create :user, email: 'usuario@express.com.br'
+    vehicle = create :vehicle, shipping_company: express
+    create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
     login_as user, scope: :user
     visit order_path 1
@@ -68,17 +54,10 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados inválidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
-    vehicle = Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                              maximum_load: 100_000, shipping_company: express)
-    Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                  delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                  recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                  distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express,
-                  status: :accepted, vehicle:)
+    express = create :express
+    user = create :user
+    vehicle = create :vehicle, shipping_company: express
+    create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
     login_as user, scope: :user
     visit order_path 1
@@ -94,22 +73,16 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com data e hora anteriores à última atualização' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
-    vehicle = Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                              maximum_load: 100_000, shipping_company: express)
-    order = Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                          delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                          recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                          distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express,
-                          status: :accepted, vehicle:)
-    RouteUpdate.create!(date_and_time: Time.current, latitude: 45.0, longitude: 45.0, order:)
+    express = create :express, email_domain: 'express.com.br'
+    user = create :user, email: 'usuario@express.com.br'
+    vehicle = create :vehicle, shipping_company: express
+    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    current_time = Time.current
+    create :route_update, order: order, date_and_time: current_time
 
     login_as user, scope: :user
     visit order_path 1
-    fill_in 'Data e hora', with: 1.second.ago
+    fill_in 'Data e hora', with: 1.second.before(current_time)
     click_on 'Atualizar rota de entrega'
 
     expect(page).to have_content 'Rota de entrega não atualizada.'

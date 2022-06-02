@@ -15,8 +15,8 @@ RSpec.describe User, type: :model do
         [invalid_user, first_valid_user, second_valid_user].each(&:valid?)
 
         expect(invalid_user.errors[:email]).to include 'não possui um domínio registrado'
-        expect(first_valid_user.errors.include?(:email)).to eq false
-        expect(second_valid_user.errors.include?(:email)).to eq false
+        expect(first_valid_user.errors.include?(:email)).to be false
+        expect(second_valid_user.errors.include?(:email)).to be false
       end
     end
   end

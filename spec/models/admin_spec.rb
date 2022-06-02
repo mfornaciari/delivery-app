@@ -12,7 +12,7 @@ RSpec.describe Admin, type: :model do
         [invalid_admin, valid_admin].each(&:valid?)
 
         expect(invalid_admin.errors[:email]).to include 'não é válido'
-        expect(valid_admin.errors.include?(:email)).to eq false
+        expect(valid_admin.errors.include?(:email)).to be false
       end
     end
   end

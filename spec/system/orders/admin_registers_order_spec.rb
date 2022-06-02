@@ -4,17 +4,13 @@ require 'rails_helper'
 
 describe 'Administrador cria um novo pedido' do
   it 'a partir de uma busca de preços' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    admin = create :admin
+    express = create :express, corporate_name: 'Express Transportes Ltda.'
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
     volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
     WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
-    a_jato = ShippingCompany.create!(brand_name: 'A Jato', corporate_name: 'A Jato S.A.',
-                                     email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
-                                     address: 'Avenida B, 23', city: 'Natal', state: 'RN')
+    a_jato = create :a_jato
     TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3)
     PriceDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000)
     a_jato_volume_range = VolumeRange.create!(shipping_company: a_jato, min_volume: 0, max_volume: 100)
@@ -49,15 +45,7 @@ describe 'Administrador cria um novo pedido' do
   end
 
   it 'sem realizar busca' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
-    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
+    admin = create :admin
 
     login_as admin, scope: :admin
     visit new_order_path
@@ -67,10 +55,8 @@ describe 'Administrador cria um novo pedido' do
   end
 
   it 'com sucesso' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    admin = create :admin
+    express = create :express
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
     volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
@@ -108,10 +94,8 @@ describe 'Administrador cria um novo pedido' do
   end
 
   it 'com dados incompletos' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    admin = create :admin
+    express = create :express
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
     volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)

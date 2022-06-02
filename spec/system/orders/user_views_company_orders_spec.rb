@@ -11,10 +11,8 @@ describe 'Usuário vê pedidos da sua transportadora' do
   end
 
   it 'e não há nenhum' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express, email_domain: 'express.com.br'
+    user = create :user, email: 'usuario@express.com.br'
 
     login_as user, scope: :user
     visit shipping_company_path 1
@@ -26,21 +24,14 @@ describe 'Usuário vê pedidos da sua transportadora' do
   end
 
   it 'com sucesso' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express, email_domain: 'express.com.br'
+    vehicle = create :vehicle, shipping_company: express
+    user = create :user, email: 'usuario@express.com.br'
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
-    Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                  delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                  recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                  distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express)
+    create :order, shipping_company: express, estimated_delivery_time: 2, value: 2_500
     allow(SecureRandom).to receive(:alphanumeric).and_return('12345ABCDE12345')
-    Order.create!(pickup_address: 'Avenida Mar Vermelho, n. 10', pickup_city: 'Fortaleza', pickup_state: 'CE',
-                  delivery_address: 'Avenida Mar Azul, n. 10', delivery_city: 'Goiânia', delivery_state: 'GO',
-                  recipient_name: 'Maria dos Anjos', product_code: '1234ABCDE', volume: 10, weight: 30,
-                  distance: 40, estimated_delivery_time: 4, value: 5000, shipping_company: express,
-                  status: :accepted)
+    create :order, shipping_company: express, estimated_delivery_time: 4, value: 5_000, status: :accepted,
+                   vehicle: vehicle
 
     login_as user, scope: :user
     visit shipping_company_path 1

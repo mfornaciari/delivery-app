@@ -23,7 +23,7 @@ RSpec.describe PriceDistanceRange, type: :model do
     end
 
     context 'Valor:' do
-      it 'Falso quando distância mínima está em branco ou é < 0 ' do
+      it 'Falso quando distância mínima está em branco ou é < 0' do
         empty_range = described_class.new(min_distance: '')
         invalid_range = described_class.new(min_distance: -1)
         valid_range = described_class.new(min_distance: 0)
