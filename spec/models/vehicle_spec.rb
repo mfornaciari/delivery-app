@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Vehicle, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando modelo está em branco' do
-        vehicle = Vehicle.new(model: '')
+        vehicle = described_class.new(model: '')
 
         vehicle.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe Vehicle, type: :model do
       end
 
       it 'Falso quando marca está em branco' do
-        vehicle = Vehicle.new(brand: '')
+        vehicle = described_class.new(brand: '')
 
         vehicle.valid?
 
@@ -20,7 +22,7 @@ RSpec.describe Vehicle, type: :model do
       end
 
       it 'Falso quando ano de produção está em branco' do
-        vehicle = Vehicle.new(production_year: '')
+        vehicle = described_class.new(production_year: '')
 
         vehicle.valid?
 
@@ -28,7 +30,7 @@ RSpec.describe Vehicle, type: :model do
       end
 
       it 'Falso quando transportadora está em branco' do
-        vehicle = Vehicle.new(shipping_company: nil)
+        vehicle = described_class.new(shipping_company: nil)
 
         vehicle.valid?
 
@@ -38,12 +40,12 @@ RSpec.describe Vehicle, type: :model do
 
     context 'Formato:' do
       it 'Falso quando placa de identificação está vazia/em formato incorreto' do
-        empty_vehicle = Vehicle.new(license_plate: '')
-        first_invalid_vehicle = Vehicle.new(license_plate: 'ABCD123')
-        second_invalid_vehicle = Vehicle.new(license_plate: 'ABC12345')
-        third_invalid_vehicle = Vehicle.new(license_plate: 'ABCD1234')
-        first_valid_vehicle = Vehicle.new(license_plate: 'ABC1D23')
-        second_valid_vehicle = Vehicle.new(license_plate: 'ABC1234')
+        empty_vehicle = described_class.new(license_plate: '')
+        first_invalid_vehicle = described_class.new(license_plate: 'ABCD123')
+        second_invalid_vehicle = described_class.new(license_plate: 'ABC12345')
+        third_invalid_vehicle = described_class.new(license_plate: 'ABCD1234')
+        first_valid_vehicle = described_class.new(license_plate: 'ABC1D23')
+        second_valid_vehicle = described_class.new(license_plate: 'ABC1234')
 
         [empty_vehicle, first_invalid_vehicle, second_invalid_vehicle, third_invalid_vehicle,
          first_valid_vehicle, second_valid_vehicle].each(&:valid?)
@@ -59,12 +61,9 @@ RSpec.describe Vehicle, type: :model do
 
     context 'Singularidade:' do
       it 'Falso quando placa de identificação é repetida' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                        maximum_load: 100_000, shipping_company: express)
-        vehicle = Vehicle.new(license_plate: 'BRA3R52')
+        express = create :express
+        create :vehicle, shipping_company: express, license_plate: 'BRA3R52'
+        vehicle = described_class.new(license_plate: 'BRA3R52')
 
         vehicle.valid?
 
@@ -74,9 +73,9 @@ RSpec.describe Vehicle, type: :model do
 
     context 'Valor:' do
       it 'Falso quando ano de produção é < 1908 ou > ano atual' do
-        first_invalid_vehicle = Vehicle.new(production_year: 1907)
-        second_invalid_vehicle = Vehicle.new(production_year: 2023)
-        valid_vehicle = Vehicle.new(production_year: 2022)
+        first_invalid_vehicle = described_class.new(production_year: 1907)
+        second_invalid_vehicle = described_class.new(production_year: 2023)
+        valid_vehicle = described_class.new(production_year: 2022)
 
         [first_invalid_vehicle, second_invalid_vehicle, valid_vehicle].each(&:valid?)
 
@@ -86,10 +85,10 @@ RSpec.describe Vehicle, type: :model do
       end
 
       it 'Falso quando carga máxima está vazia ou é <= 0' do
-        empty_vehicle = Vehicle.new(maximum_load: '')
-        first_invalid_vehicle = Vehicle.new(maximum_load: 0)
-        second_invalid_vehicle = Vehicle.new(maximum_load: -1)
-        valid_vehicle = Vehicle.new(maximum_load: 100_000)
+        empty_vehicle = described_class.new(maximum_load: '')
+        first_invalid_vehicle = described_class.new(maximum_load: 0)
+        second_invalid_vehicle = described_class.new(maximum_load: -1)
+        valid_vehicle = described_class.new(maximum_load: 100_000)
 
         [empty_vehicle, first_invalid_vehicle, second_invalid_vehicle, valid_vehicle].each(&:valid?)
 

@@ -1,25 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de distância' do
   it 'sem se autenticar' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    create :express
 
-    visit new_shipping_company_price_distance_range_path(1)
+    visit new_shipping_company_price_distance_range_path 1
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path(1)
+    visit shipping_company_path 1
     find('section#prices').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
@@ -34,13 +32,11 @@ describe 'Usuário registra um novo intervalo de distância' do
   end
 
   it 'com dados incompletos' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_price_distance_range_path(1)
+    visit new_shipping_company_price_distance_range_path 1
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
 
@@ -51,14 +47,12 @@ describe 'Usuário registra um novo intervalo de distância' do
   end
 
   it 'com dados inválidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5_000)
 
     login_as user, scope: :user
-    visit new_shipping_company_price_distance_range_path(1)
+    visit new_shipping_company_price_distance_range_path 1
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -68,13 +62,11 @@ describe 'Usuário registra um novo intervalo de distância' do
   end
 
   it 'com distância mínima >= distância máxima' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_price_distance_range_path(1)
+    visit new_shipping_company_price_distance_range_path 1
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'
     click_on 'Criar Intervalo de distância'

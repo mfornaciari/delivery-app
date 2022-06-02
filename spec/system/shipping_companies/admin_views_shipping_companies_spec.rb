@@ -1,16 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Administrador acessa o índice de transportadoras' do
-
   it 'sem se autenticar' do
     visit shipping_companies_path
 
-    expect(current_path).to eq new_admin_session_path
+    expect(page).to have_current_path new_admin_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'e vê as transportadoras cadastradas' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
     ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
                             email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
                             address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
@@ -48,7 +49,7 @@ describe 'Administrador acessa o índice de transportadoras' do
   end
 
   it 'e não há transportadoras cadastradas' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
     login_as admin, scope: :admin
     visit shipping_companies_path

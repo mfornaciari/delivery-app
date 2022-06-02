@@ -1,18 +1,18 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário acessa a página de detalhes de uma transportadora' do
   it 'e vê os veículos cadastrados' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    express = create :express
+    user = create :user
     Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
                     maximum_load: 100_000, shipping_company: express)
     Vehicle.create!(license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: 1971,
                     maximum_load: 40_000, shipping_company: express)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit shipping_company_path(1)
+    visit shipping_company_path 1
 
     expect(page).to have_content 'Veículos cadastrados'
     within_table('vehicles_table') do
@@ -41,13 +41,11 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
   end
 
   it 'e não há veículos cadastrados' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
-    login_as(user, scope: :user)
-    visit shipping_company_path(1)
+    login_as user, scope: :user
+    visit shipping_company_path 1
 
     expect(page).to have_content 'Não existem veículos cadastrados.'
   end

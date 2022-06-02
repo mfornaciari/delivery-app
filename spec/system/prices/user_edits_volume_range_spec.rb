@@ -1,30 +1,27 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário edita intervalo de volume' do
   it 'sem se autenticar' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    express = create :express
+    create :volume_range, shipping_company: express
 
-    visit edit_volume_range_path(1)
+    visit edit_volume_range_path 1
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'e vê o formulário de edição' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    express = create :express
+    user = create :user
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
-    visit shipping_company_path(1)
+    visit shipping_company_path 1
     find('table#prices_table').find('#0_30_1').click_on 'Editar intervalo'
 
     expect(page).to have_content 'Editar intervalo de volume'
@@ -42,13 +39,11 @@ describe 'Usuário edita intervalo de volume' do
   end
 
   it 'com sucesso' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    express = create :express
+    user = create :user
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -81,13 +76,11 @@ describe 'Usuário edita intervalo de volume' do
   end
 
   it 'com dados incompletos/inválidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    express = create :express
+    user = create :user
     vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
     WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -111,18 +104,15 @@ describe 'Usuário edita intervalo de volume' do
   end
 
   it 'com dados repetidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    first_vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: first_vrange, min_weight: 0, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: first_vrange, min_weight: 21, max_weight: 40, value: 75)
-    second_vrange = VolumeRange.create!(shipping_company: express, min_volume: 31, max_volume: 60)
-    WeightRange.create!(volume_range: second_vrange, min_weight: 0, max_weight: 20, value: 75)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    VolumeRange.create!(shipping_company: express, min_volume: 31, max_volume: 60)
+    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
 
     login_as user, scope: :user
-    visit edit_volume_range_path(first_vrange)
+    visit edit_volume_range_path(vrange)
     fill_in 'Volume mínimo', with: '31'
     fill_in 'Volume máximo', with: '40'
     within('section#weight_range_1') do

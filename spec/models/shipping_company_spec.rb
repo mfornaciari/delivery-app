@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ShippingCompany, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando nome fantasia está em branco' do
-        company = ShippingCompany.new(brand_name: '')
+        company = described_class.new(brand_name: '')
 
         company.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe ShippingCompany, type: :model do
       end
 
       it 'Falso quando razão social está em branco' do
-        company = ShippingCompany.new(corporate_name: '')
+        company = described_class.new(corporate_name: '')
 
         company.valid?
 
@@ -20,7 +22,7 @@ RSpec.describe ShippingCompany, type: :model do
       end
 
       it 'Falso quando endereço está em branco' do
-        company = ShippingCompany.new(address: '')
+        company = described_class.new(address: '')
 
         company.valid?
 
@@ -28,7 +30,7 @@ RSpec.describe ShippingCompany, type: :model do
       end
 
       it 'Falso quando cidade está em branco' do
-        company = ShippingCompany.new(city: '')
+        company = described_class.new(city: '')
 
         company.valid?
 
@@ -36,7 +38,7 @@ RSpec.describe ShippingCompany, type: :model do
       end
 
       it 'Falso quando estado está em branco' do
-        company = ShippingCompany.new(state: '')
+        company = described_class.new(state: '')
 
         company.valid?
 
@@ -46,12 +48,12 @@ RSpec.describe ShippingCompany, type: :model do
 
     context 'Formato:' do
       it 'Falso quando domínio do e-mail está vazio/em formato incorreto' do
-        empty_company = ShippingCompany.new(email_domain: '')
-        first_invalid_company = ShippingCompany.new(email_domain: 'express')
-        second_invalid_company = ShippingCompany.new(email_domain: '-express.com.br')
-        third_invalid_company = ShippingCompany.new(email_domain: 'express.com.br-')
-        first_valid_company = ShippingCompany.new(email_domain: 'express.com')
-        second_valid_company = ShippingCompany.new(email_domain: 'express.com.br')
+        empty_company = described_class.new(email_domain: '')
+        first_invalid_company = described_class.new(email_domain: 'express')
+        second_invalid_company = described_class.new(email_domain: '-express.com.br')
+        third_invalid_company = described_class.new(email_domain: 'express.com.br-')
+        first_valid_company = described_class.new(email_domain: 'express.com')
+        second_valid_company = described_class.new(email_domain: 'express.com.br')
 
         [empty_company, first_invalid_company, second_invalid_company, third_invalid_company,
          first_valid_company, second_valid_company].each(&:valid?)
@@ -65,10 +67,10 @@ RSpec.describe ShippingCompany, type: :model do
       end
 
       it 'Falso quando CNPJ está vazio/em formato incorreto' do
-        empty_company = ShippingCompany.new(registration_number: '')
-        first_invalid_company = ShippingCompany.new(registration_number: 8_891_540_000_121)
-        second_invalid_company = ShippingCompany.new(registration_number: 128_891_540_000_121)
-        valid_company = ShippingCompany.new(registration_number: 28_891_540_000_121)
+        empty_company = described_class.new(registration_number: '')
+        first_invalid_company = described_class.new(registration_number: 8_891_540_000_121)
+        second_invalid_company = described_class.new(registration_number: 128_891_540_000_121)
+        valid_company = described_class.new(registration_number: 28_891_540_000_121)
 
         [empty_company, first_invalid_company, second_invalid_company, valid_company].each(&:valid?)
 
@@ -81,10 +83,8 @@ RSpec.describe ShippingCompany, type: :model do
 
     context 'Singularidade:' do
       it 'Falso quando CNPJ é repetido' do
-        ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        company = ShippingCompany.new(registration_number: 28_891_540_000_121)
+        create :express, registration_number: 28_891_540_000_121
+        company = described_class.new(registration_number: 28_891_540_000_121)
 
         company.valid?
 

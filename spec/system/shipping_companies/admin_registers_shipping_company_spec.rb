@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Administrador cadastra transportadora' do
   it 'sem se autenticar' do
     visit new_shipping_company_path
 
-    expect(current_path).to eq new_admin_session_path
+    expect(page).to have_current_path new_admin_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
     login_as admin, scope: :admin
     visit shipping_companies_path
@@ -23,7 +25,7 @@ describe 'Administrador cadastra transportadora' do
     select 'RJ', from: 'Estado'
     click_on 'Criar Transportadora'
 
-    expect(current_path).to eq shipping_company_path(1)
+    expect(page).to have_current_path shipping_company_path(1)
     expect(page).to have_content 'Transportadora cadastrada com sucesso.'
     within('div#page_title') do
       expect(page).to have_content 'Express'
@@ -38,14 +40,14 @@ describe 'Administrador cadastra transportadora' do
   end
 
   it 'com dados incompletos ou inválidos' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
     login_as admin, scope: :admin
     visit new_shipping_company_path
     fill_in 'Nome fantasia', with: 'Express'
     click_on 'Criar Transportadora'
 
-    expect(current_path).to eq shipping_companies_path
+    expect(page).to have_current_path shipping_companies_path
     expect(page).to have_content 'Transportadora não cadastrada.'
     expect(page).to have_field 'Nome fantasia', with: 'Express'
     expect(page).to have_content 'Razão social não pode ficar em branco'

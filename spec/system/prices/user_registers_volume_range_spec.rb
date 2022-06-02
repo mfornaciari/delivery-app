@@ -1,25 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de volume' do
   it 'sem se autenticar' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    create :express
 
-    visit new_shipping_company_volume_range_path(1)
+    visit new_shipping_company_volume_range_path 1
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path(1)
+    visit shipping_company_path 1
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '50'
@@ -39,13 +37,11 @@ describe 'Usuário registra um novo intervalo de volume' do
   end
 
   it 'com dados incompletos' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path(1)
+    visit new_shipping_company_volume_range_path 1
     fill_in 'Volume mínimo', with: '0'
     click_on 'Criar Intervalo de volume'
 
@@ -58,15 +54,12 @@ describe 'Usuário registra um novo intervalo de volume' do
   end
 
   it 'com dados inválidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 10, value: 25)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path(1)
+    visit new_shipping_company_volume_range_path 1
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '0'
     click_on 'Criar Intervalo de volume'
@@ -76,13 +69,11 @@ describe 'Usuário registra um novo intervalo de volume' do
   end
 
   it 'com volume/peso mínimos >= volume/peso máximos' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path(1)
+    visit new_shipping_company_volume_range_path 1
     fill_in 'Volume mínimo', with: '2'
     fill_in 'Volume máximo', with: '1'
     fill_in 'Peso mínimo', with: '2'

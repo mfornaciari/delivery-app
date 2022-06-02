@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe PriceDistanceRange, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando transportadora está em branco' do
-        drange = PriceDistanceRange.new(shipping_company: nil)
+        drange = described_class.new(shipping_company: nil)
 
         drange.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe PriceDistanceRange, type: :model do
       end
 
       it 'Falso quando valor está em branco' do
-        drange = PriceDistanceRange.new(value: '')
+        drange = described_class.new(value: '')
 
         drange.valid?
 
@@ -22,9 +24,9 @@ RSpec.describe PriceDistanceRange, type: :model do
 
     context 'Valor:' do
       it 'Falso quando distância mínima está em branco ou é < 0 ' do
-        empty_range = PriceDistanceRange.new(min_distance: '')
-        invalid_range = PriceDistanceRange.new(min_distance: -1)
-        valid_range = PriceDistanceRange.new(min_distance: 0)
+        empty_range = described_class.new(min_distance: '')
+        invalid_range = described_class.new(min_distance: -1)
+        valid_range = described_class.new(min_distance: 0)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -34,9 +36,9 @@ RSpec.describe PriceDistanceRange, type: :model do
       end
 
       it 'Falso quando distância máxima está em branco ou é < 1' do
-        empty_range = PriceDistanceRange.new(max_distance: '')
-        invalid_range = PriceDistanceRange.new(max_distance: 0)
-        valid_range = PriceDistanceRange.new(max_distance: 1)
+        empty_range = described_class.new(max_distance: '')
+        invalid_range = described_class.new(max_distance: 0)
+        valid_range = described_class.new(max_distance: 1)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -46,8 +48,8 @@ RSpec.describe PriceDistanceRange, type: :model do
       end
 
       it 'Falso quando distância mínima >= distância máxima' do
-        first_invalid_range = PriceDistanceRange.new(min_distance: 5, max_distance: 5)
-        second_invalid_range = PriceDistanceRange.new(min_distance: 6, max_distance: 5)
+        first_invalid_range = described_class.new(min_distance: 5, max_distance: 5)
+        second_invalid_range = described_class.new(min_distance: 6, max_distance: 5)
 
         [first_invalid_range, second_invalid_range].each(&:valid?)
 
@@ -58,12 +60,10 @@ RSpec.describe PriceDistanceRange, type: :model do
 
     context 'Singularidade:' do
       it 'Falso quando distância mínima está inclusa em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
-        invalid_range = PriceDistanceRange.new(shipping_company: express, min_distance: 0)
-        valid_range = PriceDistanceRange.new(shipping_company: express, min_distance: 101)
+        express = create :express
+        create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
+        invalid_range = described_class.new(shipping_company: express, min_distance: 0)
+        valid_range = described_class.new(shipping_company: express, min_distance: 101)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)
@@ -73,12 +73,10 @@ RSpec.describe PriceDistanceRange, type: :model do
       end
 
       it 'Falso quando distância máxima está inclusa em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 5000)
-        invalid_range = PriceDistanceRange.new(shipping_company: express, max_distance: 100)
-        valid_range = PriceDistanceRange.new(shipping_company: express, max_distance: 101)
+        express = create :express
+        create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
+        invalid_range = described_class.new(shipping_company: express, max_distance: 100)
+        valid_range = described_class.new(shipping_company: express, max_distance: 101)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)

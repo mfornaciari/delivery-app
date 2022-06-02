@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário vê pedidos da sua transportadora' do
   it 'sem se autenticar' do
     visit orders_path
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
@@ -18,7 +20,6 @@ describe 'Usuário vê pedidos da sua transportadora' do
     visit shipping_company_path 1
     click_on 'Pedidos'
 
-    expect(current_path).to eq orders_path
     expect(page).to have_content 'Pedidos de Express Transportes Ltda.'
     expect(page).to have_content 'Esta transportadora não recebeu nenhum pedido.'
     expect(page).to have_link 'Voltar'

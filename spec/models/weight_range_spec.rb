@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe WeightRange, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando intervalo de volume está em branco' do
-        wrange = WeightRange.new(volume_range: nil)
+        wrange = described_class.new(volume_range: nil)
 
         wrange.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe WeightRange, type: :model do
       end
 
       it 'Falso quando valor está em branco' do
-        wrange = WeightRange.new(value: '')
+        wrange = described_class.new(value: '')
 
         wrange.valid?
 
@@ -22,9 +24,9 @@ RSpec.describe WeightRange, type: :model do
 
     context 'Valor:' do
       it 'Falso quando peso mínimo está em branco ou é < 0' do
-        empty_range = WeightRange.new(min_weight: '')
-        invalid_range = WeightRange.new(min_weight: -1)
-        valid_range = WeightRange.new(min_weight: 0)
+        empty_range = described_class.new(min_weight: '')
+        invalid_range = described_class.new(min_weight: -1)
+        valid_range = described_class.new(min_weight: 0)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -34,9 +36,9 @@ RSpec.describe WeightRange, type: :model do
       end
 
       it 'Falso quando peso máximo está em branco ou é < 1' do
-        empty_range = WeightRange.new(max_weight: '')
-        invalid_range = WeightRange.new(max_weight: 0)
-        valid_range = WeightRange.new(max_weight: 1)
+        empty_range = described_class.new(max_weight: '')
+        invalid_range = described_class.new(max_weight: 0)
+        valid_range = described_class.new(max_weight: 1)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -46,8 +48,8 @@ RSpec.describe WeightRange, type: :model do
       end
 
       it 'Falso quando peso mínimo >= peso máximo' do
-        first_invalid_range = WeightRange.new(min_weight: 5, max_weight: 5)
-        second_invalid_range = WeightRange.new(min_weight: 6, max_weight: 5)
+        first_invalid_range = described_class.new(min_weight: 5, max_weight: 5)
+        second_invalid_range = described_class.new(min_weight: 6, max_weight: 5)
 
         [first_invalid_range, second_invalid_range].each(&:valid?)
 
@@ -58,13 +60,11 @@ RSpec.describe WeightRange, type: :model do
 
     context 'Singularidade:' do
       it 'Falso quando peso mínimo está incluso em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
-        WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 10, value: 50)
-        invalid_range = WeightRange.new(volume_range: vrange, min_weight: 0)
-        valid_range = WeightRange.new(volume_range: vrange, min_weight: 11)
+        express = create :express
+        vrange = create :volume_range, shipping_company: express
+        create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 10
+        invalid_range = described_class.new(volume_range: vrange, min_weight: 0)
+        valid_range = described_class.new(volume_range: vrange, min_weight: 11)
 
         vrange.reload
         [invalid_range, valid_range].each(&:valid?)
@@ -74,13 +74,11 @@ RSpec.describe WeightRange, type: :model do
       end
 
       it 'Falso quando peso máximo está incluso em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
-        WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 10, value: 50)
-        invalid_range = WeightRange.new(volume_range: vrange, max_weight: 10)
-        valid_range = WeightRange.new(volume_range: vrange, max_weight: 11)
+        express = create :express
+        vrange = create :volume_range, shipping_company: express
+        create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 10
+        invalid_range = described_class.new(volume_range: vrange, max_weight: 10)
+        valid_range = described_class.new(volume_range: vrange, max_weight: 11)
 
         vrange.reload
         [invalid_range, valid_range].each(&:valid?)

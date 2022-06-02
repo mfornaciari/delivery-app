@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário de transportadora se autentica' do
   it 'com sucesso' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    create :express
     User.create!(email: 'usuario@express.com.br', password: 'password')
 
     visit root_path
@@ -13,7 +13,7 @@ describe 'Usuário de transportadora se autentica' do
     fill_in 'Senha', with: 'password'
     click_on 'Entrar'
 
-    expect(current_path).to eq shipping_company_path(1)
+    expect(page).to have_current_path shipping_company_path 1
     expect(page).to have_content 'Login efetuado com sucesso'
     expect(page).to have_content 'usuario@express.com.br'
     expect(page).to have_button 'Sair'
@@ -22,12 +22,10 @@ describe 'Usuário de transportadora se autentica' do
   end
 
   it 'e não vê mais links de autenticação' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
-    login_as(user, scope: :user)
+    login_as user, scope: :user
     visit root_path
 
     expect(page).not_to have_link 'Entrar (administrador)'
@@ -35,16 +33,14 @@ describe 'Usuário de transportadora se autentica' do
   end
 
   it 'e faz logout' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
     login_as user, scope: :user
     visit root_path
     click_on 'Sair'
 
-    expect(current_path).to eq root_path
+    expect(page).to have_current_path root_path
     expect(page).to have_link 'Entrar'
     expect(page).not_to have_button 'Sair'
   end

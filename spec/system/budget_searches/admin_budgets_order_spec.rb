@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Administrador consulta preço de pedido' do
   it 'a partir do menu de navegação' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
-    login_as(admin, scope: :admin)
+    login_as admin, scope: :admin
     visit root_path
     find('nav').click_on 'Consultar preços'
 
@@ -21,33 +23,29 @@ describe 'Administrador consulta preço de pedido' do
   it 'sem se autenticar' do
     visit new_budget_search_path
 
-    expect(current_path).to eq new_admin_session_path
+    expect(page).to have_current_path new_admin_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    admin = create :admin
+    express = create :express, brand_name: 'Express'
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     TimeDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3)
     PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
     first_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    second_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 51, max_volume: 100)
     WeightRange.create!(volume_range: first_express_volume_range, min_weight: 1, max_weight: 20, value: 50)
+    second_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 51, max_volume: 100)
     WeightRange.create!(volume_range: second_express_volume_range, min_weight: 1, max_weight: 10, value: 75)
     WeightRange.create!(volume_range: second_express_volume_range, min_weight: 11, max_weight: 20, value: 100)
-    a_jato = ShippingCompany.create!(brand_name: 'A Jato', corporate_name: 'A Jato S.A.',
-                                     email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
-                                     address: 'Avenida B, 23', city: 'Natal', state: 'RN')
+    a_jato = create :a_jato, brand_name: 'A Jato'
     TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3)
     TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 101, max_distance: 200, delivery_time: 4)
     PriceDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000)
     a_jato_volume_range = VolumeRange.create!(shipping_company: a_jato, min_volume: 0, max_volume: 100)
     WeightRange.create!(volume_range: a_jato_volume_range, min_weight: 1, max_weight: 5, value: 50)
 
-    login_as(admin, scope: :admin)
+    login_as admin, scope: :admin
     visit new_budget_search_path
     fill_in 'Altura', with: 100
     fill_in 'Largura', with: 100
@@ -82,23 +80,19 @@ describe 'Administrador consulta preço de pedido' do
   end
 
   it 'e não há transportadoras para atendê-lo' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    admin = create :admin
+    express = create :express, brand_name: 'Express'
     TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
     first_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
     WeightRange.create!(volume_range: first_express_volume_range, min_weight: 21, max_weight: 40, value: 50)
     second_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 51, max_volume: 100)
     WeightRange.create!(volume_range: second_express_volume_range, min_weight: 0, max_weight: 20, value: 75)
-    a_jato = ShippingCompany.create!(brand_name: 'A Jato', corporate_name: 'A Jato S.A.',
-                                     email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
-                                     address: 'Avenida B, 23', city: 'Natal', state: 'RN')
+    a_jato = create :a_jato, brand_name: 'A Jato'
     TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 101, max_distance: 200, delivery_time: 3)
     a_jato_volume_range = VolumeRange.create!(shipping_company: a_jato, min_volume: 0, max_volume: 50)
     WeightRange.create!(volume_range: a_jato_volume_range, min_weight: 0, max_weight: 20, value: 50)
 
-    login_as(admin, scope: :admin)
+    login_as admin, scope: :admin
     visit new_budget_search_path
     fill_in 'Altura', with: 100
     fill_in 'Largura', with: 100
@@ -117,9 +111,9 @@ describe 'Administrador consulta preço de pedido' do
   end
 
   it 'com dados incompletos' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
-    login_as(admin, scope: :admin)
+    login_as admin, scope: :admin
     visit new_budget_search_path
     fill_in 'Altura', with: '100'
     click_on 'Consultar'
@@ -133,9 +127,9 @@ describe 'Administrador consulta preço de pedido' do
   end
 
   it 'com dados inválidos' do
-    admin = Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    admin = create :admin
 
-    login_as(admin, scope: :admin)
+    login_as admin, scope: :admin
     visit new_budget_search_path
     fill_in 'Altura', with: '0'
     fill_in 'Largura', with: '0'

@@ -1,25 +1,23 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário cadastra veículo' do
   it 'sem se autenticar' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    create :express
 
-    visit new_shipping_company_vehicle_path(1)
+    visit new_shipping_company_vehicle_path 1
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
-    login_as(user)
-    visit shipping_company_path(1)
+    login_as user, scope: :user
+    visit shipping_company_path 1
     click_on 'Cadastrar veículo'
     fill_in 'Placa de identificação', with: 'BRA3R52'
     fill_in 'Modelo', with: 'Uno'
@@ -37,13 +35,11 @@ describe 'Usuário cadastra veículo' do
   end
 
   it 'com dados incompletos' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    create :express
+    user = create :user
 
-    login_as(user, scope: :user)
-    visit new_shipping_company_vehicle_path(1)
+    login_as user, scope: :user
+    visit new_shipping_company_vehicle_path 1
     fill_in 'Modelo', with: 'Uno'
     click_on 'Criar Veículo'
 
@@ -56,17 +52,14 @@ describe 'Usuário cadastra veículo' do
   end
 
   it 'com dados inválidos ou repetidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    Vehicle.create!(license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                    maximum_load: 100_000, shipping_company: express)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    create :vehicle, shipping_company: express, license_plate: 'BRA3R52'
 
-    login_as(user, scope: :user)
-    visit new_shipping_company_vehicle_path(1)
+    login_as user, scope: :user
+    visit new_shipping_company_vehicle_path 1
     fill_in 'Placa de identificação', with: 'BRA3R52'
-    fill_in 'Ano de produção', with: '2023'
+    fill_in 'Ano de produção', with: 1.year.from_now.year
     fill_in 'Carga máxima', with: '0'
     click_on 'Criar Veículo'
 

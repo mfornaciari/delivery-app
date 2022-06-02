@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Administrador cria um novo pedido' do
@@ -60,7 +62,7 @@ describe 'Administrador cria um novo pedido' do
     login_as admin, scope: :admin
     visit new_order_path
 
-    expect(current_path).to eq root_path
+    expect(page).to have_current_path root_path
     expect(page).to have_content 'Crie um pedido a partir de uma consulta de preços.'
   end
 
@@ -89,7 +91,7 @@ describe 'Administrador cria um novo pedido' do
     fill_in 'Código do produto a transportar', with: 'ABCD1234'
     click_on 'Enviar pedido'
 
-    expect(current_path).to eq order_path 1
+    expect(page).to have_current_path order_path 1
     expect(page).to have_content 'Pedido cadastrado com sucesso.'
     expect(page).to have_content 'Pedido ABCDE12345ABCDE'
     expect(page).to have_content 'Transportadora: Express Transportes Ltda.'

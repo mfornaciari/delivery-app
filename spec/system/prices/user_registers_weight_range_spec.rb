@@ -1,26 +1,22 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de peso' do
   it 'sem se autenticar' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    express = create :express
+    vrange = create :volume_range, shipping_company: express
 
     visit new_volume_range_weight_range_path(vrange)
 
-    expect(current_path).to eq new_user_session_path
+    expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    vrange = create :volume_range, shipping_company: express
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -37,12 +33,9 @@ describe 'Usuário registra um novo intervalo de peso' do
   end
 
   it 'com dados incompletos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    vrange = create :volume_range, shipping_company: express
 
     login_as user, scope: :user
     visit new_volume_range_weight_range_path(vrange)
@@ -56,12 +49,10 @@ describe 'Usuário registra um novo intervalo de peso' do
   end
 
   it 'com dados inválidos' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
+    express = create :express
+    user = create :user
+    vrange = create :volume_range, shipping_company: express
     WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
 
     login_as user, scope: :user
     visit new_volume_range_weight_range_path(vrange)
@@ -74,12 +65,9 @@ describe 'Usuário registra um novo intervalo de peso' do
   end
 
   it 'com peso mínimo >= peso máximo' do
-    express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                      email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                      address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    user = User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    user = create :user
+    vrange = create :volume_range, shipping_company: express
 
     login_as user, scope: :user
     visit new_volume_range_weight_range_path(vrange)

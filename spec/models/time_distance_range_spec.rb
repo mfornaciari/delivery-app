@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TimeDistanceRange, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando transportadora está em branco' do
-        trange = TimeDistanceRange.new(shipping_company: nil)
+        trange = described_class.new(shipping_company: nil)
 
         trange.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe TimeDistanceRange, type: :model do
       end
 
       it 'Falso quando prazo está em branco' do
-        trange = TimeDistanceRange.new(delivery_time: '')
+        trange = described_class.new(delivery_time: '')
 
         trange.valid?
 
@@ -22,9 +24,9 @@ RSpec.describe TimeDistanceRange, type: :model do
 
     context 'Valor:' do
       it 'Falso quando distância mínima está em branco ou é < 0 ' do
-        empty_range = TimeDistanceRange.new(min_distance: '')
-        invalid_range = TimeDistanceRange.new(min_distance: -1)
-        valid_range = TimeDistanceRange.new(min_distance: 0)
+        empty_range = described_class.new(min_distance: '')
+        invalid_range = described_class.new(min_distance: -1)
+        valid_range = described_class.new(min_distance: 0)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -34,9 +36,9 @@ RSpec.describe TimeDistanceRange, type: :model do
       end
 
       it 'Falso quando distância máxima está em branco ou é < 1' do
-        empty_range = TimeDistanceRange.new(max_distance: '')
-        invalid_range = TimeDistanceRange.new(max_distance: 0)
-        valid_range = TimeDistanceRange.new(max_distance: 1)
+        empty_range = described_class.new(max_distance: '')
+        invalid_range = described_class.new(max_distance: 0)
+        valid_range = described_class.new(max_distance: 1)
 
         [empty_range, invalid_range, valid_range].each(&:valid?)
 
@@ -46,8 +48,8 @@ RSpec.describe TimeDistanceRange, type: :model do
       end
 
       it 'Falso quando distância mínima >= distância máxima' do
-        first_invalid_range = TimeDistanceRange.new(min_distance: 5, max_distance: 5)
-        second_invalid_range = TimeDistanceRange.new(min_distance: 6, max_distance: 5)
+        first_invalid_range = described_class.new(min_distance: 5, max_distance: 5)
+        second_invalid_range = described_class.new(min_distance: 6, max_distance: 5)
 
         [first_invalid_range, second_invalid_range].each(&:valid?)
 
@@ -58,12 +60,10 @@ RSpec.describe TimeDistanceRange, type: :model do
 
     context 'Singularidade:' do
       it 'Falso quando distância mínima está inclusa em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-        invalid_range = TimeDistanceRange.new(shipping_company: express, min_distance: 0)
-        valid_range = TimeDistanceRange.new(shipping_company: express, min_distance: 101)
+        express = create :express
+        create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
+        invalid_range = described_class.new(shipping_company: express, min_distance: 0)
+        valid_range = described_class.new(shipping_company: express, min_distance: 101)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)
@@ -73,12 +73,10 @@ RSpec.describe TimeDistanceRange, type: :model do
       end
 
       it 'Falso quando distância máxima está inclusa em intervalos já cadastrados' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-        invalid_range = TimeDistanceRange.new(shipping_company: express, max_distance: 100)
-        valid_range = TimeDistanceRange.new(shipping_company: express, max_distance: 101)
+        express = create :express
+        create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
+        invalid_range = described_class.new(shipping_company: express, max_distance: 100)
+        valid_range = described_class.new(shipping_company: express, max_distance: 101)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)
@@ -88,16 +86,12 @@ RSpec.describe TimeDistanceRange, type: :model do
       end
 
       it 'Falso quando prazo já está em uso' do
-        express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                          email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                          address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-        a_jato = ShippingCompany.create!(brand_name: 'A Jato', corporate_name: 'A Jato S.A.',
-                                         email_domain: 'ajato.com', registration_number: 19_824_380_000_107,
-                                         address: 'Avenida B, 23', city: 'Natal', state: 'RN')
-        TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-        TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3)
-        invalid_range = TimeDistanceRange.new(shipping_company: express, delivery_time: 2)
-        valid_range = TimeDistanceRange.new(shipping_company: express, delivery_time: 3)
+        express = create :express
+        a_jato = create :a_jato
+        create :time_distance_range, shipping_company: express, delivery_time: 2
+        create :time_distance_range, shipping_company: a_jato, delivery_time: 3
+        invalid_range = described_class.new(shipping_company: express, delivery_time: 2)
+        valid_range = described_class.new(shipping_company: express, delivery_time: 3)
 
         express.reload
         [invalid_range, valid_range].each(&:valid?)

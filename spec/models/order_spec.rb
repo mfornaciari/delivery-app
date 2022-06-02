@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe Order, type: :model do
   describe '#valid?' do
     context 'Presença:' do
       it 'Falso quando endereço de retirada está em branco' do
-        order = Order.new(pickup_address: '')
+        order = described_class.new(pickup_address: '')
 
         order.valid?
 
@@ -12,7 +14,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando cidade de retirada está em branco' do
-        order = Order.new(pickup_city: '')
+        order = described_class.new(pickup_city: '')
 
         order.valid?
 
@@ -20,7 +22,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando estado de retirada está em branco' do
-        order = Order.new(pickup_state: '')
+        order = described_class.new(pickup_state: '')
 
         order.valid?
 
@@ -28,7 +30,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando endereço de entrega está em branco' do
-        order = Order.new(delivery_address: '')
+        order = described_class.new(delivery_address: '')
 
         order.valid?
 
@@ -36,7 +38,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando cidade de entrega está em branco' do
-        order = Order.new(delivery_city: '')
+        order = described_class.new(delivery_city: '')
 
         order.valid?
 
@@ -44,7 +46,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando estado de entrega está em branco' do
-        order = Order.new(delivery_state: '')
+        order = described_class.new(delivery_state: '')
 
         order.valid?
 
@@ -52,7 +54,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando destinatário(a) está em branco' do
-        order = Order.new(recipient_name: '')
+        order = described_class.new(recipient_name: '')
 
         order.valid?
 
@@ -60,7 +62,7 @@ RSpec.describe Order, type: :model do
       end
 
       it 'Falso quando código do produto está em branco' do
-        order = Order.new(product_code: '')
+        order = described_class.new(product_code: '')
 
         order.valid?
 
@@ -71,13 +73,8 @@ RSpec.describe Order, type: :model do
 
   describe 'Gera um código aleatório' do
     it 'ao criar um novo pedido' do
-      express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                        email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                        address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-      order = Order.new(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                        delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                        recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                        distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express)
+      express = create :express
+      order = create :order, shipping_company: express
 
       order.save!
 
@@ -86,19 +83,9 @@ RSpec.describe Order, type: :model do
     end
 
     it 'e ele é único' do
-      express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                        email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                        address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-      first_order = Order.create!(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal',
-                                  pickup_state: 'RN', delivery_address: 'Rua Rio Verde, n. 10',
-                                  delivery_city: 'Aracaju', delivery_state: 'SE', recipient_name: 'João da Silva',
-                                  product_code: 'ABCD1234', volume: 5, weight: 10, distance: 30,
-                                  estimated_delivery_time: 2, value: 2500, shipping_company: express)
-      second_order = Order.new(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal',
-                               pickup_state: 'RN', delivery_address: 'Rua Rio Verde, n. 10',
-                               delivery_city: 'Aracaju', delivery_state: 'SE', recipient_name: 'João da Silva',
-                               product_code: 'ABCD1234', volume: 5, weight: 10, distance: 30,
-                               estimated_delivery_time: 2, value: 2500, shipping_company: express)
+      express = create :express
+      first_order = create :order, shipping_company: express
+      second_order = create :order, shipping_company: express
 
       second_order.save!
 
@@ -106,20 +93,13 @@ RSpec.describe Order, type: :model do
     end
 
     it 'e ele não muda após atualização' do
-      express = ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                                        email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                                        address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
-      order = Order.new(pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                        delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                        recipient_name: 'João da Silva', product_code: 'ABCD1234', volume: 5, weight: 10,
-                        distance: 30, estimated_delivery_time: 2, value: 2500, shipping_company: express)
+      express = create :express
+      order = create :order, shipping_company: express
 
-      order.save!
-      code_after_creation = order.code
+      original_code = order.code
       order.accepted!
-      code_after_update = order.code
 
-      expect(code_after_update).to eq code_after_creation
+      expect(order.code).to eq original_code
     end
   end
 end

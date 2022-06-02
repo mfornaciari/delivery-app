@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe 'Usuário atualiza o status de um pedido' do
@@ -23,7 +25,7 @@ describe 'Usuário atualiza o status de um pedido' do
       select 'ARG4523', from: 'Veículo responsável'
       click_on 'Aceitar pedido'
 
-      expect(current_path).to eq order_path 1
+      expect(page).to have_current_path order_path 1
       expect(page).to have_content 'Pedido aceito.'
       expect(page).to have_content 'Status: Aceito'
       expect(page).to have_content 'Veículo responsável: ARG4523'
@@ -47,7 +49,7 @@ describe 'Usuário atualiza o status de um pedido' do
       click_on order.code
       click_on 'Aceitar pedido'
 
-      expect(current_path).to eq order_path 1
+      expect(page).to have_current_path order_path 1
       expect(page).to have_content 'Status não atualizado: atribua o pedido a um veículo.'
       within('#order_details') do
         expect(page).not_to have_content 'Veículo responsável'
