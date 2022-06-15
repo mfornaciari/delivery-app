@@ -4,13 +4,13 @@ class ShippingCompany < ApplicationRecord
   validates :registration_number, format: { with: /\A\d{14}\z/ }
   validates :registration_number, uniqueness: true
 
-  has_many :vehicles
-  has_many :volume_ranges
+  has_many :vehicles, dependent: :destroy
+  has_many :volume_ranges, dependent: :destroy
   has_many :weight_ranges, through: :volume_ranges
-  has_many :price_distance_ranges
-  has_many :time_distance_ranges
-  has_many :users
-  has_many :orders
+  has_many :price_distance_ranges, dependent: :destroy
+  has_many :time_distance_ranges, dependent: :destroy
+  has_many :users, dependent: :nullify
+  has_many :orders, dependent: :nullify
 
   STATES = %w[AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO].freeze
 

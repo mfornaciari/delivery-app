@@ -5,7 +5,7 @@ require:
 
 AllCops:
   TargetRubyVersion: 3.1
-  TargeRailsVersion: 7.0
+  TargetRailsVersion: 7.0
   NewCops: enable
   Exclude:
   - 'bin/**/*'
@@ -15,8 +15,18 @@ AllCops:
 Documentation:
   Enabled: false
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/HashSyntax:
+  Enabled: false
+
 Metrics/BlockLength:
-  ExcludedMethods: ['describe', 'context']
+  IgnoredMethods: ['describe', 'context']
+
+Layout/LineLength:
+  Exclude:
+    - 'config/initializers/devise.rb'
 
 RSpec/ExampleLength:
   Max: 40

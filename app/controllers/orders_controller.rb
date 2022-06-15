@@ -8,7 +8,7 @@ class OrdersController < ApplicationController
   end
 
   def new
-    return redirect_to root_path, notice: 'Crie um pedido a partir de uma consulta de preços.' unless params_exist
+    return redirect_to root_path, notice: t('direct_creation_attempt_message') unless params_exist
 
     @order = Order.new(params.permit(%i[shipping_company_id volume weight distance value
                                         estimated_delivery_time]))
@@ -18,10 +18,10 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new(order_params)
     if @order.save
-      redirect_to @order, notice: 'Pedido cadastrado com sucesso.'
+      redirect_to @order, notice: t('order_creation_succeeded_message')
     else
       @states = Order::STATES
-      flash.now[:notice] = 'Pedido não cadastrado.'
+      flash.now[:notice] = t('order_creation_failed_message')
       render 'new'
     end
   end
@@ -34,31 +34,29 @@ class OrdersController < ApplicationController
 
   def accepted
     @order = Order.find params[:id]
-    if params[:vehicle_id].empty?
-      return redirect_to @order, notice: 'Status não atualizado: atribua o pedido a um veículo.'
-    end
+    return redirect_to @order, notice: t('must_set_vehicle_message') if params[:vehicle_id].empty?
 
     @order.accepted!
     vehicle = Vehicle.find params[:vehicle_id]
     @order.update vehicle: vehicle
-    redirect_to @order, notice: 'Pedido aceito.'
+    redirect_to @order, notice: t('order_accepted_message')
   end
 
   def rejected
     @order = Order.find params[:id]
     @order.rejected!
-    redirect_to @order, notice: 'Pedido rejeitado.'
+    redirect_to @order, notice: t('order_rejected_message')
   end
 
   def finished
     @order = Order.find params[:id]
     @order.finished!
-    redirect_to @order, notice: 'Pedido finalizado.'
+    redirect_to @order, notice: t('order_finished_message')
   end
 
   def search
     @order = Order.find_by code: params[:query], status: %i[accepted finished]
-    redirect_to root_path, notice: 'Não há pedidos aceitos com esse código.' if @order.nil?
+    redirect_to root_path, notice: t('no_such_order_message') if @order.nil?
   end
 
   private

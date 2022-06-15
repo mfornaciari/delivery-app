@@ -1,4 +1,6 @@
 pt-BR:
+  search_succeeded_message: 'Resultado da sua busca:'
+  search_failed_message: 'Sua busca não pôde ser realizada.'
   activerecord:
     models:
       budget_search: Busca de preços

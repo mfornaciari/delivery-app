@@ -9,9 +9,9 @@ class BudgetSearchesController < ApplicationController
     @budget_search = BudgetSearch.new(budget_search_params)
     @budget_search.admin = current_admin
     if @budget_search.save
-      redirect_to @budget_search, notice: 'Resultado da sua busca:'
+      redirect_to @budget_search, notice: t('search_succeeded_message')
     else
-      flash.now[:notice] = 'Sua busca não pôde ser realizada.'
+      flash.now[:notice] = t('search_failed_message')
       render 'new'
     end
   end

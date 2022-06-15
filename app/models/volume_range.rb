@@ -5,7 +5,7 @@ class VolumeRange < ApplicationRecord
   validate :min_volume_less_than_max_volume
 
   belongs_to :shipping_company
-  has_many :weight_ranges
+  has_many :weight_ranges, dependent: :destroy
   accepts_nested_attributes_for :weight_ranges
 
   private

@@ -1,4 +1,12 @@
 pt-BR:
+  direct_creation_attempt_message: Crie um pedido a partir de uma consulta de preços.
+  order_creation_succeeded_message: Pedido cadastrado com sucesso.
+  order_creation_failed_message: Pedido não cadastrado.
+  must_set_vehicle_message: 'Status não atualizado: atribua o pedido a um veículo.'
+  order_accepted_message: Pedido aceito.
+  order_rejected_message: Pedido rejeitado.
+  order_finished_message: Pedido finalizado.
+  no_such_order_message: Não há pedidos aceitos com esse código.
   pending: Pendente
   accepted: Aceito
   rejected: Rejeitado

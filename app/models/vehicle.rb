@@ -7,7 +7,7 @@ class Vehicle < ApplicationRecord
   validate :produced_in_valid_years
 
   belongs_to :shipping_company
-  has_one :order
+  has_one :order, dependent: :nullify
 
   private
 
