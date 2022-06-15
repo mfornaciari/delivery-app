@@ -1,4 +1,8 @@
 pt-BR:
+  volume_range_creation_succeeded: Intervalo cadastrado com sucesso.
+  volume_range_creation_failed: Intervalo não cadastrado.
+  volume_range_update_succeeded: Intervalo atualizado com sucesso.
+  volume_range_update_failed: Intervalo não atualizado.
   activerecord:
     models:
       volume_range: Intervalo de volume

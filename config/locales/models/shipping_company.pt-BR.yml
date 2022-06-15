@@ -1,4 +1,6 @@
 pt-BR:
+  company_creation_succeeded: Transportadora cadastrada com sucesso.
+  company_creation_failed: Transportadora não cadastrada.
   activerecord:
     models:
       shipping_company: Transportadora

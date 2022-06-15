@@ -1,4 +1,6 @@
 pt-BR:
+  price_distance_range_creation_succeeded_message: Intervalo cadastrado com sucesso.
+  price_distance_range_creation_failed_message: Intervalo não cadastrado.
   activerecord:
     models:
       price_distance_range: Intervalo de distância

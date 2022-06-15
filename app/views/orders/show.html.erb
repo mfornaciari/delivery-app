@@ -53,7 +53,7 @@
     <%= button_to 'Rejeitar pedido', rejected_order_path(@order) %>
 
   <% elsif @order.accepted? %>
-    <% unless @route_updates.empty? %>
+    <% unless @order.route_updates.empty? %>
       <h3>Rota de entrega:</h3>
 
       <table id='route'>
@@ -63,7 +63,7 @@
           <th>Longitude</th>
         </tr>
 
-        <% @route_updates.each_with_index do |route_update, index| %>
+        <% @order.route_updates.each_with_index do |route_update, index| %>
           <tr id=<%= "update_#{index + 1}" %>>
             <td><%= I18n.l(route_update.date_and_time) %></td>
             <td><%= route_update.latitude %></td>

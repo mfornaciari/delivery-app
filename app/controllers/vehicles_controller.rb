@@ -9,18 +9,15 @@ class VehiclesController < ApplicationController
   def create
     @vehicle = Vehicle.new(vehicle_params)
     @vehicle.shipping_company = @shipping_company
-    if @vehicle.save
-      redirect_to @shipping_company, notice: 'Veículo cadastrado com sucesso.'
-    else
-      flash.now[:notice] = 'Veículo não cadastrado.'
-      render 'new'
-    end
+    return redirect_to @shipping_company, notice: t('vehicle_creation_succeeded') if @vehicle.save
+
+    flash.now[:notice] = t('vehicle_creation_failed')
+    render 'new'
   end
 
   private
 
   def vehicle_params
-    params.require(:vehicle).permit(:license_plate, :model, :brand, :production_year,
-                                    :maximum_load)
+    params.require(:vehicle).permit(%i[license_plate model brand production_year maximum_load])
   end
 end

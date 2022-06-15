@@ -10,16 +10,16 @@ class TimeDistanceRangesController < ApplicationController
     @time_distance_range = TimeDistanceRange.new(time_distance_range_params)
     @time_distance_range.shipping_company = @shipping_company
     if @time_distance_range.save
-      redirect_to @shipping_company, notice: 'Intervalo cadastrado com sucesso.'
-    else
-      flash.now[:notice] = 'Intervalo não cadastrado.'
-      render 'new'
+      return redirect_to @shipping_company, notice: t('time_distance_range_creation_succeeded')
     end
+
+    flash.now[:notice] = t('time_distance_range_creation_failed')
+    render 'new'
   end
 
   private
 
   def time_distance_range_params
-    params.require(:time_distance_range).permit(:min_distance, :max_distance, :delivery_time)
+    params.require(:time_distance_range).permit(%i[min_distance max_distance delivery_time])
   end
 end

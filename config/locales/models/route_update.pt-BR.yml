@@ -1,4 +1,6 @@
 pt-BR:
+  route_update_succeeded_message: Rota de entrega do pedido atualizada.
+  route_update_failed_message: Rota de entrega não atualizada.
   activerecord:
     models:
       route_update: Atualização de rota

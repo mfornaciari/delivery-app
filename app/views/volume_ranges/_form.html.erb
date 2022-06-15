@@ -13,7 +13,7 @@
     </div>
   </section>
 
-  <% @weight_ranges.each_with_index do |wrange, index| %>
+  <% @volume_range.weight_ranges.each_with_index do |wrange, index| %>
     <section id=<%= "weight_range_#{index + 1}" %>>
       <h2 align='center'><%= "Intervalo de peso #{index + 1}" %></h2>
 

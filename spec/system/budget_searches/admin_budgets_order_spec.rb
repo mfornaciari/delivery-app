@@ -60,22 +60,20 @@ describe 'Administrador consulta preço de pedido' do
     expect(page).to have_content 'Volume: 1 m³'
     expect(page).to have_content 'Peso: 5 kg'
     expect(page).to have_content 'Distância a percorrer: 20 km'
-    within_table('search_details') do
-      within('#table_header') do
-        expect(page).to have_content 'Transportadora'
-        expect(page).to have_content 'Valor'
-        expect(page).to have_content 'Prazo'
-      end
-      within('#express') do
-        expect(page).to have_content 'Express'
-        expect(page).to have_content 'R$ 10,00'
-        expect(page).to have_content '2 dias'
-      end
-      within('#a_jato') do
-        expect(page).to have_content 'A Jato'
-        expect(page).to have_content 'R$ 50,00'
-        expect(page).to have_content '3 dias'
-      end
+    within('#table_header') do
+      expect(page).to have_content 'Transportadora'
+      expect(page).to have_content 'Valor'
+      expect(page).to have_content 'Prazo'
+    end
+    within('#express') do
+      expect(page).to have_content 'Express'
+      expect(page).to have_content 'R$ 10,00'
+      expect(page).to have_content '2 dias'
+    end
+    within('#a_jato') do
+      expect(page).to have_content 'A Jato'
+      expect(page).to have_content 'R$ 50,00'
+      expect(page).to have_content '3 dias'
     end
   end
 

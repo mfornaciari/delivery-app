@@ -1,4 +1,6 @@
 pt-BR:
+  weight_range_creation_succeeded: Intervalo cadastrado com sucesso.
+  weight_range_creation_failed: Intervalo não cadastrado.
   activerecord:
     models:
       weight_range: Intervalo de peso

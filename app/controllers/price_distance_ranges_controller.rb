@@ -10,9 +10,9 @@ class PriceDistanceRangesController < ApplicationController
     @price_distance_range = PriceDistanceRange.new(price_distance_range_params)
     @price_distance_range.shipping_company = @shipping_company
     if @price_distance_range.save
-      redirect_to @shipping_company, notice: 'Intervalo cadastrado com sucesso.'
+      redirect_to @shipping_company, notice: t('price_distance_range_creation_succeeded_message')
     else
-      flash.now[:notice] = 'Intervalo não cadastrado.'
+      flash.now[:notice] = t('price_distance_range_creation_failed_message')
       render 'new'
     end
   end
@@ -20,6 +20,6 @@ class PriceDistanceRangesController < ApplicationController
   private
 
   def price_distance_range_params
-    params.require(:price_distance_range).permit(:min_distance, :max_distance, :value)
+    params.require(:price_distance_range).permit(%i[min_distance max_distance value])
   end
 end

@@ -5,36 +5,30 @@ class VolumeRangesController < ApplicationController
 
   def new
     @volume_range = VolumeRange.new
-    @volume_range.weight_ranges.new
-    @weight_ranges = @volume_range.weight_ranges
+    @volume_range.weight_ranges.build
     @form_model_attributes = [:shipping_company, @volume_range]
   end
 
   def create
     @volume_range = VolumeRange.new(volume_range_params)
     @volume_range.shipping_company = @shipping_company
-    if @volume_range.save
-      redirect_to @shipping_company, notice: 'Intervalo cadastrado com sucesso.'
-    else
-      @weight_ranges = @volume_range.weight_ranges
-      @form_model_attributes = [:shipping_company, @volume_range]
-      flash.now[:notice] = 'Intervalo não cadastrado.'
-      render 'new'
-    end
+    return redirect_to @shipping_company, notice: t('volume_range_creation_succeeded') if @volume_range.save
+
+    @form_model_attributes = [:shipping_company, @volume_range]
+    flash.now[:notice] = t('volume_range_creation_failed')
+    render 'new'
   end
 
   def edit
     @form_model_attributes = @volume_range
-    @weight_ranges = @volume_range.weight_ranges
   end
 
   def update
     if @volume_range.update(volume_range_params)
-      redirect_to @volume_range.shipping_company, notice: 'Intervalo atualizado com sucesso.'
+      redirect_to @volume_range.shipping_company, notice: t('volume_range_update_succeeded')
     else
-      @weight_ranges = @volume_range.weight_ranges
       @form_model_attributes = @volume_range
-      flash.now[:notice] = 'Intervalo não atualizado.'
+      flash.now[:notice] = t('volume_range_update_failed')
       render 'edit'
     end
   end

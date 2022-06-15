@@ -13,13 +13,11 @@ class ShippingCompaniesController < ApplicationController
 
   def create
     @shipping_company = ShippingCompany.new(shipping_company_params)
-    if @shipping_company.save
-      redirect_to @shipping_company, notice: 'Transportadora cadastrada com sucesso.'
-    else
-      @states = ShippingCompany::STATES
-      flash.now[:notice] = 'Transportadora não cadastrada.'
-      render 'new'
-    end
+    return redirect_to @shipping_company, notice: t('company_creation_succeeded') if @shipping_company.save
+
+    @states = ShippingCompany::STATES
+    flash.now[:notice] = t('company_creation_failed')
+    render 'new'
   end
 
   def show
@@ -34,7 +32,7 @@ class ShippingCompaniesController < ApplicationController
   private
 
   def shipping_company_params
-    params.require(:shipping_company).permit(:brand_name, :corporate_name, :registration_number, :email_domain,
-                                             :address, :city, :state)
+    params.require(:shipping_company).permit(%i[brand_name corporate_name registration_number email_domain
+                                                address city state])
   end
 end

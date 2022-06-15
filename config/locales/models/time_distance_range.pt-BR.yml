@@ -1,4 +1,6 @@
 pt-BR:
+  time_distance_range_creation_succeeded: Intervalo cadastrado com sucesso.
+  time_distance_range_creation_failed: Intervalo não cadastrado.
   activerecord:
     models:
       time_distance_range: Intervalo de distância

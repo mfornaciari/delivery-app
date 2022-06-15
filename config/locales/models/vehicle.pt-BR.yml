@@ -1,4 +1,6 @@
 pt-BR:
+  vehicle_creation_succeeded: Veículo cadastrado com sucesso.
+  vehicle_creation_failed: Veículo não cadastrado.
   activerecord:
     models:
       vehicle: Veículo

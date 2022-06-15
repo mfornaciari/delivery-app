@@ -10,11 +10,11 @@ class WeightRangesController < ApplicationController
     @weight_range = WeightRange.new(weight_range_params)
     @weight_range.volume_range = @volume_range
     if @weight_range.save
-      redirect_to edit_volume_range_path(@volume_range), notice: 'Intervalo cadastrado com sucesso.'
-    else
-      flash.now[:notice] = 'Intervalo não cadastrado.'
-      render 'new'
+      return redirect_to edit_volume_range_path(@volume_range), notice: t('weight_range_creation_succeeded')
     end
+
+    flash.now[:notice] = t('weight_range_creation_failed')
+    render 'new'
   end
 
   private
@@ -24,6 +24,6 @@ class WeightRangesController < ApplicationController
   end
 
   def weight_range_params
-    params.require(:weight_range).permit(:min_weight, :max_weight, :value)
+    params.require(:weight_range).permit(%i[min_weight max_weight value])
   end
 end
