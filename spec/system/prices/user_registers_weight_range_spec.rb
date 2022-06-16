@@ -26,6 +26,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     fill_in 'Valor', with: '75'
     click_on 'Criar Intervalo de peso'
 
+    expect(page).to have_current_path edit_volume_range_path(vrange)
     expect(page).to have_content 'Intervalo cadastrado com sucesso.'
     expect(page).to have_field 'Peso mínimo', with: '21'
     expect(page).to have_field 'Peso máximo', with: '40'
@@ -42,6 +43,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     fill_in 'Peso mínimo', with: '21'
     click_on 'Criar Intervalo de peso'
 
+    expect(page).to have_current_path volume_range_weight_ranges_path(vrange)
     expect(page).to have_content 'Intervalo não cadastrado.'
     expect(page).to have_field 'Peso mínimo', with: '21'
     expect(page).to have_content 'Peso máximo não pode ficar em branco'
@@ -52,7 +54,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     express = create :express
     user = create :user
     vrange = create :volume_range, shipping_company: express
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
 
     login_as user, scope: :user
     visit new_volume_range_weight_range_path(vrange)
@@ -60,6 +62,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     fill_in 'Peso máximo', with: '0'
     click_on 'Criar Intervalo de peso'
 
+    expect(page).to have_current_path volume_range_weight_ranges_path(vrange)
     expect(page).to have_content 'Peso mínimo não pode estar contido em intervalos já registrados'
     expect(page).to have_content 'Peso máximo deve ser maior que 0'
   end
@@ -75,6 +78,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     fill_in 'Peso máximo', with: '21'
     click_on 'Criar Intervalo de peso'
 
+    expect(page).to have_current_path volume_range_weight_ranges_path(vrange)
     expect(page).to have_content 'Peso mínimo deve ser menor que o peso máximo'
   end
 end

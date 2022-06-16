@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'Administrador se autentica' do
   it 'com sucesso' do
-    Admin.create!(email: 'admin@sistemadefrete.com.br', password: 'password')
+    create :admin, email: 'admin@sistemadefrete.com.br', password: 'password'
 
     visit root_path
     click_on 'Entrar (administrador)'

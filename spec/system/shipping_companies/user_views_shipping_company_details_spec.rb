@@ -4,9 +4,9 @@ require 'rails_helper'
 
 describe 'Usuário acessa a tela de detalhes da sua transportadora' do
   it 'sem se autenticar' do
-    create :express
+    express = create :express
 
-    visit shipping_company_path(1)
+    visit shipping_company_path(express)
 
     expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
@@ -33,11 +33,11 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
   end
 
   it 'e volta para a tela inicial' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path(1)
+    visit shipping_company_path(express)
     click_on 'Voltar'
 
     expect(page).to have_current_path root_path

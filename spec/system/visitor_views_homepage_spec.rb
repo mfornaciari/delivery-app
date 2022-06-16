@@ -12,9 +12,9 @@ describe 'Visitante acessa a página inicial' do
   end
 
   it 'e vê o menu de navegação' do
-    ShippingCompany.create!(brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                            email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
-                            address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ')
+    create :express, brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                     email_domain: 'express.com.br', registration_number: 28_891_540_000_121,
+                     address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ'
 
     visit root_path
 

@@ -25,7 +25,7 @@ describe 'Administrador cadastra transportadora' do
     select 'RJ', from: 'Estado'
     click_on 'Criar Transportadora'
 
-    expect(page).to have_current_path shipping_company_path(1)
+    expect(page).to have_current_path shipping_company_path(ShippingCompany.last)
     expect(page).to have_content 'Transportadora cadastrada com sucesso.'
     within('div#page_title') do
       expect(page).to have_content 'Express'

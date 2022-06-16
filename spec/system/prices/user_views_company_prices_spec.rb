@@ -4,11 +4,11 @@ require 'rails_helper'
 
 describe 'Usuário vê tabela de preços da transportadora' do
   it 'e não há intervalos de volume cadastrados' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
 
     expect(page).to have_content 'Tabela de preços'
     expect(page).to have_link 'Cadastrar intervalo de volume'
@@ -18,14 +18,14 @@ describe 'Usuário vê tabela de preços da transportadora' do
   it 'e vê intervalos de volume' do
     express = create :express
     user = create :user
-    first_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 1, max_volume: 50)
-    WeightRange.create!(volume_range: first_volume_range, min_weight: 1, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: first_volume_range, min_weight: 21, max_weight: 40, value: 75)
-    second_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 51, max_volume: 100)
-    WeightRange.create!(volume_range: second_volume_range, min_weight: 1, max_weight: 20, value: 75)
+    first_volume_range = create :volume_range, shipping_company: express, min_volume: 1, max_volume: 50
+    create :weight_range, volume_range: first_volume_range, min_weight: 1, max_weight: 20, value: 50
+    create :weight_range, volume_range: first_volume_range, min_weight: 21, max_weight: 40, value: 75
+    second_volume_range = create :volume_range, shipping_company: express, min_volume: 51, max_volume: 100
+    create :weight_range, volume_range: second_volume_range, min_weight: 1, max_weight: 20, value: 75
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
 
     expect(page).not_to have_content 'Não existem intervalos de volume cadastrados.'
     within_table('prices_table') do

@@ -4,20 +4,20 @@ require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de volume' do
   it 'sem se autenticar' do
-    create :express
+    express = create :express
 
-    visit new_shipping_company_volume_range_path 1
+    visit new_shipping_company_volume_range_path(express)
 
     expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     click_on 'Cadastrar intervalo de volume'
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '50'
@@ -37,11 +37,11 @@ describe 'Usuário registra um novo intervalo de volume' do
   end
 
   it 'com dados incompletos' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path 1
+    visit new_shipping_company_volume_range_path(express)
     fill_in 'Volume mínimo', with: '0'
     click_on 'Criar Intervalo de volume'
 
@@ -56,10 +56,10 @@ describe 'Usuário registra um novo intervalo de volume' do
   it 'com dados inválidos' do
     express = create :express
     user = create :user
-    VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 20)
+    create :volume_range, shipping_company: express, min_volume: 0, max_volume: 20
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path 1
+    visit new_shipping_company_volume_range_path(express)
     fill_in 'Volume mínimo', with: '0'
     fill_in 'Volume máximo', with: '0'
     click_on 'Criar Intervalo de volume'
@@ -69,11 +69,11 @@ describe 'Usuário registra um novo intervalo de volume' do
   end
 
   it 'com volume/peso mínimos >= volume/peso máximos' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_volume_range_path 1
+    visit new_shipping_company_volume_range_path(express)
     fill_in 'Volume mínimo', with: '2'
     fill_in 'Volume máximo', with: '1'
     fill_in 'Peso mínimo', with: '2'

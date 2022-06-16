@@ -7,7 +7,7 @@ describe 'Usuário edita intervalo de volume' do
     express = create :express
     create :volume_range, shipping_company: express
 
-    visit edit_volume_range_path 1
+    visit edit_volume_range_path(express)
 
     expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
@@ -16,12 +16,12 @@ describe 'Usuário edita intervalo de volume' do
   it 'e vê o formulário de edição' do
     express = create :express
     user = create :user
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     find('table#prices_table').find('#0_30_1').click_on 'Editar intervalo'
 
     expect(page).to have_content 'Editar intervalo de volume'
@@ -41,9 +41,9 @@ describe 'Usuário edita intervalo de volume' do
   it 'com sucesso' do
     express = create :express
     user = create :user
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -61,6 +61,7 @@ describe 'Usuário edita intervalo de volume' do
     end
     click_on 'Atualizar Intervalo de volume'
 
+    expect(page).to have_current_path shipping_company_path(express)
     expect(page).to have_content 'Intervalo atualizado com sucesso.'
     within_table('prices_table') do
       within('#10_40_1') do
@@ -78,9 +79,9 @@ describe 'Usuário edita intervalo de volume' do
   it 'com dados incompletos/inválidos' do
     express = create :express
     user = create :user
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -93,6 +94,7 @@ describe 'Usuário edita intervalo de volume' do
     end
     click_on 'Atualizar Intervalo de volume'
 
+    expect(page).to have_current_path volume_range_path(vrange)
     expect(page).to have_content 'Intervalo não atualizado.'
     expect(page).to have_content 'Volume mínimo não pode ficar em branco'
     expect(page).to have_content 'Volume máximo deve ser maior que 0'
@@ -106,10 +108,10 @@ describe 'Usuário edita intervalo de volume' do
   it 'com dados repetidos' do
     express = create :express
     user = create :user
-    VolumeRange.create!(shipping_company: express, min_volume: 31, max_volume: 60)
-    vrange = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 30)
-    WeightRange.create!(volume_range: vrange, min_weight: 0, max_weight: 20, value: 50)
-    WeightRange.create!(volume_range: vrange, min_weight: 21, max_weight: 40, value: 75)
+    create :volume_range, shipping_company: express, min_volume: 31, max_volume: 60
+    vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -125,6 +127,7 @@ describe 'Usuário edita intervalo de volume' do
     end
     click_on 'Atualizar Intervalo de volume'
 
+    expect(page).to have_current_path volume_range_path(vrange)
     expect(page).to have_content 'Volume mínimo não pode estar contido em intervalos já registrados'
     expect(page).to have_content 'Volume máximo não pode estar contido em intervalos já registrados'
     within('section#weight_range_2') do

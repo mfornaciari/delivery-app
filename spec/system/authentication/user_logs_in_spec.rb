@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe 'Usuário de transportadora se autentica' do
   it 'com sucesso' do
-    create :express
-    User.create!(email: 'usuario@express.com.br', password: 'password')
+    express = create :express
+    create :user, email: 'usuario@express.com.br', password: 'password'
 
     visit root_path
     click_on 'Entrar (usuário)'
@@ -13,7 +13,7 @@ describe 'Usuário de transportadora se autentica' do
     fill_in 'Senha', with: 'password'
     click_on 'Entrar'
 
-    expect(page).to have_current_path shipping_company_path 1
+    expect(page).to have_current_path shipping_company_path(express.id)
     expect(page).to have_content 'Login efetuado com sucesso'
     expect(page).to have_content 'usuario@express.com.br'
     expect(page).to have_button 'Sair'
