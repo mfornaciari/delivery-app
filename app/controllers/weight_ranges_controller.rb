@@ -10,10 +10,10 @@ class WeightRangesController < ApplicationController
     @weight_range = WeightRange.new(weight_range_params)
     @weight_range.volume_range = @volume_range
     if @weight_range.save
-      return redirect_to edit_volume_range_path(@volume_range), notice: t('weight_range_creation_succeeded')
+      return redirect_to edit_volume_range_path(@volume_range), notice: t('range_creation_succeeded')
     end
 
-    flash.now[:notice] = t('weight_range_creation_failed')
+    flash.now[:notice] = t('range_creation_failed')
     render 'new'
   end
 

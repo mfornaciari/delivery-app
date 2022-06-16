@@ -9,11 +9,9 @@ class TimeDistanceRangesController < ApplicationController
   def create
     @time_distance_range = TimeDistanceRange.new(time_distance_range_params)
     @time_distance_range.shipping_company = @shipping_company
-    if @time_distance_range.save
-      return redirect_to @shipping_company, notice: t('time_distance_range_creation_succeeded')
-    end
+    return redirect_to @shipping_company, notice: t('range_creation_succeeded') if @time_distance_range.save
 
-    flash.now[:notice] = t('time_distance_range_creation_failed')
+    flash.now[:notice] = t('range_creation_failed')
     render 'new'
   end
 

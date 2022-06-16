@@ -9,12 +9,10 @@ class PriceDistanceRangesController < ApplicationController
   def create
     @price_distance_range = PriceDistanceRange.new(price_distance_range_params)
     @price_distance_range.shipping_company = @shipping_company
-    if @price_distance_range.save
-      redirect_to @shipping_company, notice: t('price_distance_range_creation_succeeded_message')
-    else
-      flash.now[:notice] = t('price_distance_range_creation_failed_message')
-      render 'new'
-    end
+    return redirect_to @shipping_company, notice: t('range_creation_succeeded') if @price_distance_range.save
+
+    flash.now[:notice] = t('range_creation_failed')
+    render 'new'
   end
 
   private

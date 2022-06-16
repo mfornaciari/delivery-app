@@ -25,12 +25,12 @@ class VolumeRangesController < ApplicationController
 
   def update
     if @volume_range.update(volume_range_params)
-      redirect_to @volume_range.shipping_company, notice: t('volume_range_update_succeeded')
-    else
-      @form_model_attributes = @volume_range
-      flash.now[:notice] = t('volume_range_update_failed')
-      render 'edit'
+      return redirect_to @volume_range.shipping_company, notice: t('range_update_succeeded')
     end
+
+    @form_model_attributes = @volume_range
+    flash.now[:notice] = t('range_update_failed')
+    render 'edit'
   end
 
   private
