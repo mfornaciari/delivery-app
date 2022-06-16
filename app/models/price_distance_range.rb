@@ -20,9 +20,8 @@ class PriceDistanceRange < ApplicationRecord
 
     previous_ranges.each do |drange|
       interval = (drange.min_distance..drange.max_distance)
-      message = 'não pode estar contida em intervalos já registrados'
-      errors.add(:min_distance, message) if interval.include? min_distance
-      errors.add(:max_distance, message) if interval.include? max_distance
+      errors.add(:min_distance, I18n.t('distance_range_previously_registered')) if interval.include? min_distance
+      errors.add(:max_distance, I18n.t('distance_range_previously_registered')) if interval.include? max_distance
     end
   end
 

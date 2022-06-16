@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   before_action :set_order, only: %i[show accepted rejected finished]
 
   def index
-    @company = user_signed_in? ? current_user.shipping_company : ShippingCompany.find(params[:shipping_company])
+    @company = user_signed_in? ? current_user.shipping_company : set_shipping_company
     @orders = @company.orders
   end
 
@@ -69,6 +69,7 @@ class OrdersController < ApplicationController
     %i[shipping_company_id volume weight distance value estimated_delivery_time].each do |key|
       return false if params[key].nil?
     end
+
     true
   end
 end

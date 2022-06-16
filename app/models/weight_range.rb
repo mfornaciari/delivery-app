@@ -20,9 +20,8 @@ class WeightRange < ApplicationRecord
 
     previous_ranges.each do |wrange|
       interval = (wrange.min_weight..wrange.max_weight)
-      message = 'não pode estar contido em intervalos já registrados'
-      errors.add(:min_weight, message) if interval.include? min_weight
-      errors.add(:max_weight, message) if interval.include? max_weight
+      errors.add(:min_weight, I18n.t('range_previously_registered')) if interval.include? min_weight
+      errors.add(:max_weight, I18n.t('range_previously_registered')) if interval.include? max_weight
     end
   end
 

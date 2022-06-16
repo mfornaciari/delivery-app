@@ -1,7 +1,7 @@
 class RouteUpdate < ApplicationRecord
   validates :date_and_time, :latitude, :longitude, presence: true
-  validates :latitude, inclusion: { in: -90..90, message: 'deve estar entre -90 e 90' }
-  validates :longitude, inclusion: { in: -180..180, message: 'deve estar entre -180 e 180' }
+  validates :latitude, inclusion: { in: -90..90, message: I18n.t('latitude_validation_error') }
+  validates :longitude, inclusion: { in: -180..180, message: I18n.t('longitude_validation_error') }
   validate :not_future
   validate :after_last_update
 

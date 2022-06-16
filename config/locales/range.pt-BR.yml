@@ -3,3 +3,5 @@ pt-BR:
   range_creation_failed: Intervalo não cadastrado.
   range_update_succeeded: Intervalo atualizado com sucesso.
   range_update_failed: Intervalo não atualizado.
+  range_previously_registered: não pode estar contido em intervalos já registrados
+  distance_range_previously_registered: não pode estar contida em intervalos já registrados

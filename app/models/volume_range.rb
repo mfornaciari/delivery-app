@@ -21,9 +21,8 @@ class VolumeRange < ApplicationRecord
 
     previous_ranges.each do |vrange|
       interval = (vrange.min_volume..vrange.max_volume)
-      message = 'não pode estar contido em intervalos já registrados'
-      errors.add(:min_volume, message) if interval.include? min_volume
-      errors.add(:max_volume, message) if interval.include? max_volume
+      errors.add(:min_volume, I18n.t('range_previously_registered')) if interval.include? min_volume
+      errors.add(:max_volume, I18n.t('range_previously_registered')) if interval.include? max_volume
     end
   end
 
