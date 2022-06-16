@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Vehicle < ApplicationRecord
   validates :model, :brand, :production_year, presence: true
   validates :license_plate, format: { with: /\A[a-z]{3}\d[\d|[a-z]]\d{2}\z/i }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RouteUpdate < ApplicationRecord
   validates :date_and_time, :latitude, :longitude, presence: true
   validates :latitude, inclusion: { in: -90..90, message: I18n.t('latitude_validation_error') }

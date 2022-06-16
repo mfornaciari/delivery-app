@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrdersController < ApplicationController
   before_action :authenticate_admin!, only: :new
   before_action :authenticate_user_or_admin, only: %i[index show]

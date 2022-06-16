@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShippingCompaniesController < ApplicationController
   before_action :authenticate_user_or_admin, only: [:show]
   before_action :authenticate_admin!, only: %i[index new]

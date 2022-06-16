@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BudgetSearch < ApplicationRecord
   belongs_to :admin
 

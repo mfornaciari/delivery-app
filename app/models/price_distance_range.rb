@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PriceDistanceRange < ApplicationRecord
   validates :value, presence: true
   validates :min_distance, comparison: { greater_than_or_equal_to: 0 }

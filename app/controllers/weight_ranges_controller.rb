@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class WeightRangesController < ApplicationController
   before_action :authenticate_user_or_admin
   before_action :set_volume_range, only: %i[new create]

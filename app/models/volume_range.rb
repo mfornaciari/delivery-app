@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VolumeRange < ApplicationRecord
   validates :min_volume, comparison: { greater_than_or_equal_to: 0 }
   validates :max_volume, comparison: { greater_than: 0 }

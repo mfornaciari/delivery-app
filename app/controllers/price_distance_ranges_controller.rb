@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PriceDistanceRangesController < ApplicationController
   before_action :authenticate_user_or_admin
   before_action :set_shipping_company

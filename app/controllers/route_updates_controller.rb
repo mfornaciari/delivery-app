@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RouteUpdatesController < ApplicationController
   def create
     @route_update = RouteUpdate.new(route_update_params)

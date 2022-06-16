@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TimeDistanceRange < ApplicationRecord
   validates :delivery_time, presence: true
   validates :delivery_time, uniqueness: { scope: :shipping_company_id }
