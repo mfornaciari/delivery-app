@@ -18,13 +18,15 @@ class WeightRange < ApplicationRecord
   def not_previously_registered
     return unless volume_range
 
-    volume_range.weight_ranges.each do |wrange|
-      next if wrange == self
-
+    previous_ranges.each do |wrange|
       interval = (wrange.min_weight..wrange.max_weight)
       message = 'não pode estar contido em intervalos já registrados'
       errors.add(:min_weight, message) if interval.include? min_weight
       errors.add(:max_weight, message) if interval.include? max_weight
     end
+  end
+
+  def previous_ranges
+    volume_range.weight_ranges - [self]
   end
 end

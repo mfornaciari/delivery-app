@@ -18,13 +18,15 @@ class PriceDistanceRange < ApplicationRecord
   def not_previously_registered
     return unless shipping_company
 
-    shipping_company.price_distance_ranges.each do |drange|
-      next if drange == self
-
+    previous_ranges.each do |drange|
       interval = (drange.min_distance..drange.max_distance)
       message = 'não pode estar contida em intervalos já registrados'
       errors.add(:min_distance, message) if interval.include? min_distance
       errors.add(:max_distance, message) if interval.include? max_distance
     end
+  end
+
+  def previous_ranges
+    shipping_company.price_distance_ranges - [self]
   end
 end

@@ -19,13 +19,15 @@ class VolumeRange < ApplicationRecord
   def not_previously_registered
     return unless shipping_company
 
-    shipping_company.volume_ranges.each do |vrange|
-      next if vrange == self
-
+    previous_ranges.each do |vrange|
       interval = (vrange.min_volume..vrange.max_volume)
       message = 'não pode estar contido em intervalos já registrados'
       errors.add(:min_volume, message) if interval.include? min_volume
       errors.add(:max_volume, message) if interval.include? max_volume
     end
+  end
+
+  def previous_ranges
+    shipping_company.volume_ranges - [self]
   end
 end
