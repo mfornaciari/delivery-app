@@ -9,7 +9,7 @@ describe 'Usuário atualiza o status de um pedido' do
       user = create :user, email: 'usuario@express.com.br'
       create :vehicle, shipping_company: express, license_plate: 'BRA3R52'
       create :vehicle, shipping_company: express, license_plate: 'ARG4523'
-      order = create :order, shipping_company: express
+      order = create :order, shipping_company: express, status: :pending
 
       login_as user, scope: :user
       visit shipping_company_path(express)
@@ -28,7 +28,7 @@ describe 'Usuário atualiza o status de um pedido' do
       express = create :express, email_domain: 'express.com.br'
       user = create :user, email: 'usuario@express.com.br'
       create :vehicle, shipping_company: express
-      order = create :order, shipping_company: express
+      order = create :order, shipping_company: express, status: :pending
 
       login_as user, scope: :user
       visit shipping_company_path(express)
@@ -48,7 +48,7 @@ describe 'Usuário atualiza o status de um pedido' do
   it 'e rejeita-o' do
     express = create :express, email_domain: 'express.com.br'
     user = create :user, email: 'usuario@express.com.br'
-    order = create :order, shipping_company: express
+    order = create :order, shipping_company: express, status: :pending
 
     login_as user, scope: :user
     visit shipping_company_path(express)

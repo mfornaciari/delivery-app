@@ -11,10 +11,10 @@ describe 'Administrador cria um novo pedido' do
     express_volume_range = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 50
     create :weight_range, volume_range: express_volume_range, min_weight: 0, max_weight: 20, value: 50
     a_jato = create :a_jato
-    create :time_distance_range, shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3
-    create :price_distance_range, shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000
-    a_jato_volume_range = create :volume_range, shipping_company: a_jato, min_volume: 0, max_volume: 100
-    create :weight_range, volume_range: a_jato_volume_range, min_weight: 1, max_weight: 5, value: 50
+    create :time_distance_range, shipping_company: a_jato
+    create :price_distance_range, shipping_company: a_jato
+    a_jato_volume_range = create :volume_range, shipping_company: a_jato
+    create :weight_range, volume_range: a_jato_volume_range
     search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
 
     login_as admin, scope: :admin
@@ -96,12 +96,11 @@ describe 'Administrador cria um novo pedido' do
   it 'com dados incompletos' do
     admin = create :admin
     express = create :express
-    create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
-    create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
-    volume_range = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 50
-    create :weight_range, volume_range: volume_range, min_weight: 0, max_weight: 20, value: 50
-    search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
-    allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
+    create :time_distance_range, shipping_company: express
+    create :price_distance_range, shipping_company: express
+    volume_range = create :volume_range, shipping_company: express
+    create :weight_range, volume_range: volume_range
+    search = create :budget_search, admin: admin
 
     login_as admin, scope: :admin
     visit budget_search_path(search)
