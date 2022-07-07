@@ -15,14 +15,14 @@ describe 'Usuário vê tabela de preços da transportadora' do
     expect(page).to have_content 'Não existem intervalos de volume cadastrados.'
   end
 
-  it 'e vê intervalos de volume' do
+  it 'e vê intervalos de volume cadastrados' do
     express = create :express
     user = create :user
-    first_volume_range = create :volume_range, shipping_company: express, min_volume: 1, max_volume: 50
-    create :weight_range, volume_range: first_volume_range, min_weight: 1, max_weight: 20, value: 50
-    create :weight_range, volume_range: first_volume_range, min_weight: 21, max_weight: 40, value: 75
-    second_volume_range = create :volume_range, shipping_company: express, min_volume: 51, max_volume: 100
-    create :weight_range, volume_range: second_volume_range, min_weight: 1, max_weight: 20, value: 75
+    volume_range1 = create :volume_range, shipping_company: express, min_volume: 1, max_volume: 50
+    create :weight_range, volume_range: volume_range1, min_weight: 1, max_weight: 20, value: 50
+    create :weight_range, volume_range: volume_range1, min_weight: 21, max_weight: 40, value: 75
+    volume_range2 = create :volume_range, shipping_company: express, min_volume: 51, max_volume: 100
+    create :weight_range, volume_range: volume_range2, min_weight: 1, max_weight: 20, value: 75
 
     login_as user, scope: :user
     visit shipping_company_path(express)

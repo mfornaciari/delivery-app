@@ -56,7 +56,7 @@ describe 'Usuário registra um novo intervalo de volume' do
   it 'com dados inválidos' do
     express = create :express
     user = create :user
-    create :volume_range, shipping_company: express, min_volume: 0, max_volume: 20
+    create :volume_range, shipping_company: express, min_volume: 0
 
     login_as user, scope: :user
     visit new_shipping_company_volume_range_path(express)

@@ -79,9 +79,9 @@ describe 'Usuário edita intervalo de volume' do
   it 'com dados incompletos/inválidos' do
     express = create :express
     user = create :user
-    vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
-    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
-    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
+    vrange = create :volume_range, shipping_company: express
+    create :weight_range, volume_range: vrange
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)
@@ -103,6 +103,7 @@ describe 'Usuário edita intervalo de volume' do
     expect(page).to have_content 'Valor não pode ficar em branco'
     expect(page).to have_field 'Peso máximo', with: '0'
     expect(page).to have_field 'Peso mínimo', with: '21'
+    expect(page).to have_field 'Peso máximo', with: '40'
   end
 
   it 'com dados repetidos' do
@@ -110,8 +111,8 @@ describe 'Usuário edita intervalo de volume' do
     user = create :user
     create :volume_range, shipping_company: express, min_volume: 31, max_volume: 60
     vrange = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 30
-    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
-    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40, value: 75
+    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20
+    create :weight_range, volume_range: vrange, min_weight: 21, max_weight: 40
 
     login_as user, scope: :user
     visit edit_volume_range_path(vrange)

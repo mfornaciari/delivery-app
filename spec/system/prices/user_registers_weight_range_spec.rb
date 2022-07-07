@@ -54,7 +54,7 @@ describe 'Usuário registra um novo intervalo de peso' do
     express = create :express
     user = create :user
     vrange = create :volume_range, shipping_company: express
-    create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 20, value: 50
+    create :weight_range, volume_range: vrange, min_weight: 0
 
     login_as user, scope: :user
     visit new_volume_range_weight_range_path(vrange)

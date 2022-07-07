@@ -11,11 +11,11 @@ describe 'Usuário vê pedidos da sua transportadora' do
   end
 
   it 'e não há nenhum' do
-    create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
+    express = create :express, email_domain: 'express.com.br'
+    user = create :user, email: 'user@express.com.br'
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     click_on 'Pedidos'
 
     expect(page).to have_content 'Pedidos de Express Transportes Ltda.'
@@ -25,8 +25,8 @@ describe 'Usuário vê pedidos da sua transportadora' do
 
   it 'com sucesso' do
     express = create :express, email_domain: 'express.com.br'
-    vehicle = create :vehicle, shipping_company: express
     user = create :user, email: 'usuario@express.com.br'
+    vehicle = create :vehicle, shipping_company: express
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
     create :order, shipping_company: express, estimated_delivery_time: 2, value: 2_500
     allow(SecureRandom).to receive(:alphanumeric).and_return('12345ABCDE12345')
@@ -34,7 +34,7 @@ describe 'Usuário vê pedidos da sua transportadora' do
                    vehicle: vehicle
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     click_on 'Pedidos'
 
     within_table('orders') do

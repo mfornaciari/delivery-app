@@ -6,19 +6,19 @@ describe 'Administrador cria um novo pedido' do
   it 'a partir de uma busca de preços' do
     admin = create :admin
     express = create :express, corporate_name: 'Express Transportes Ltda.'
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
+    create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
+    create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
+    express_volume_range = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 50
+    create :weight_range, volume_range: express_volume_range, min_weight: 0, max_weight: 20, value: 50
     a_jato = create :a_jato
-    TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3)
-    PriceDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000)
-    a_jato_volume_range = VolumeRange.create!(shipping_company: a_jato, min_volume: 0, max_volume: 100)
-    WeightRange.create!(volume_range: a_jato_volume_range, min_weight: 1, max_weight: 5, value: 50)
-    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
+    create :time_distance_range, shipping_company: a_jato
+    create :price_distance_range, shipping_company: a_jato
+    a_jato_volume_range = create :volume_range, shipping_company: a_jato
+    create :weight_range, volume_range: a_jato_volume_range
+    search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
 
     login_as admin, scope: :admin
-    visit budget_search_path 1
+    visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
 
     expect(page).to have_content 'Enviando pedido para Express Transportes Ltda.'
@@ -57,15 +57,15 @@ describe 'Administrador cria um novo pedido' do
   it 'com sucesso' do
     admin = create :admin
     express = create :express
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
-    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
+    create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
+    create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
+    volume_range = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 50
+    create :weight_range, volume_range: volume_range, min_weight: 0, max_weight: 20, value: 50
+    search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
 
     login_as admin, scope: :admin
-    visit budget_search_path 1
+    visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
     fill_in 'Endereço de retirada', with: 'Rua Rio Vermelho, n. 10'
     fill_in 'Cidade de retirada', with: 'Natal'
@@ -77,7 +77,7 @@ describe 'Administrador cria um novo pedido' do
     fill_in 'Código do produto a transportar', with: 'ABCD1234'
     click_on 'Enviar pedido'
 
-    expect(page).to have_current_path order_path 1
+    expect(page).to have_current_path order_path(Order.last)
     expect(page).to have_content 'Pedido cadastrado com sucesso.'
     expect(page).to have_content 'Pedido ABCDE12345ABCDE'
     expect(page).to have_content 'Transportadora: Express Transportes Ltda.'
@@ -96,15 +96,14 @@ describe 'Administrador cria um novo pedido' do
   it 'com dados incompletos' do
     admin = create :admin
     express = create :express
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range:, min_weight: 0, max_weight: 20, value: 50)
-    BudgetSearch.create!(height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin:)
-    allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
+    create :time_distance_range, shipping_company: express
+    create :price_distance_range, shipping_company: express
+    volume_range = create :volume_range, shipping_company: express
+    create :weight_range, volume_range: volume_range
+    search = create :budget_search, admin: admin
 
     login_as admin, scope: :admin
-    visit budget_search_path 1
+    visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
     click_on 'Enviar pedido'
 

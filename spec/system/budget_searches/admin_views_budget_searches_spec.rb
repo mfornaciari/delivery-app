@@ -6,8 +6,8 @@ describe 'Administrador vê as buscas de preço realizadas' do
   it 'na página inicial' do
     admin = create :admin, email: 'admin@sistemadefrete.com.br'
     other_admin = create :admin, email: 'other@sistemadefrete.com.br'
-    create :budget_search, admin: admin
-    create :budget_search, admin: other_admin
+    search1 = create :budget_search, admin: admin
+    search2 = create :budget_search, admin: other_admin
 
     login_as admin, scope: :admin
     visit root_path
@@ -20,13 +20,13 @@ describe 'Administrador vê as buscas de preço realizadas' do
         expect(page).to have_content 'Data'
         expect(page).to have_content 'Administrador'
       end
-      within('#1') do
-        expect(page).to have_content '1'
+      within("##{search1.id}") do
+        expect(page).to have_content search1.id.to_s
         expect(page).to have_content I18n.l(Date.current)
         expect(page).to have_content 'admin@sistemadefrete.com.br'
       end
-      within('#2') do
-        expect(page).to have_content '2'
+      within("##{search2.id}") do
+        expect(page).to have_content search2.id.to_s
         expect(page).to have_content I18n.l(Date.current)
         expect(page).to have_content 'other@sistemadefrete.com.br'
       end
@@ -44,12 +44,12 @@ describe 'Administrador vê as buscas de preço realizadas' do
 
   it 'e acessa os detalhes de uma' do
     admin = create :admin
-    create :budget_search, admin: admin
+    search = create :budget_search, admin: admin
 
     login_as admin, scope: :admin
     visit root_path
-    click_on '1'
+    click_on search.id.to_s
 
-    expect(page).to have_current_path budget_search_path 1
+    expect(page).to have_current_path budget_search_path(search)
   end
 end
