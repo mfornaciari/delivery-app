@@ -1,11 +1,11 @@
 # Sistema de gerenciamento de entregas
-Aplicação desenvolvida para gerenciar entregas de produtos. Permite:
-- Cadastrar transportadoras, seus veículos e suas tabelas de preço e prazos;
+Aplicação desenvolvida no âmbito da Turma 8 do **[TreinaDev](https://treinadev.com.br/)** para gerenciar entregas de produtos. Permite:
+- Cadastrar transportadoras, seus veículos e suas tabelas de preços e prazos;
 - Criar ordens de serviço, pesquisar preços e prazos praticados pelas transportadoras para aquela ordem e atribuí-la a uma transportadora;
 - Aceitar ordens de serviço atribuídas à transportadora e atualizar periodicamente situação da entrega;
 - Consultar situação de entrega sendo realizada.
 
-**[Projeto associado na área de projetos do GitHub](https://github.com/users/mfornaciari/projects/1)**
+**[Projeto associado no GitHub Projects](https://github.com/users/mfornaciari/projects/1)**
 
 ## Requisitos
 - [Ruby 3.1.2 +](https://docs.ruby-lang.org/en/3.1/)
