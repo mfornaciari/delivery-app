@@ -11,7 +11,7 @@ describe 'Usuário atualiza rota do pedido' do
     current_time = Time.current
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     click_on 'Pedidos'
     click_on order.code
     within('#route_update') do
@@ -41,10 +41,10 @@ describe 'Usuário atualiza rota do pedido' do
     express = create :express, email_domain: 'express.com.br'
     user = create :user, email: 'usuario@express.com.br'
     vehicle = create :vehicle, shipping_company: express
-    create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
     login_as user, scope: :user
-    visit order_path 1
+    visit order_path(order)
     click_on 'Atualizar rota de entrega'
 
     expect(page).to have_content 'Rota de entrega não atualizada.'
@@ -57,10 +57,10 @@ describe 'Usuário atualiza rota do pedido' do
     express = create :express
     user = create :user
     vehicle = create :vehicle, shipping_company: express
-    create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
     login_as user, scope: :user
-    visit order_path 1
+    visit order_path(order)
     fill_in 'Latitude', with: '-90.1'
     fill_in 'Longitude', with: '180.1'
     fill_in 'Data e hora', with: 1.second.from_now
@@ -81,7 +81,7 @@ describe 'Usuário atualiza rota do pedido' do
     create :route_update, order: order, date_and_time: current_time
 
     login_as user, scope: :user
-    visit order_path 1
+    visit order_path(order)
     fill_in 'Data e hora', with: 1.second.before(current_time)
     click_on 'Atualizar rota de entrega'
 

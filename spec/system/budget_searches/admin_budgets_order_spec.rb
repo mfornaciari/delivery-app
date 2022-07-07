@@ -10,6 +10,7 @@ describe 'Administrador consulta preço de pedido' do
     visit root_path
     find('nav').click_on 'Consultar preços'
 
+    expect(page).to have_current_path new_budget_search_path
     expect(page).to have_content 'Consulta de preços de transporte'
     expect(page).to have_content 'Dimensões do item (em centímetros):'
     expect(page).to have_field 'Altura'
@@ -28,22 +29,22 @@ describe 'Administrador consulta preço de pedido' do
   end
 
   it 'com sucesso' do
-    admin = create :admin
+    admin = create :admin, email: 'admin@sistemadefrete.com.br'
     express = create :express, brand_name: 'Express'
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3)
-    PriceDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, value: 500)
-    first_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 0, max_volume: 50)
-    WeightRange.create!(volume_range: first_express_volume_range, min_weight: 1, max_weight: 20, value: 50)
-    second_express_volume_range = VolumeRange.create!(shipping_company: express, min_volume: 51, max_volume: 100)
-    WeightRange.create!(volume_range: second_express_volume_range, min_weight: 1, max_weight: 10, value: 75)
-    WeightRange.create!(volume_range: second_express_volume_range, min_weight: 11, max_weight: 20, value: 100)
+    create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
+    create :time_distance_range, shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3
+    create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
+    express_volume_range1 = create :volume_range, shipping_company: express, min_volume: 0, max_volume: 50
+    create :weight_range, volume_range: express_volume_range1, min_weight: 1, max_weight: 20, value: 50
+    express_volume_range2 = create :volume_range, shipping_company: express, min_volume: 51, max_volume: 100
+    create :weight_range, volume_range: express_volume_range2, min_weight: 1, max_weight: 10, value: 75
+    create :weight_range, volume_range: express_volume_range2, min_weight: 11, max_weight: 20, value: 100
     a_jato = create :a_jato, brand_name: 'A Jato'
-    TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3)
-    TimeDistanceRange.create!(shipping_company: a_jato, min_distance: 101, max_distance: 200, delivery_time: 4)
-    PriceDistanceRange.create!(shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000)
-    a_jato_volume_range = VolumeRange.create!(shipping_company: a_jato, min_volume: 0, max_volume: 100)
-    WeightRange.create!(volume_range: a_jato_volume_range, min_weight: 1, max_weight: 5, value: 50)
+    create :time_distance_range, shipping_company: a_jato, min_distance: 0, max_distance: 100, delivery_time: 3
+    create :time_distance_range, shipping_company: a_jato, min_distance: 101, max_distance: 200, delivery_time: 4
+    create :price_distance_range, shipping_company: a_jato, min_distance: 0, max_distance: 100, value: 5_000
+    a_jato_volume_range = create :volume_range, shipping_company: a_jato, min_volume: 0, max_volume: 100
+    create :weight_range, volume_range: a_jato_volume_range, min_weight: 1, max_weight: 5, value: 50
 
     login_as admin, scope: :admin
     visit new_budget_search_path
@@ -55,8 +56,8 @@ describe 'Administrador consulta preço de pedido' do
     click_on 'Consultar'
 
     expect(page).to have_content 'Resultado da sua busca:'
-    expect(page).to have_content "Busca no. 1 (#{I18n.l(Date.current)})"
-    expect(page).to have_content "Realizada por: #{admin.email}"
+    expect(page).to have_content "Busca no. #{BudgetSearch.last.id} (#{I18n.l(Date.current)})"
+    expect(page).to have_content 'Realizada por: admin@sistemadefrete.com.br'
     expect(page).to have_content 'Volume: 1 m³'
     expect(page).to have_content 'Peso: 5 kg'
     expect(page).to have_content 'Distância a percorrer: 20 km'

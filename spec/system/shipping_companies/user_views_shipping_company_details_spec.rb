@@ -13,7 +13,9 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
   end
 
   it 'e vê detalhes completos' do
-    create :express
+    create :express, brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
+                     registration_number: 28_891_540_000_121, email_domain: 'express.com.br',
+                     address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ'
     user = create :user
 
     login_as user, scope: :user

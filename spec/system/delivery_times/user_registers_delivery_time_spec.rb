@@ -4,20 +4,20 @@ require 'rails_helper'
 
 describe 'Usuário registra um novo intervalo de distância' do
   it 'sem se autenticar' do
-    create :express
+    express = create :express
 
-    visit new_shipping_company_time_distance_range_path 1
+    visit new_shipping_company_time_distance_range_path(express)
 
     expect(page).to have_current_path new_user_session_path
     expect(page).to have_content 'Para continuar, faça login ou registre-se.'
   end
 
   it 'com sucesso' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit shipping_company_path 1
+    visit shipping_company_path(express)
     find('section#delivery_times').click_on 'Cadastrar intervalo de distância'
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '100'
@@ -32,11 +32,11 @@ describe 'Usuário registra um novo intervalo de distância' do
   end
 
   it 'com dados incompletos' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_time_distance_range_path 1
+    visit new_shipping_company_time_distance_range_path(express)
     fill_in 'Distância mínima', with: '0'
     click_on 'Criar Intervalo de distância'
 
@@ -49,10 +49,10 @@ describe 'Usuário registra um novo intervalo de distância' do
   it 'com dados inválidos' do
     express = create :express
     user = create :user
-    TimeDistanceRange.create!(shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2)
+    create :time_distance_range, shipping_company: express, min_distance: 0
 
     login_as user, scope: :user
-    visit new_shipping_company_time_distance_range_path 1
+    visit new_shipping_company_time_distance_range_path(express)
     fill_in 'Distância mínima', with: '0'
     fill_in 'Distância máxima', with: '0'
     click_on 'Criar Intervalo de distância'
@@ -62,11 +62,11 @@ describe 'Usuário registra um novo intervalo de distância' do
   end
 
   it 'com distância mínima >= distância máxima' do
-    create :express
+    express = create :express
     user = create :user
 
     login_as user, scope: :user
-    visit new_shipping_company_time_distance_range_path 1
+    visit new_shipping_company_time_distance_range_path(express)
     fill_in 'Distância mínima', with: '10'
     fill_in 'Distância máxima', with: '5'
     click_on 'Criar Intervalo de distância'

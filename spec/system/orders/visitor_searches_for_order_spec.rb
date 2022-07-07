@@ -5,12 +5,12 @@ require 'rails_helper'
 describe 'Visitante busca status de pedido' do
   it 'informando seu código' do
     express = create :express, corporate_name: 'Express Transportes Ltda.'
-    vehicle = create :vehicle, license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', shipping_company: express
-    order = create :order, pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
-                           delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE',
-                           status: :accepted, shipping_company: express, vehicle: vehicle
-    RouteUpdate.create!(latitude: 45.0, longitude: 60.2, date_and_time: 2.days.ago, order:)
-    RouteUpdate.create!(latitude: 62.0, longitude: 65.2, date_and_time: 1.day.ago, order:)
+    vehicle = create :vehicle, shipping_company: express, license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno'
+    order = create :order, shipping_company: express, vehicle: vehicle, status: :accepted,
+                           pickup_address: 'Rua Rio Vermelho, n. 10', pickup_city: 'Natal', pickup_state: 'RN',
+                           delivery_address: 'Rua Rio Verde, n. 10', delivery_city: 'Aracaju', delivery_state: 'SE'
+    create :route_update, latitude: 45.0, longitude: 60.2, date_and_time: 2.days.ago, order: order
+    create :route_update, latitude: 62.0, longitude: 65.2, date_and_time: 1.day.ago, order: order
 
     visit root_path
     fill_in 'Código do pedido', with: order.code
@@ -29,7 +29,8 @@ describe 'Visitante busca status de pedido' do
   it 'informando um código incorreto' do
     express = create :express
     vehicle = create :vehicle, shipping_company: express
-    create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    allow(SecureRandom).to receive(:alphanumeric).and_return('12345EDCBAABCDE')
+    create :order, shipping_company: express, vehicle: vehicle, status: :accepted
 
     visit root_path
     fill_in 'Código do pedido', with: 'ABCDE12345ABCDE'
@@ -41,7 +42,7 @@ describe 'Visitante busca status de pedido' do
 
   it 'que ainda não foi aceito' do
     express = create :express
-    order = create :order, shipping_company: express
+    order = create :order, shipping_company: express, status: :pending
 
     visit root_path
     fill_in 'Código do pedido', with: order.code

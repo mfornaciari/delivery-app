@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe 'Visitante cria uma conta' do
   it 'com sucesso' do
-    create :express, email_domain: 'express.com.br'
+    express = create :express, email_domain: 'express.com.br'
 
     visit new_user_session_path
     click_on 'Inscrever-se'
@@ -13,7 +13,7 @@ describe 'Visitante cria uma conta' do
     fill_in 'Confirme sua senha', with: 'password'
     click_on 'Inscrever-se'
 
-    expect(page).to have_current_path shipping_company_path 1
+    expect(page).to have_current_path shipping_company_path(express)
     expect(page).to have_content 'Você realizou seu registro com sucesso.'
     expect(page).to have_content 'usuario@express.com.br'
     expect(page).to have_button 'Sair'
