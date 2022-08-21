@@ -13,8 +13,6 @@ FactoryBot.define do
       corporate_name { 'Express Transportes Ltda.' }
       email_domain { 'express.com.br' }
       registration_number { 28_891_540_000_121 }
-      city { 'Rio de Janeiro' }
-      state { 'RJ' }
     end
 
     factory :a_jato do
@@ -22,8 +20,6 @@ FactoryBot.define do
       corporate_name { 'A Jato S.A.' }
       email_domain { 'ajato.com' }
       registration_number { 19_824_380_000_107 }
-      city { 'Natal' }
-      state { 'RN' }
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_21_161510) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_21_213837) do
   create_table "addresses", force: :cascade do |t|
     t.string "line1"
     t.string "city"
@@ -49,8 +49,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_161510) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string "pickup_address"
-    t.string "delivery_address"
     t.string "recipient_name"
     t.string "product_code"
     t.integer "volume"
@@ -61,10 +59,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_161510) do
     t.integer "shipping_company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "pickup_city"
-    t.string "pickup_state"
-    t.string "delivery_city"
-    t.string "delivery_state"
     t.integer "estimated_delivery_time"
     t.integer "value"
     t.integer "search_id"
@@ -98,9 +92,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_161510) do
     t.string "corporate_name"
     t.string "email_domain"
     t.integer "registration_number"
-    t.string "address"
-    t.string "city"
-    t.string "state"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["registration_number"], name: "index_shipping_companies_on_registration_number", unique: true
