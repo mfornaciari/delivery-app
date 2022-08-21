@@ -3,16 +3,25 @@
 class Order < ApplicationRecord
   belongs_to :shipping_company
   belongs_to :vehicle, optional: true
+  has_one :pickup_address,
+          -> { where(kind: :pickup) },
+          class_name: 'Address',
+          as: :addressable,
+          dependent: :destroy
+  has_one :delivery_address,
+          -> { where(kind: :delivery) },
+          class_name: 'Address',
+          as: :addressable,
+          dependent: :destroy
   has_many :route_updates, dependent: :destroy
 
-  validates :pickup_address, :pickup_city, :pickup_state, :delivery_address, :delivery_city, :delivery_state,
-            :recipient_name, :product_code, presence: true
-
-  before_create :generate_code
+  validates :recipient_name, :product_code, presence: true
 
   enum status: { pending: 0, rejected: 5, accepted: 10, finished: 15 }
 
-  STATES = %w[AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO].freeze
+  accepts_nested_attributes_for :pickup_address, :delivery_address
+
+  before_create :generate_code
 
   private
 

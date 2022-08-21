@@ -8,14 +8,22 @@ FactoryBot.define do
     state { :RJ }
 
     trait :for_express do
+      kind { :company }
       association :addressable, factory: :express
     end
 
     trait :for_a_jato do
+      kind { :company }
       association :addressable, factory: :a_jato
     end
 
-    trait :for_order do
+    trait :for_order_pickup do
+      kind { :pickup }
+      association :addressable, factory: :order
+    end
+
+    trait :for_order_delivery do
+      kind { :delivery }
       association :addressable, factory: :order
     end
   end

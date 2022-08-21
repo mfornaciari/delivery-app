@@ -29,15 +29,15 @@ describe 'Administrador cria um novo pedido' do
     expect(page).to have_content 'Valor: R$ 25,00'
     within('#pickup_address') do
       expect(page).to have_content 'Retirada:'
-      expect(page).to have_field 'Endereço de retirada'
-      expect(page).to have_field 'Cidade de retirada'
-      expect(page).to have_field 'Estado de retirada'
+      expect(page).to have_field 'Endereço'
+      expect(page).to have_field 'Cidade'
+      expect(page).to have_field 'Estado'
     end
     within('#delivery_address') do
       expect(page).to have_content 'Entrega:'
-      expect(page).to have_field 'Endereço de entrega'
-      expect(page).to have_field 'Cidade de entrega'
-      expect(page).to have_field 'Estado de entrega'
+      expect(page).to have_field 'Endereço'
+      expect(page).to have_field 'Cidade'
+      expect(page).to have_field 'Estado'
     end
     expect(page).to have_field 'Destinado a'
     expect(page).to have_field 'Código do produto a transportar'
@@ -67,12 +67,16 @@ describe 'Administrador cria um novo pedido' do
     login_as admin, scope: :admin
     visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
-    fill_in 'Endereço de retirada', with: 'Rua Rio Vermelho, n. 10'
-    fill_in 'Cidade de retirada', with: 'Natal'
-    select 'RN', from: 'Estado de retirada'
-    fill_in 'Endereço de entrega', with: 'Rua Rio Verde, n. 10'
-    fill_in 'Cidade de entrega', with: 'Aracaju'
-    select 'SE', from: 'Estado de entrega'
+    within('#pickup_address') do
+      fill_in 'Endereço', with: 'Rua Rio Vermelho, n. 10'
+      fill_in 'Cidade', with: 'Natal'
+      select 'RN', from: 'Estado'
+    end
+    within('#delivery_address') do
+      fill_in 'Endereço', with: 'Rua Rio Verde, n. 10'
+      fill_in 'Cidade', with: 'Aracaju'
+      select 'SE', from: 'Estado'
+    end
     fill_in 'Destinado a', with: 'João da Silva'
     fill_in 'Código do produto a transportar', with: 'ABCD1234'
     click_on 'Enviar pedido'
@@ -108,12 +112,14 @@ describe 'Administrador cria um novo pedido' do
     click_on 'Enviar pedido'
 
     expect(page).to have_content 'Pedido não cadastrado.'
-    expect(page).to have_content 'Endereço de retirada não pode ficar em branco'
-    expect(page).to have_content 'Cidade de retirada não pode ficar em branco'
-    expect(page).to have_content 'Estado de retirada não pode ficar em branco'
-    expect(page).to have_content 'Endereço de entrega não pode ficar em branco'
-    expect(page).to have_content 'Cidade de entrega não pode ficar em branco'
-    expect(page).to have_content 'Estado de entrega não pode ficar em branco'
+    within('#pickup_address') do
+      expect(page).to have_content 'Endereço não pode ficar em branco'
+      expect(page).to have_content 'Cidade não pode ficar em branco'
+    end
+    within('#delivery_address') do
+      expect(page).to have_content 'Endereço não pode ficar em branco'
+      expect(page).to have_content 'Cidade não pode ficar em branco'
+    end
     expect(page).to have_content 'Nome(a) do destinatário(a) não pode ficar em branco'
     expect(page).to have_content 'Código do produto não pode ficar em branco'
   end

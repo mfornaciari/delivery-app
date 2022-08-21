@@ -13,10 +13,10 @@
     <dd><%= @order.distance %> km</dd>
 
     <dt>Endereço de retirada:</dt>
-    <dd><%= "#{@order.pickup_address} - #{@order.pickup_city}/#{@order.pickup_state}" %></dd>
+    <dd><%= @order.pickup_address.full_address %></dd>
 
     <dt>Endereço de entrega:</dt>
-    <dd><%= "#{@order.delivery_address} - #{@order.delivery_city}/#{@order.delivery_state}" %></dd>
+    <dd><%= @order.delivery_address.full_address %></dd>
 
     <dt>Destinado a:</dt>
     <dd><%= @order.recipient_name %></dd>
@@ -45,7 +45,7 @@
   <% if @order.pending? %>
     <%= form_with url: accepted_order_path(@order), method: :post do |form| %>
       <%= form.label :vehicle_id, 'Veículo responsável' %>
-      <%= form.collection_select(:vehicle_id, @order.shipping_company.vehicles, 
+      <%= form.collection_select(:vehicle_id, @order.shipping_company.vehicles,
                                 :id, :license_plate, include_blank: true) %>
       <%= form.submit 'Aceitar pedido' %>
     <% end %>
@@ -72,7 +72,7 @@
         <% end %>
       </table>
     <% end %>
-    
+
     <div id='route_update'>
       <%= form_with model: [@order, @route_update] do |form| %>
         <%= form.label :latitude %>

@@ -36,6 +36,7 @@ RSpec.describe Address, type: :model do
   end
 
   it { is_expected.to define_enum_for(:state).with_values(valid_states) }
+  it { is_expected.to define_enum_for(:kind).with_values({ company: 0, pickup: 5, delivery: 10 }) }
 
   it { is_expected.to belong_to(:addressable) }
 

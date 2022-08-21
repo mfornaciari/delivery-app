@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :shipping_company do
-    address { association :address, addressable: instance }
+    address { association :address, addressable: instance, kind: :company }
 
     trait :without_address do
       address { nil }

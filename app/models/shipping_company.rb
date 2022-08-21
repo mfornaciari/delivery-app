@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class ShippingCompany < ApplicationRecord
-  validates :brand_name, :corporate_name, :email_domain, :registration_number, presence: true
-  validates :email_domain, format: { with: /\A[a-z0-9]+\.[a-z]+(.[a-z]+)?\z/i }
-  validates :registration_number, format: { with: /\A\d{14}\z/ }
-  validates :registration_number, uniqueness: true
-
-  has_one :address, as: :addressable
+  has_one :address,
+          -> { where(kind: :company) },
+          as: :addressable,
+          dependent: :destroy
   has_many :users, dependent: :nullify
   has_many :vehicles, dependent: :destroy
   has_many :volume_ranges, dependent: :destroy
@@ -14,6 +12,11 @@ class ShippingCompany < ApplicationRecord
   has_many :price_distance_ranges, dependent: :destroy
   has_many :time_distance_ranges, dependent: :destroy
   has_many :orders, dependent: :nullify
+
+  validates :brand_name, :corporate_name, :email_domain, :registration_number, presence: true
+  validates :email_domain, format: { with: /\A[a-z0-9]+\.[a-z]+(.[a-z]+)?\z/i }
+  validates :registration_number, format: { with: /\A\d{14}\z/ }
+  validates :registration_number, uniqueness: true
 
   accepts_nested_attributes_for :address
 

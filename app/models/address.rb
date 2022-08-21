@@ -34,6 +34,7 @@ class Address < ApplicationRecord
     SE: 125,
     TO: 130
   }
+  enum kind: { company: 0, pickup: 5, delivery: 10 }
 
   def full_address
     "#{line1} - #{city}/#{state}"

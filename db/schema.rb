@@ -15,6 +15,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_161510) do
     t.string "line1"
     t.string "city"
     t.integer "state", default: 0
+    t.integer "kind", default: 0
     t.string "addressable_type"
     t.integer "addressable_id"
     t.datetime "created_at", null: false

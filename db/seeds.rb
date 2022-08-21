@@ -13,7 +13,8 @@ FactoryBot.create :address,
                   addressable: express,
                   line1: 'Avenida A, 10',
                   city: 'Rio de Janeiro',
-                  state: :RJ
+                  state: :RJ,
+                  kind: :company
 
 # VEÍCULOS da Express
 express_vehicle1 = FactoryBot.create :vehicle,
@@ -95,7 +96,8 @@ FactoryBot.create :address,
                   addressable: a_jato,
                   line1: 'Avenida B, 23',
                   city: 'Natal',
-                  state: :RN
+                  state: :RN,
+                  kind: :company
 
 # Intervalos de VOLUME na tabela de PREÇOS da A Jato
 a_jato_volume_range1 = FactoryBot.create :volume_range,
@@ -142,7 +144,8 @@ FactoryBot.create :address,
                   addressable: carroca_e_cia,
                   line1: 'Avenida C, 155',
                   city: 'Tanguá',
-                  state: 'RJ'
+                  state: :RJ,
+                  kind: :company
 
 # USUÁRIOS
 admin = FactoryBot.create :admin,

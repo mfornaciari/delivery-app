@@ -24,6 +24,8 @@
   </div>
 
   <%= f.fields_for :address do |address_f| %>
+    <%= address_f.hidden_field :kind, value: :company %>
+
     <div id='line1'>
       <p><strong><%= address_f.label :line1 %></strong>
       <%= address_f.text_field :line1 %>
