@@ -17,8 +17,6 @@ class ShippingCompany < ApplicationRecord
 
   accepts_nested_attributes_for :address
 
-  STATES = %w[AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO].freeze
-
   def delivery_time(distance:)
     time_distance_ranges.find_by('min_distance <= :distance AND max_distance >= :distance',
                                  distance:)&.delivery_time
