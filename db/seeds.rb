@@ -172,16 +172,11 @@ FactoryBot.create :budget_search,
                   admin: admin
 
 # PEDIDOS cadastrados
+# PRIMEIRO pedido
 order1 = FactoryBot.create :order,
                            shipping_company: express,
                            vehicle: express_vehicle1,
                            status: :accepted,
-                           pickup_address: 'Rua Rio Vermelho, n. 10',
-                           pickup_city: 'Natal',
-                           pickup_state: 'RN',
-                           delivery_address: 'Rua Rio Verde, n. 10',
-                           delivery_city: 'Aracaju',
-                           delivery_state: 'SE',
                            recipient_name: 'João da Silva',
                            product_code: 'ABCD1234',
                            volume: 1,
@@ -189,21 +184,48 @@ order1 = FactoryBot.create :order,
                            distance: 10,
                            estimated_delivery_time: 2,
                            value: 500
-FactoryBot.create :order,
-                  shipping_company: express,
-                  pickup_address: 'Av. Rio Azul, n. 310',
-                  pickup_city: 'Fortaleza',
-                  pickup_state: 'CE',
-                  delivery_address: 'Rua Mar Roxo, n. 210',
-                  delivery_city: 'São Luís',
-                  delivery_state: 'MA',
-                  recipient_name: 'Maria das Dores',
-                  product_code: 'ABCD1234',
-                  volume: 10,
-                  weight: 20,
-                  distance: 40,
-                  estimated_delivery_time: 2,
-                  value: 2000
+
+# ENDEREÇO DE RETIRADA do primeiro pedido
+FactoryBot.create :address,
+                  addressable: order1,
+                  kind: :pickup,
+                  line1: 'Rua Rio Vermelho, n. 10',
+                  city: 'Natal',
+                  state: :RN
+
+# ENDEREÇO DE ENTREGA do primeiro pedido
+FactoryBot.create :address,
+                  addressable: order1,
+                  kind: :delivery,
+                  line1: 'Rua Rio Verde, n. 10',
+                  city: 'Aracaju',
+                  state: :SE
+
+# SEGUNDO pedido
+order2 = FactoryBot.create :order,
+                           shipping_company: express,
+                           product_code: 'ABCD1234',
+                           volume: 10,
+                           weight: 20,
+                           distance: 40,
+                           estimated_delivery_time: 2,
+                           value: 2000
+
+# ENDEREÇO DE RETIRADA do segundo pedido
+FactoryBot.create :address,
+                  addressable: order2,
+                  kind: :pickup,
+                  line1: 'Av. Rio Azul, n. 310',
+                  city: 'Fortaleza',
+                  state: :CE
+
+# ENDEREÇO DE ENTREGA do segundo pedido
+FactoryBot.create :address,
+                  addressable: order2,
+                  kind: :delivery,
+                  line1: 'Rua Mar Roxo, n. 210',
+                  city: 'São Luís',
+                  state: :MA
 
 # ATUALIZAÇÕES DE TRAJETO do primeiro pedido
 FactoryBot.create :route_update,
