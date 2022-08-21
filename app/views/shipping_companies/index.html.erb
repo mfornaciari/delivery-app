@@ -26,7 +26,7 @@
         <td><%= company.email_domain %></td>
         <% number = company.registration_number.to_s %>
         <td><%= "#{number[0..1]}.#{number[2..4]}.#{number[5..7]}/#{number[8..11]}-#{number[12..-1]}" %></td>
-        <td><%= "#{company.address} - #{company.city}/#{company.state}" %></td>
+        <td><%= company.address.full_address %></td>
       </tr>
     <% end %>
 

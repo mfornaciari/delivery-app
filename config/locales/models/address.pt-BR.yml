@@ -1,0 +1,9 @@
+pt-BR:
+  activerecord:
+    models:
+      address: Endereço
+    attributes:
+      address:
+        line1: Endereço
+        city: Cidade
+        state: Estado

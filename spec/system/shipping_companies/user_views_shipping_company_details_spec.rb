@@ -13,10 +13,12 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
   end
 
   it 'e vê detalhes completos' do
-    create :express, brand_name: 'Express', corporate_name: 'Express Transportes Ltda.',
-                     registration_number: 28_891_540_000_121, email_domain: 'express.com.br',
-                     address: 'Avenida A, 10', city: 'Rio de Janeiro', state: 'RJ'
-    user = create :user
+    express = create :express, :without_address, brand_name: 'Express',
+                                                 corporate_name: 'Express Transportes Ltda.',
+                                                 registration_number: 28_891_540_000_121,
+                                                 email_domain: 'express.com.br'
+    create :address, addressable: express, line1: 'Avenida A, 10', city: 'Natal', state: :RN
+    user = create :user, email: 'usuario@express.com.br'
 
     login_as user, scope: :user
     visit root_path
@@ -30,7 +32,7 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
       expect(page).to have_content 'Razão social: Express Transportes Ltda.'
       expect(page).to have_content 'CNPJ: 28.891.540/0001-21'
       expect(page).to have_content 'Domínio de e-mail: express.com.br'
-      expect(page).to have_content 'Endereço: Avenida A, 10 - Rio de Janeiro/RJ'
+      expect(page).to have_content 'Endereço: Avenida A, 10 - Natal/RN'
     end
   end
 

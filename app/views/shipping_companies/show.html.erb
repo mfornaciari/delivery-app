@@ -19,7 +19,7 @@
       <dd><%= @shipping_company.email_domain %></dd>
 
       <dt><strong>Endereço: </strong></dt>
-      <dd><%= "#{@shipping_company.address} - #{@shipping_company.city}/#{@shipping_company.state}" %></dd>
+      <dd><%= @shipping_company.address.full_address %></dd>
     </dl>
   </div>
 </section>

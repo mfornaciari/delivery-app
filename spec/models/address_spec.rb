@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 RSpec.describe Address, type: :model do
-  context 'Presença' do
+  context 'Presença:' do
     it { is_expected.to validate_presence_of(:line1) }
     it { is_expected.to validate_presence_of(:city) }
     it { is_expected.to validate_presence_of(:state) }
   end
 
-  context 'Enum' do
+  context 'Enum:' do
     let(:valid_states) do
       {
         AC: 0,
@@ -43,5 +43,19 @@ RSpec.describe Address, type: :model do
     end
 
     it { is_expected.to define_enum_for(:state).with_values(valid_states) }
+  end
+
+  context 'Associação:' do
+    it { is_expected.to belong_to(:addressable) }
+  end
+
+  describe '#full_address' do
+    it 'retorna o endereço completo como string' do
+      address = create :address, line1: 'Avenida A, 10', city: 'Natal', state: :RN
+
+      result = address.full_address
+
+      expect(result).to eq('Avenida A, 10 - Natal/RN')
+    end
   end
 end

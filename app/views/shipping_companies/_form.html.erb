@@ -19,27 +19,29 @@
 
   <div id='email_domain'>
     <p><strong><%= f.label :email_domain %></strong>
-    <%= f.text_field :email_domain %> 
+    <%= f.text_field :email_domain %>
     <%= @shipping_company.errors.full_messages_for(:email_domain)[0] if @shipping_company.errors %></p>
   </div>
 
-  <div id='address'>
-    <p><strong><%= f.label :address %></strong>
-    <%= f.text_field :address %>
-    <%= @shipping_company.errors.full_messages_for(:address)[0] if @shipping_company.errors %></p>
-  </div>
+  <%= f.fields_for :address do |address_f| %>
+    <div id='line1'>
+      <p><strong><%= address_f.label :line1 %></strong>
+      <%= address_f.text_field :line1 %>
+      <%= @shipping_company.address.errors.full_messages_for(:line1)[0] if @shipping_company.errors %></p>
+    </div>
 
-  <div id='city'>
-    <p><strong><%= f.label :city %></strong>
-    <%= f.text_field :city %>
-    <%= @shipping_company.errors.full_messages_for(:city)[0] if @shipping_company.errors %></p>
-  </div>
+    <div id='city'>
+      <p><strong><%= address_f.label :city %></strong>
+      <%= address_f.text_field :city %>
+      <%= @shipping_company.address.errors.full_messages_for(:city)[0] if @shipping_company.errors %></p>
+    </div>
 
-  <div id='state'>
-    <p><strong><%= f.label :state %></strong>
-    <%= f.select :state, @states, include_blank: true %>
-    <%= @shipping_company.errors.full_messages_for(:state)[0] if @shipping_company.errors %></p>
-  </div>
+    <div id='state'>
+      <p><strong><%= address_f.label :state %></strong>
+      <%= address_f.select :state, Address.states.keys %>
+      <%= @shipping_company.address.errors.full_messages_for(:state)[0] if @shipping_company.errors %></p>
+    </div>
+  <% end %>
 
   <div id='submit_button'>
     <%= f.submit %>

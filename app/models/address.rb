@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Address < ApplicationRecord
+  belongs_to :addressable, polymorphic: true
+
   validates :line1, :city, :state, presence: true
 
   enum state: {
@@ -32,4 +34,8 @@ class Address < ApplicationRecord
     SE: 125,
     TO: 130
   }
+
+  def full_address
+    "#{line1} - #{city}/#{state}"
+  end
 end

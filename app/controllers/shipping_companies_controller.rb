@@ -10,14 +10,13 @@ class ShippingCompaniesController < ApplicationController
 
   def new
     @shipping_company = ShippingCompany.new
-    @states = ShippingCompany::STATES
+    @shipping_company.build_address
   end
 
   def create
     @shipping_company = ShippingCompany.new(shipping_company_params)
     return redirect_to @shipping_company, notice: t('company_creation_succeeded') if @shipping_company.save
 
-    @states = ShippingCompany::STATES
     flash.now[:notice] = t('company_creation_failed')
     render 'new'
   end
@@ -34,7 +33,10 @@ class ShippingCompaniesController < ApplicationController
   private
 
   def shipping_company_params
-    params.require(:shipping_company).permit(%i[brand_name corporate_name registration_number email_domain
-                                                address city state])
+    params.require(:shipping_company).permit(:brand_name,
+                                             :corporate_name,
+                                             :registration_number,
+                                             :email_domain,
+                                             address_attributes: %i[line1 city state])
   end
 end
