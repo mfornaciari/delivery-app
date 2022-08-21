@@ -174,6 +174,7 @@ FactoryBot.create :budget_search,
 # PEDIDOS cadastrados
 # PRIMEIRO pedido
 order1 = FactoryBot.create :order,
+                           :without_addresses,
                            shipping_company: express,
                            vehicle: express_vehicle1,
                            status: :accepted,
@@ -203,6 +204,7 @@ FactoryBot.create :address,
 
 # SEGUNDO pedido
 order2 = FactoryBot.create :order,
+                           :without_addresses,
                            shipping_company: express,
                            product_code: 'ABCD1234',
                            volume: 10,

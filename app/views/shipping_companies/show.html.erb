@@ -24,7 +24,7 @@
   </div>
 </section>
 
-<h2 align='center'><%= link_to 'Pedidos', orders_path(shipping_company: @shipping_company) %></h2>
+<h2 align='center'><%= link_to 'Pedidos', orders_path(shipping_company_id: @shipping_company.id) %></h2>
 
 <%= render 'vehicles_table' %>
 

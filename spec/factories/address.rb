@@ -2,15 +2,11 @@
 
 FactoryBot.define do
   factory :address do
-    for_express
+    kind { :company }
+    association :addressable, factory: :express
     sequence(:line1) { |n| "Rua Rio Verde, #{n}" }
     city { 'Rio de Janeiro' }
     state { :RJ }
-
-    trait :for_express do
-      kind { :company }
-      association :addressable, factory: :express
-    end
 
     trait :for_a_jato do
       kind { :company }
