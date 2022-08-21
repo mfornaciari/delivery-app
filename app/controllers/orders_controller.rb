@@ -15,14 +15,14 @@ class OrdersController < ApplicationController
 
     @order = Order.new(params.permit(%i[shipping_company_id volume weight distance value
                                         estimated_delivery_time]))
-    @states = Order::STATES
+    @order.build_pickup_address
+    @order.build_delivery_address
   end
 
   def create
     @order = Order.new(order_params)
     return redirect_to @order, notice: t('order_creation_succeeded_message') if @order.save
 
-    @states = Order::STATES
     flash.now[:notice] = t('order_creation_failed_message')
     render 'new'
   end
@@ -62,9 +62,16 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit(%i[shipping_company_id volume weight distance estimated_delivery_time value
-                                     pickup_address pickup_city pickup_state delivery_address delivery_city
-                                     delivery_state recipient_name product_code])
+    params.require(:order).permit(:shipping_company_id,
+                                  :volume,
+                                  :weight,
+                                  :distance,
+                                  :estimated_delivery_time,
+                                  :value,
+                                  :recipient_name,
+                                  :product_code,
+                                  delivery_address_attributes: %i[line1 city state],
+                                  pickup_address_attributes: %i[line1 city state])
   end
 
   def params_exist

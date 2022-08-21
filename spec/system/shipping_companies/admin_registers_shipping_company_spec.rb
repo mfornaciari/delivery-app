@@ -45,6 +45,8 @@ describe 'Administrador cadastra transportadora' do
     login_as admin, scope: :admin
     visit new_shipping_company_path
     fill_in 'Nome fantasia', with: 'Express'
+    fill_in 'CNPJ', with: '1234'
+    fill_in 'Domínio de e-mail', with: 'gmail.com!'
     click_on 'Criar Transportadora'
 
     expect(page).to have_current_path shipping_companies_path
@@ -55,6 +57,5 @@ describe 'Administrador cadastra transportadora' do
     expect(page).to have_content 'Domínio de e-mail não é válido'
     expect(page).to have_content 'Endereço não pode ficar em branco'
     expect(page).to have_content 'Cidade não pode ficar em branco'
-    expect(page).to have_content 'Estado não pode ficar em branco'
   end
 end

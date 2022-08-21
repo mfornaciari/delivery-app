@@ -1,6 +1,6 @@
 <div align='center'>
   <h1>Pedido <%= @order.code %></h1>
-  
+
   <dl>
     <dt>Transportadora:</dt>
     <dd><%= @order.shipping_company.corporate_name %></dd>
@@ -9,10 +9,10 @@
     <dd><%= "#{@order.vehicle.license_plate} (#{@order.vehicle.brand} #{@order.vehicle.model})" %></dd>
 
     <dt>Endereço de retirada:</dt>
-    <dd><%= "#{@order.pickup_address} - #{@order.pickup_city}/#{@order.pickup_state})" %></dd>
+    <dd><%= @order.pickup_address.full_address %></dd>
 
     <dt>Endereço de entrega:</dt>
-    <dd><%= "#{@order.delivery_address} - #{@order.delivery_city}/#{@order.delivery_state})" %></dd>
+    <dd><%= @order.delivery_address.full_address %></dd>
 
     <h2>Atualizações de trajeto:</h2>
 
@@ -20,7 +20,7 @@
       <dt><%= I18n.l(update.date_and_time) %>:</dt>
       <dd><%= "Latitude #{update.latitude}, Longitude #{update.longitude}" %></dd>
     <% end %>
-    
+
     <% if @order.finished? %>
       <p><strong>Pedido entregue.</strong></p>
     <% end %>

@@ -28,37 +28,57 @@
     <%= form.hidden_field :estimated_delivery_time, value: @order.estimated_delivery_time %>
     <%= form.hidden_field :value, value: @order.value %>
 
+  <%= form.fields_for :pickup_address do |pickup_address_form| %>
+    <%= pickup_address_form.hidden_field :kind, value: :pickup %>
+
     <div id='pickup_address'>
       <h3>Retirada:</h3>
 
-      <p><strong><%= form.label :pickup_address %></strong>
-      <%= form.text_area :pickup_address %>
-      <%= @order.errors.full_messages_for(:pickup_address).first if @order.errors %></p>
+      <div id='line1'>
+        <p><strong><%= pickup_address_form.label :line1 %></strong>
+        <%= pickup_address_form.text_field :line1 %>
+        <%= @order.pickup_address.errors.full_messages_for(:line1)[0] if @order.errors %></p>
+      </div>
 
-      <p><strong><%= form.label :pickup_city %></strong>
-      <%= form.text_area :pickup_city %>
-      <%= @order.errors.full_messages_for(:pickup_city).first if @order.errors %></p>
+      <div id='city'>
+        <p><strong><%= pickup_address_form.label :city %></strong>
+        <%= pickup_address_form.text_field :city %>
+        <%= @order.pickup_address.errors.full_messages_for(:city)[0] if @order.errors %></p>
+      </div>
 
-      <p><strong><%= form.label :pickup_state %></strong>
-      <%= form.select :pickup_state, @states, include_blank: true %>
-      <%= @order.errors.full_messages_for(:pickup_state).first if @order.errors %></p>
+      <div id='state'>
+        <p><strong><%= pickup_address_form.label :state %></strong>
+        <%= pickup_address_form.select :state, Address.states.keys %>
+        <%= @order.pickup_address.errors.full_messages_for(:state)[0] if @order.errors %></p>
+      </div>
     </div>
+  <% end %>
+
+  <%= form.fields_for :delivery_address do |delivery_address_form| %>
+    <%= delivery_address_form.hidden_field :kind, value: :delivery %>
 
     <div id='delivery_address'>
       <h3>Entrega:</h3>
 
-      <p><strong><%= form.label :delivery_address %></strong>
-      <%= form.text_area :delivery_address %>
-      <%= @order.errors.full_messages_for(:delivery_address).first if @order.errors %></p>
+      <div id='line1'>
+        <p><strong><%= delivery_address_form.label :line1 %></strong>
+        <%= delivery_address_form.text_field :line1 %>
+        <%= @order.delivery_address.errors.full_messages_for(:line1)[0] if @order.errors %></p>
+      </div>
 
-      <p><strong><%= form.label :delivery_city %></strong>
-      <%= form.text_area :delivery_city %>
-      <%= @order.errors.full_messages_for(:delivery_city).first if @order.errors %></p>
+      <div id='city'>
+        <p><strong><%= delivery_address_form.label :city %></strong>
+        <%= delivery_address_form.text_field :city %>
+        <%= @order.delivery_address.errors.full_messages_for(:city)[0] if @order.errors %></p>
+      </div>
 
-      <p><strong><%= form.label :delivery_state %></strong>
-      <%= form.select :delivery_state, @states, include_blank: true %>
-      <%= @order.errors.full_messages_for(:delivery_state).first if @order.errors %></p>
+      <div id='state'>
+        <p><strong><%= delivery_address_form.label :state %></strong>
+        <%= delivery_address_form.select :state, Address.states.keys %>
+        <%= @order.delivery_address.errors.full_messages_for(:state)[0] if @order.errors %></p>
+      </div>
     </div>
+  <% end %>
 
     <p><strong><%= form.label :recipient_name, 'Destinado a' %></strong>
     <%= form.text_field :recipient_name %>

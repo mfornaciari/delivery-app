@@ -19,12 +19,12 @@
       <dd><%= @shipping_company.email_domain %></dd>
 
       <dt><strong>Endereço: </strong></dt>
-      <dd><%= "#{@shipping_company.address} - #{@shipping_company.city}/#{@shipping_company.state}" %></dd>
+      <dd><%= @shipping_company.address.full_address %></dd>
     </dl>
   </div>
 </section>
 
-<h2 align='center'><%= link_to 'Pedidos', orders_path(shipping_company: @shipping_company) %></h2>
+<h2 align='center'><%= link_to 'Pedidos', orders_path(shipping_company_id: @shipping_company.id) %></h2>
 
 <%= render 'vehicles_table' %>
 
