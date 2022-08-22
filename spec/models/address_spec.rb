@@ -40,9 +40,9 @@ RSpec.describe Address, type: :model do
 
   it { is_expected.to belong_to(:addressable) }
 
-  it { is_expected.to validate_presence_of(:line1) }
-  it { is_expected.to validate_presence_of(:city) }
-  it { is_expected.to validate_presence_of(:state) }
+  it { is_expected.to validate_presence_of(:line1).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:city).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:state).with_message('não pode ficar em branco') }
 
   describe '#full_address' do
     subject do
