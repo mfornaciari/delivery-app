@@ -3,33 +3,22 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe '#valid?' do
-    context 'Valor:' do
-      it 'Falso quando domínio de e-mail não está registrado' do
-        create :express, email_domain: 'express.com.br'
-        create :a_jato, email_domain: 'ajato.com'
-        invalid_user = described_class.new(email: 'usuario@email.com')
-        first_valid_user = described_class.new(email: 'usuario@express.com.br')
-        second_valid_user = described_class.new(email: 'usuario@ajato.com')
+  subject(:user) { build :user }
 
-        [invalid_user, first_valid_user, second_valid_user].each(&:valid?)
+  let!(:express) { create :express, email_domain: 'express.com.br' }
 
-        expect(invalid_user.errors[:email]).to include 'não possui um domínio registrado'
-        expect(first_valid_user.errors.include?(:email)).to be false
-        expect(second_valid_user.errors.include?(:email)).to be false
-      end
-    end
+  it 'e-mail domain validation' do
+    create :a_jato, email_domain: 'ajato.com'
+
+    expect(user).not_to allow_value('usuario@gmail.com')
+      .for(:email).with_message('não possui um domínio registrado')
+    expect(user).to allow_values('usuario@express.com.br', 'usuario@ajato.com')
+      .for(:email)
   end
 
   describe '#set_shipping_company' do
-    it 'Deve atribuir transportadora com base no domínio de e-mail' do
-      create :a_jato, email_domain: 'ajato.com'
-      express = create :express, email_domain: 'express.com.br'
-      user = create :user, email: 'usuario@express.com.br'
+    subject(:user_company) { (create :user, email: 'usuario@express.com.br').shipping_company }
 
-      user.valid?
-
-      expect(user.shipping_company).to eq express
-    end
+    it { is_expected.to eq express }
   end
 end

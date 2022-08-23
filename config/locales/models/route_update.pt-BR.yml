@@ -1,8 +1,6 @@
 pt-BR:
   route_update_succeeded_message: Rota de entrega do pedido atualizada.
   route_update_failed_message: Rota de entrega não atualizada.
-  latitude_validation_error: deve estar entre -90 e 90
-  longitude_validation_error: deve estar entre -180 e 180
   activerecord:
     models:
       route_update: Atualização de rota

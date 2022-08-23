@@ -24,7 +24,7 @@ RSpec.describe Vehicle, type: :model do
       .for(:license_plate)
   end
 
-  it 'production year format validation' do
+  it 'production year value validation' do
     expect(vehicle).not_to allow_values(1907, 1.year.from_now.year)
       .for(:production_year).with_message('deve estar entre 1908 e o ano atual')
     expect(vehicle).to allow_value(2022)

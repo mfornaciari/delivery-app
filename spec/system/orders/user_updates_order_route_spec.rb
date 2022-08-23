@@ -67,9 +67,9 @@ describe 'Usuário atualiza rota do pedido' do
     click_on 'Atualizar rota de entrega'
 
     expect(page).to have_content 'Rota de entrega não atualizada.'
-    expect(page).to have_content 'Latitude deve estar entre -90 e 90'
-    expect(page).to have_content 'Longitude deve estar entre -180 e 180'
-    expect(page).to have_content 'Data e hora não podem estar no futuro'
+    expect(page).to have_content 'Latitude deve ser maior ou igual a -90'
+    expect(page).to have_content 'Longitude deve ser menor ou igual a 180'
+    expect(page).to have_content "Data e hora deve ser menor ou igual a #{Time.zone.now}"
   end
 
   it 'com data e hora anteriores à última atualização' do

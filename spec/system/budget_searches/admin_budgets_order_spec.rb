@@ -133,7 +133,7 @@ describe 'Administrador consulta preço de pedido' do
     fill_in 'Altura', with: '0'
     fill_in 'Largura', with: '0'
     fill_in 'Profundidade', with: '-1'
-    fill_in 'Peso', with: 'Z'
+    fill_in 'Peso', with: '0'
     fill_in 'Distância', with: '0'
     click_on 'Consultar'
 
