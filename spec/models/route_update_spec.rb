@@ -11,12 +11,12 @@ RSpec.describe RouteUpdate, type: :model do
   it { is_expected.to validate_presence_of(:latitude).with_message('não pode ficar em branco') }
   it { is_expected.to validate_presence_of(:longitude).with_message('não pode ficar em branco') }
 
-  it 'latitude value validation' do
+  it 'must not allow latitude to be < -90 or > 90' do
     expect(route_update).to validate_numericality_of(:latitude)
       .is_greater_than_or_equal_to(-90).is_less_than_or_equal_to(90)
   end
 
-  it 'longitude value validation' do
+  it 'must not allow longitude to be < -180 or > 180' do
     expect(route_update).to validate_numericality_of(:longitude)
       .is_greater_than_or_equal_to(-180).is_less_than_or_equal_to(180)
   end

@@ -21,14 +21,14 @@ RSpec.describe ShippingCompany, type: :model do
 
   it { is_expected.to validate_uniqueness_of(:registration_number).with_message('já está em uso') }
 
-  it 'e-mail domain format validation' do
+  it 'must not allow incorrect format for e-mail domain' do
     expect(company).not_to allow_values('express', '-express.com.br', 'express.com-')
       .for(:email_domain).with_message('não é válido')
     expect(company).to allow_values('express.com.br', 'ajato.com')
       .for(:email_domain)
   end
 
-  it 'registration number format validation' do
+  it 'must not allow incorrect format for registration number' do
     expect(company).not_to allow_values(8_891_540_000_121, 128_891_540_000_121)
       .for(:registration_number).with_message('não é válido')
     expect(company).to allow_value(28_891_540_000_121)

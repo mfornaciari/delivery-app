@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 class VolumeRange < ApplicationRecord
-  validates :min_volume, comparison: { greater_than_or_equal_to: 0 }
-  validates :max_volume, comparison: { greater_than: 0 }
+  validates :min_volume, :max_volume, presence: true
+  validates :min_volume, numericality: { greater_than_or_equal_to: 0 }
+  validates :max_volume, numericality: { greater_than: 0 }
   validate :not_previously_registered
   validate :min_volume_less_than_max_volume
 

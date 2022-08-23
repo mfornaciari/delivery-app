@@ -7,7 +7,7 @@ RSpec.describe User, type: :model do
 
   let!(:express) { create :express, email_domain: 'express.com.br' }
 
-  it 'e-mail domain validation' do
+  it 'must not allow e-mails with unregistered domains' do
     create :a_jato, email_domain: 'ajato.com'
 
     expect(user).not_to allow_value('usuario@gmail.com')

@@ -17,14 +17,14 @@ RSpec.describe Vehicle, type: :model do
 
   it { is_expected.to validate_numericality_of(:maximum_load).is_greater_than(0) }
 
-  it 'license plate format validation' do
+  it 'must not allow incorrect format for license plate' do
     expect(vehicle).not_to allow_values('ABCD123', 'ABC12345', 'ABCD1234')
       .for(:license_plate).with_message('não é válido')
     expect(vehicle).to allow_values('ABC1D23', 'ABC1234')
       .for(:license_plate)
   end
 
-  it 'production year value validation' do
+  it 'must not allow production year to be < 1908 or > current year' do
     expect(vehicle).not_to allow_values(1907, 1.year.from_now.year)
       .for(:production_year).with_message('deve estar entre 1908 e o ano atual')
     expect(vehicle).to allow_value(2022)

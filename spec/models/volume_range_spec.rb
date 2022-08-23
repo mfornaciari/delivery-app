@@ -3,79 +3,40 @@
 require 'rails_helper'
 
 RSpec.describe VolumeRange, type: :model do
-  describe '#valid?' do
-    context 'Presença:' do
-      it 'Falso quando transportadora está em branco' do
-        vrange = described_class.new(shipping_company: nil)
+  it { is_expected.to belong_to(:shipping_company) }
 
-        vrange.valid?
+  it { is_expected.to validate_presence_of(:min_volume).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:max_volume).with_message('não pode ficar em branco') }
 
-        expect(vrange.errors[:shipping_company]).to include 'é obrigatório(a)'
-      end
+  it { is_expected.to validate_numericality_of(:min_volume).is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:max_volume).is_greater_than(0) }
+
+  it 'must not allow minimum volume to be >= maximum volume' do
+    range = build :volume_range, max_volume: 5
+
+    expect(range).not_to allow_values(5, 6).for(:min_volume).with_message('deve ser menor que o volume máximo')
+    expect(range).to allow_value(4).for(:min_volume)
+  end
+
+  context 'must not allow repetition' do
+    subject(:v_range) { build :volume_range }
+
+    before do
+      create :volume_range, shipping_company: v_range.shipping_company, min_volume: 0, max_volume: 2
+      v_range.shipping_company.reload
     end
 
-    context 'Valor:' do
-      it 'Falso quando volume mínimo está em branco ou é < 0' do
-        empty_range = described_class.new(min_volume: '')
-        invalid_range = described_class.new(min_volume: -1)
-        valid_range = described_class.new(min_volume: 0)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:min_volume]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:min_volume]).to include 'deve ser maior ou igual a 0'
-        expect(valid_range.errors.include?(:min_volume)).to be false
-      end
-
-      it 'Falso quando volume máximo está em branco ou é < 1' do
-        empty_range = described_class.new(max_volume: '')
-        invalid_range = described_class.new(max_volume: 0)
-        valid_range = described_class.new(max_volume: 1)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:max_volume]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:max_volume]).to include 'deve ser maior que 0'
-        expect(valid_range.errors.include?(:max_volume)).to be false
-      end
-
-      it 'Falso quando volume mínimo >= volume máximo' do
-        first_invalid_range = described_class.new(min_volume: 5, max_volume: 5)
-        second_invalid_range = described_class.new(min_volume: 6, max_volume: 5)
-
-        [first_invalid_range, second_invalid_range].each(&:valid?)
-
-        expect(first_invalid_range.errors[:min_volume]).to include 'deve ser menor que o volume máximo'
-        expect(second_invalid_range.errors[:min_volume]).to include 'deve ser menor que o volume máximo'
-      end
+    it 'of minimum volume' do
+      expect(v_range).not_to allow_values(0, 1, 2)
+        .for(:min_volume).with_message('não pode estar contido em intervalos já registrados')
     end
 
-    context 'Singularidade:' do
-      it 'Falso quando volume mínimo está incluso em intervalos já cadastrados' do
-        express = create :express
-        described_class.create!(shipping_company: express, min_volume: 0, max_volume: 20)
-        invalid_range = described_class.new(shipping_company: express, min_volume: 0)
-        valid_range = described_class.new(shipping_company: express, min_volume: 21)
-
-        express.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:min_volume]).to include('não pode estar contido em intervalos já registrados')
-        expect(valid_range.errors.include?(:min_volume)).to be false
-      end
-
-      it 'Falso quando volume máximo está incluso em intervalos já cadastrados' do
-        express = create :express
-        described_class.create!(shipping_company: express, min_volume: 0, max_volume: 20)
-        invalid_range = described_class.new(shipping_company: express, max_volume: 20)
-        valid_range = described_class.new(shipping_company: express, max_volume: 40)
-
-        express.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:max_volume]).to include('não pode estar contido em intervalos já registrados')
-        expect(valid_range.errors.include?(:max_volume)).to be false
-      end
+    it 'of maximum volume' do
+      expect(v_range).not_to allow_values(1, 2)
+        .for(:max_volume).with_message('não pode estar contido em intervalos já registrados')
     end
+
+    it { is_expected.to allow_value(3).for(:min_volume) }
+    it { is_expected.to allow_value(3).for(:max_volume) }
   end
 end
