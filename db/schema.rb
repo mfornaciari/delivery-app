@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_21_213837) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_24_234643) do
   create_table "addresses", force: :cascade do |t|
     t.string "line1"
     t.string "city"
@@ -104,6 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_21_213837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "shipping_company_id", null: false
+    t.index ["delivery_time", "shipping_company_id"], name: "index_td_ranges_on_delivery_time_and_company_id", unique: true
     t.index ["shipping_company_id"], name: "index_time_distance_ranges_on_shipping_company_id"
   end
 
