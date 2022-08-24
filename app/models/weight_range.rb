@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class WeightRange < ApplicationRecord
+  belongs_to :volume_range
+
   validates :min_weight, :max_weight, :value, presence: true
   validates :min_weight, numericality: { greater_than_or_equal_to: 0 }
   validates :max_weight, numericality: { greater_than: 0 }
   validate :not_previously_registered
   validate :min_weight_less_than_max_weight
-
-  belongs_to :volume_range
 
   private
 

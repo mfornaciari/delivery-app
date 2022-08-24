@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class VolumeRange < ApplicationRecord
+  belongs_to :shipping_company
+  has_many :weight_ranges, dependent: :destroy
+
   validates :min_volume, :max_volume, presence: true
   validates :min_volume, numericality: { greater_than_or_equal_to: 0 }
   validates :max_volume, numericality: { greater_than: 0 }
   validate :not_previously_registered
   validate :min_volume_less_than_max_volume
 
-  belongs_to :shipping_company
-  has_many :weight_ranges, dependent: :destroy
   accepts_nested_attributes_for :weight_ranges
 
   private

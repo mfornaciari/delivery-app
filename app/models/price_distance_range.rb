@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class PriceDistanceRange < ApplicationRecord
-  validates :value, presence: true
-  validates :min_distance, comparison: { greater_than_or_equal_to: 0 }
-  validates :max_distance, comparison: { greater_than: 0 }
+  belongs_to :shipping_company
+
+  validates :value, :min_distance, :max_distance, presence: true
+  validates :min_distance, numericality: { greater_than_or_equal_to: 0 }
+  validates :max_distance, numericality: { greater_than: 0 }
   validate :not_previously_registered
   validate :min_distance_less_than_max_distance
-
-  belongs_to :shipping_company
 
   private
 
