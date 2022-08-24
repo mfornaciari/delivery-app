@@ -22,7 +22,7 @@ class ShippingCompany < ApplicationRecord
 
   def delivery_time(distance:)
     time_distance_ranges.find_by('min_distance <= :distance AND max_distance >= :distance',
-                                 distance:)&.delivery_time
+                                 distance: distance)&.delivery_time
   end
 
   def value(volume:, weight:, distance:)
@@ -30,18 +30,18 @@ class ShippingCompany < ApplicationRecord
                                                                 max_weight >= :weight AND
                                                                 volume_ranges.min_volume <= :volume AND
                                                                 volume_ranges.max_volume >= :volume',
-                                                                volume:, weight:)&.value
+                                                                volume: volume, weight: weight)&.value
     return if standard_value.nil?
 
     standard_value *= distance
-    min_value = min_value(distance:)
-    min_value > standard_value ? min_value : standard_value
+    min_value = min_value(distance: distance)
+    min_value && min_value > standard_value ? min_value : standard_value
   end
 
   private
 
   def min_value(distance:)
     price_distance_ranges.find_by('min_distance <= :distance AND max_distance >= :distance',
-                                  distance:)&.value
+                                  distance: distance)&.value
   end
 end

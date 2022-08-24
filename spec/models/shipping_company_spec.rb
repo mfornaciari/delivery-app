@@ -34,4 +34,52 @@ RSpec.describe ShippingCompany, type: :model do
     expect(company).to allow_value(28_891_540_000_121)
       .for(:registration_number)
   end
+
+  describe '#delivery_time' do
+    subject(:company) { create :express }
+
+    it 'must return delivery time for provided distance / nil if no time registered' do
+      create(:time_distance_range,
+             shipping_company: company,
+             min_distance: 0,
+             max_distance: 20,
+             delivery_time: 1)
+      create(:time_distance_range,
+             shipping_company: company,
+             min_distance: 21,
+             max_distance: 40,
+             delivery_time: 2)
+
+      expect(company.delivery_time(distance: 20)).to eq 1
+      expect(company.delivery_time(distance: 21)).to eq 2
+      expect(company.delivery_time(distance: 41)).to be_nil
+    end
+  end
+
+  describe '#value' do
+    subject(:company) { create :express }
+
+    it 'must return value for provided volume, weight and distance / nil if no value registered' do
+      v_range1 = create :volume_range, shipping_company: company, min_volume: 0, max_volume: 20
+      create :weight_range, volume_range: v_range1, min_weight: 0, max_weight: 20, value: 5
+      create :weight_range, volume_range: v_range1, min_weight: 21, max_weight: 40, value: 15
+      v_range2 = create :volume_range, shipping_company: company, min_volume: 21, max_volume: 40
+      create :weight_range, volume_range: v_range2, min_weight: 0, max_weight: 20, value: 10
+
+      expect(company.value(volume: 20, weight: 20, distance: 10)).to eq 50
+      expect(company.value(volume: 20, weight: 21, distance: 10)).to eq 150
+      expect(company.value(volume: 21, weight: 20, distance: 10)).to eq 100
+      expect(company.value(volume: 41, weight: 20, distance: 10)).to be_nil
+      expect(company.value(volume: 20, weight: 41, distance: 10)).to be_nil
+    end
+
+    it 'must return minimum value for distance if it is higher than the calculated value' do
+      v_range1 = create :volume_range, shipping_company: company, min_volume: 0, max_volume: 20
+      create :weight_range, volume_range: v_range1, min_weight: 0, max_weight: 20, value: 5
+      create :price_distance_range, shipping_company: company, min_distance: 0, max_distance: 20, value: 100
+
+      expect(company.value(volume: 20, weight: 20, distance: 19)).to eq 100
+      expect(company.value(volume: 20, weight: 20, distance: 21)).to eq 105
+    end
+  end
 end
