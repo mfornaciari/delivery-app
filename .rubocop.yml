@@ -6,9 +6,9 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-  - 'bin/**/*'
-  - 'vendor/**/*'
-  - 'db/**/*'
+  - bin/**/*
+  - vendor/**/*
+  - db/**/*
 
 Style/Documentation:
   Enabled: false
@@ -17,7 +17,7 @@ Style/HashSyntax:
 
 Layout/LineLength:
   Exclude:
-    - 'config/initializers/devise.rb'
+    - config/initializers/devise.rb
 
 RSpec/ExampleLength:
   Max: 40
