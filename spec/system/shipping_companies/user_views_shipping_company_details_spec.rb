@@ -24,9 +24,7 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
     visit root_path
     click_on 'Express'
 
-    within('div#page_title') do
-      expect(page).to have_content 'Express'
-    end
+    within('div#page_title') { expect(page).to have_content 'Express' }
     within('section#company_details') do
       expect(page).to have_content 'Nome fantasia: Express'
       expect(page).to have_content 'Razão social: Express Transportes Ltda.'

@@ -3,15 +3,25 @@
 require 'rails_helper'
 
 describe 'Usuário acessa a página de detalhes de uma transportadora' do
-  it 'e vê os veículos cadastrados' do
-    express = create :express
-    user = create :user
-    create :vehicle, license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno', production_year: 1992,
-                     maximum_load: 100_000, shipping_company: express
-    create :vehicle, license_plate: 'ARG4523', brand: 'Volkswagen', model: 'Fusca', production_year: 1971,
-                     maximum_load: 40_000, shipping_company: express
+  let!(:express) { create :express }
+  let(:user) { create :user }
 
-    login_as user, scope: :user
+  before { login_as user, scope: :user }
+
+  it 'e vê os veículos cadastrados' do
+    create :vehicle, license_plate: 'BRA3R52',
+                     brand: 'Fiat',
+                     model: 'Uno',
+                     production_year: 1992,
+                     maximum_load: 100_000,
+                     shipping_company: express
+    create :vehicle, license_plate: 'ARG4523',
+                     brand: 'Volkswagen',
+                     model: 'Fusca',
+                     production_year: 1971,
+                     maximum_load: 40_000,
+                     shipping_company: express
+
     visit shipping_company_path(express)
 
     expect(page).to have_content 'Veículos cadastrados'
@@ -41,10 +51,6 @@ describe 'Usuário acessa a página de detalhes de uma transportadora' do
   end
 
   it 'e não há veículos cadastrados' do
-    express = create :express
-    user = create :user
-
-    login_as user, scope: :user
     visit shipping_company_path(express)
 
     expect(page).to have_content 'Não existem veículos cadastrados.'
