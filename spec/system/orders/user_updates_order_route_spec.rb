@@ -3,14 +3,16 @@
 require 'rails_helper'
 
 describe 'Usuário atualiza rota do pedido' do
+  let!(:express) { create :express }
+  let(:user) { create :user }
+  let(:vehicle) { create :vehicle, shipping_company: express }
+
+  before { login_as user, scope: :user }
+
   it 'com sucesso' do
-    express = create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
-    vehicle = create :vehicle, shipping_company: express
     order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
     current_time = Time.current
 
-    login_as user, scope: :user
     visit shipping_company_path(express)
     click_on 'Pedidos'
     click_on order.code
@@ -38,12 +40,8 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados incompletos' do
-    express = create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
-    vehicle = create :vehicle, shipping_company: express
     order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
-    login_as user, scope: :user
     visit order_path(order)
     click_on 'Atualizar rota de entrega'
 
@@ -54,12 +52,8 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados inválidos' do
-    express = create :express
-    user = create :user
-    vehicle = create :vehicle, shipping_company: express
     order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
 
-    login_as user, scope: :user
     visit order_path(order)
     fill_in 'Latitude', with: '-90.1'
     fill_in 'Longitude', with: '180.1'
@@ -73,14 +67,10 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com data e hora anteriores à última atualização' do
-    express = create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
-    vehicle = create :vehicle, shipping_company: express
     order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
     current_time = Time.current
     create :route_update, order: order, date_and_time: current_time
 
-    login_as user, scope: :user
     visit order_path(order)
     fill_in 'Data e hora', with: 1.second.before(current_time)
     click_on 'Atualizar rota de entrega'
