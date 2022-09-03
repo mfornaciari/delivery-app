@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_24_234643) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_03_214437) do
   create_table "addresses", force: :cascade do |t|
     t.string "line1"
     t.string "city"
@@ -75,6 +75,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_24_234643) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["shipping_company_id"], name: "index_price_distance_ranges_on_shipping_company_id"
+  end
+
+  create_table "prices", force: :cascade do |t|
+    t.integer "min_volume"
+    t.integer "max_volume"
+    t.integer "min_weight"
+    t.integer "max_weight"
+    t.integer "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "route_updates", force: :cascade do |t|
