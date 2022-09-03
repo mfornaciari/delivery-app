@@ -83,8 +83,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_03_214437) do
     t.integer "min_weight"
     t.integer "max_weight"
     t.integer "value"
+    t.integer "shipping_company_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["shipping_company_id"], name: "index_prices_on_shipping_company_id"
   end
 
   create_table "route_updates", force: :cascade do |t|
@@ -168,6 +170,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_03_214437) do
   add_foreign_key "orders", "shipping_companies"
   add_foreign_key "orders", "vehicles"
   add_foreign_key "price_distance_ranges", "shipping_companies"
+  add_foreign_key "prices", "shipping_companies"
   add_foreign_key "route_updates", "orders"
   add_foreign_key "time_distance_ranges", "shipping_companies"
   add_foreign_key "vehicles", "shipping_companies"

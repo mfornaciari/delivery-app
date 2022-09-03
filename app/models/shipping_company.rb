@@ -7,6 +7,7 @@ class ShippingCompany < ApplicationRecord
           dependent: :destroy
   has_many :users, dependent: :nullify
   has_many :vehicles, dependent: :destroy
+  has_many :prices, dependent: :destroy
   has_many :volume_ranges, dependent: :destroy
   has_many :weight_ranges, through: :volume_ranges
   has_many :price_distance_ranges, dependent: :destroy
