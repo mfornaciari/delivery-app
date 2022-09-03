@@ -5,6 +5,6 @@ FactoryBot.define do
     min_distance { 0 }
     max_distance { 1_000 }
     value { 5_000 }
-    association :shipping_company
+    association :shipping_company, factory: :express
   end
 end

@@ -3,8 +3,9 @@
 require 'rails_helper'
 
 describe 'Visitante busca status de pedido' do
+  let(:express) { create :express, corporate_name: 'Express Transportes Ltda.' }
+
   it 'informando seu código' do
-    express = create :express, corporate_name: 'Express Transportes Ltda.'
     vehicle = create :vehicle, shipping_company: express, license_plate: 'BRA3R52', brand: 'Fiat', model: 'Uno'
     order = create :order, :without_addresses, shipping_company: express, vehicle: vehicle, status: :accepted
     create :address, addressable: order, line1: 'Rua Rio Vermelho, n. 10', city: 'Natal', state: 'RN', kind: :pickup
@@ -27,10 +28,11 @@ describe 'Visitante busca status de pedido' do
   end
 
   it 'informando um código incorreto' do
-    express = create :express
     vehicle = create :vehicle, shipping_company: express
     allow(SecureRandom).to receive(:alphanumeric).and_return('12345EDCBAABCDE')
-    create :order, shipping_company: express, vehicle: vehicle, status: :accepted
+    create :order, shipping_company: express,
+                   vehicle: vehicle,
+                   status: :accepted
 
     visit root_path
     fill_in 'Código do pedido', with: 'ABCDE12345ABCDE'
@@ -41,7 +43,6 @@ describe 'Visitante busca status de pedido' do
   end
 
   it 'que ainda não foi aceito' do
-    express = create :express
     order = create :order, shipping_company: express, status: :pending
 
     visit root_path
@@ -53,9 +54,10 @@ describe 'Visitante busca status de pedido' do
   end
 
   it 'que foi finalizado' do
-    express = create :express
     vehicle = create :vehicle, shipping_company: express
-    order = create :order, shipping_company: express, vehicle: vehicle, status: :finished
+    order = create :order, shipping_company: express,
+                           vehicle: vehicle,
+                           status: :finished
 
     visit root_path
     fill_in 'Código do pedido', with: order.code

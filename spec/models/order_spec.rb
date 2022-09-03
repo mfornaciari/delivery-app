@@ -6,32 +6,25 @@ RSpec.describe Order, type: :model do
   it { is_expected.to have_one(:pickup_address) }
   it { is_expected.to have_one(:delivery_address) }
 
-  it { is_expected.to validate_presence_of(:recipient_name) }
-  it { is_expected.to validate_presence_of(:product_code) }
+  it { is_expected.to validate_presence_of(:recipient_name).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:product_code).with_message('não pode ficar em branco') }
 
-  describe 'Gera um código aleatório' do
-    it 'ao criar um novo pedido' do
-      order = create :order
+  describe '#generate_code' do
+    let(:order) { create :order, :for_express }
 
-      order.save!
-
-      expect(order.code).not_to be_empty
-      expect(order.code.length).to eq 15
+    it 'must create a 15-character alphanumeric code' do
+      expect(order.code).to match(/\A[[:alnum:]]{15}\z/)
     end
 
-    it 'e ele é único' do
-      order1 = create :order
-      order2 = create :order, shipping_company: order1.shipping_company
+    it 'must create a unique code' do
+      new_order = create :order, :for_a_jato
 
-      order2.save!
-
-      expect(order2.code).not_to eq order1.code
+      expect(order.code).not_to eq new_order.code
     end
 
-    it 'e ele não muda após atualização' do
-      order = create :order
-
+    it 'must create a code that does not change on update' do
       original_code = order.code
+
       order.accepted!
 
       expect(order.code).to eq original_code

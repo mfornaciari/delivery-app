@@ -3,87 +3,45 @@
 require 'rails_helper'
 
 RSpec.describe PriceDistanceRange, type: :model do
-  describe '#valid?' do
-    context 'Presença:' do
-      it 'Falso quando transportadora está em branco' do
-        drange = described_class.new(shipping_company: nil)
+  subject(:pd_range) { build :price_distance_range }
 
-        drange.valid?
+  it { is_expected.to belong_to(:shipping_company) }
 
-        expect(drange.errors[:shipping_company]).to include 'é obrigatório(a)'
-      end
+  it { is_expected.to validate_presence_of(:value).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:min_distance).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:max_distance).with_message('não pode ficar em branco') }
 
-      it 'Falso quando valor está em branco' do
-        drange = described_class.new(value: '')
+  it { is_expected.to validate_numericality_of(:min_distance).is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:max_distance).is_greater_than(0) }
 
-        drange.valid?
+  it 'must not allow minimum distance to be >= maximum distance' do
+    range = build :price_distance_range, max_distance: 5
 
-        expect(drange.errors[:value]).to include 'não pode ficar em branco'
-      end
+    expect(range).not_to allow_values(5, 6).for(:min_distance).with_message('deve ser menor que distância máxima')
+    expect(range).to allow_value(4).for(:min_distance)
+  end
+
+  context 'must not allow repetition' do
+    subject(:pd_range) { build :price_distance_range }
+
+    before do
+      create :price_distance_range, shipping_company: pd_range.shipping_company,
+                                    min_distance: 0,
+                                    max_distance: 2
+      pd_range.shipping_company.reload
     end
 
-    context 'Valor:' do
-      it 'Falso quando distância mínima está em branco ou é < 0' do
-        empty_range = described_class.new(min_distance: '')
-        invalid_range = described_class.new(min_distance: -1)
-        valid_range = described_class.new(min_distance: 0)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:min_distance]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:min_distance]).to include 'deve ser maior ou igual a 0'
-        expect(valid_range.errors.include?(:min_distance)).to be false
-      end
-
-      it 'Falso quando distância máxima está em branco ou é < 1' do
-        empty_range = described_class.new(max_distance: '')
-        invalid_range = described_class.new(max_distance: 0)
-        valid_range = described_class.new(max_distance: 1)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:max_distance]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:max_distance]).to include 'deve ser maior que 0'
-        expect(valid_range.errors.include?(:max_distance)).to be false
-      end
-
-      it 'Falso quando distância mínima >= distância máxima' do
-        first_invalid_range = described_class.new(min_distance: 5, max_distance: 5)
-        second_invalid_range = described_class.new(min_distance: 6, max_distance: 5)
-
-        [first_invalid_range, second_invalid_range].each(&:valid?)
-
-        expect(first_invalid_range.errors[:min_distance]).to include 'deve ser menor que distância máxima'
-        expect(second_invalid_range.errors[:min_distance]).to include 'deve ser menor que distância máxima'
-      end
+    it 'of minimum distance' do
+      expect(pd_range).not_to allow_values(0, 1, 2)
+        .for(:min_distance).with_message('não pode estar contida em intervalos já registrados')
     end
 
-    context 'Singularidade:' do
-      it 'Falso quando distância mínima está inclusa em intervalos já cadastrados' do
-        express = create :express
-        create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
-        invalid_range = described_class.new(shipping_company: express, min_distance: 0)
-        valid_range = described_class.new(shipping_company: express, min_distance: 101)
-
-        express.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:min_distance]).to include('não pode estar contida em intervalos já registrados')
-        expect(valid_range.errors.include?(:min_distance)).to be false
-      end
-
-      it 'Falso quando distância máxima está inclusa em intervalos já cadastrados' do
-        express = create :express
-        create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100
-        invalid_range = described_class.new(shipping_company: express, max_distance: 100)
-        valid_range = described_class.new(shipping_company: express, max_distance: 101)
-
-        express.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:max_distance]).to include('não pode estar contida em intervalos já registrados')
-        expect(valid_range.errors.include?(:max_distance)).to be false
-      end
+    it 'of maximum distance' do
+      expect(pd_range).not_to allow_values(1, 2)
+        .for(:max_distance).with_message('não pode estar contida em intervalos já registrados')
     end
+
+    it { is_expected.to allow_value(3).for(:min_distance) }
+    it { is_expected.to allow_value(3).for(:max_distance) }
   end
 end

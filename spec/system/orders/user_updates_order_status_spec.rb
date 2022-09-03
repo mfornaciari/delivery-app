@@ -3,15 +3,20 @@
 require 'rails_helper'
 
 describe 'Usuário atualiza o status de um pedido' do
+  let!(:express) { create :express }
+  let(:user) { create :user }
+
+  before { login_as user, scope: :user }
+
   context 'e aceita-o' do
     it 'com sucesso' do
-      express = create :express, email_domain: 'express.com.br'
-      user = create :user, email: 'usuario@express.com.br'
-      create :vehicle, shipping_company: express, license_plate: 'BRA3R52'
-      create :vehicle, shipping_company: express, license_plate: 'ARG4523'
-      order = create :order, shipping_company: express, status: :pending
+      create :vehicle, shipping_company: express,
+                       license_plate: 'BRA3R52'
+      create :vehicle, shipping_company: express,
+                       license_plate: 'ARG4523'
+      order = create :order, shipping_company: express,
+                             status: :pending
 
-      login_as user, scope: :user
       visit shipping_company_path(express)
       click_on 'Pedidos'
       click_on order.code
@@ -25,12 +30,10 @@ describe 'Usuário atualiza o status de um pedido' do
     end
 
     it 'sem escolher veículo' do
-      express = create :express, email_domain: 'express.com.br'
-      user = create :user, email: 'usuario@express.com.br'
       create :vehicle, shipping_company: express
-      order = create :order, shipping_company: express, status: :pending
+      order = create :order, shipping_company: express,
+                             status: :pending
 
-      login_as user, scope: :user
       visit shipping_company_path(express)
       click_on 'Pedidos'
       click_on order.code
@@ -46,11 +49,9 @@ describe 'Usuário atualiza o status de um pedido' do
   end
 
   it 'e rejeita-o' do
-    express = create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
-    order = create :order, shipping_company: express, status: :pending
+    order = create :order, shipping_company: express,
+                           status: :pending
 
-    login_as user, scope: :user
     visit shipping_company_path(express)
     click_on 'Pedidos'
     click_on order.code
@@ -63,12 +64,11 @@ describe 'Usuário atualiza o status de um pedido' do
   end
 
   it 'e finaliza-o' do
-    express = create :express, email_domain: 'express.com.br'
-    user = create :user, email: 'usuario@express.com.br'
     vehicle = create :vehicle, shipping_company: express
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
 
-    login_as user, scope: :user
     visit shipping_company_path(express)
     click_on 'Pedidos'
     click_on order.code

@@ -138,10 +138,8 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
-    phlex (0.1.0)
-      activesupport (~> 7.0)
     public_suffix (5.0.0)
-    puma (5.6.4)
+    puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.4)
@@ -199,7 +197,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    rubocop (1.35.0)
+    rubocop (1.36.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
@@ -254,7 +252,6 @@ DEPENDENCIES
   debug
   devise
   factory_bot_rails
-  phlex
   puma (~> 5.0)
   rails (~> 7.0.2, >= 7.0.2.4)
   rspec-rails

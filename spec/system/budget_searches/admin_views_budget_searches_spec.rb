@@ -3,13 +3,15 @@
 require 'rails_helper'
 
 describe 'Administrador vê as buscas de preço realizadas' do
+  let(:admin) { create :admin, email: 'admin@sistemadefrete.com.br' }
+
+  before { login_as admin, scope: :admin }
+
   it 'na página inicial' do
-    admin = create :admin, email: 'admin@sistemadefrete.com.br'
     other_admin = create :admin, email: 'other@sistemadefrete.com.br'
     search1 = create :budget_search, admin: admin
     search2 = create :budget_search, admin: other_admin
 
-    login_as admin, scope: :admin
     visit root_path
 
     expect(page).not_to have_content 'Não há buscas de orçamento registradas.'
@@ -34,19 +36,14 @@ describe 'Administrador vê as buscas de preço realizadas' do
   end
 
   it 'e não há nenhuma' do
-    admin = create :admin
-
-    login_as admin, scope: :admin
     visit root_path
 
     expect(page).to have_content 'Não há buscas de orçamento registradas.'
   end
 
   it 'e acessa os detalhes de uma' do
-    admin = create :admin
     search = create :budget_search, admin: admin
 
-    login_as admin, scope: :admin
     visit root_path
     click_on search.id.to_s
 

@@ -3,11 +3,13 @@
 require 'rails_helper'
 
 describe 'Administrador vê pedidos de uma transportadora' do
-  it 'e não há nenhum' do
-    express = create :express
-    admin = create :admin
+  let(:admin) { create :admin }
+  let(:express) { create :express }
+  let(:vehicle) { create :vehicle, shipping_company: express }
 
-    login_as admin, scope: :admin
+  before { login_as admin, scope: :admin }
+
+  it 'e não há nenhum' do
     visit shipping_company_path(express)
     click_on 'Pedidos'
 
@@ -17,16 +19,12 @@ describe 'Administrador vê pedidos de uma transportadora' do
   end
 
   it 'com sucesso' do
-    express = create :express
-    admin = create :admin
-    vehicle = create :vehicle, shipping_company: express
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
     create :order, shipping_company: express, estimated_delivery_time: 2, value: 2_500
     allow(SecureRandom).to receive(:alphanumeric).and_return('12345ABCDE12345')
     create :order, shipping_company: express, estimated_delivery_time: 4, value: 5_000, status: :accepted,
                    vehicle: vehicle
 
-    login_as admin, scope: :admin
     visit shipping_company_path(express)
     click_on 'Pedidos'
 

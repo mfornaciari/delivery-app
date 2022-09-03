@@ -202,6 +202,18 @@ FactoryBot.create :address,
                   city: 'Aracaju',
                   state: :SE
 
+# ATUALIZAÇÕES DE TRAJETO do primeiro pedido
+FactoryBot.create :route_update,
+                  order: order1,
+                  date_and_time: 5.days.ago,
+                  latitude: 45.0,
+                  longitude: 90.0
+FactoryBot.create :route_update,
+                  order: order1,
+                  date_and_time: 1.day.ago,
+                  latitude: 50.0,
+                  longitude: 130.5
+
 # SEGUNDO pedido
 order2 = FactoryBot.create :order,
                            :without_addresses,
@@ -228,15 +240,3 @@ FactoryBot.create :address,
                   line1: 'Rua Mar Roxo, n. 210',
                   city: 'São Luís',
                   state: :MA
-
-# ATUALIZAÇÕES DE TRAJETO do primeiro pedido
-FactoryBot.create :route_update,
-                  order: order1,
-                  date_and_time: 5.days.ago,
-                  latitude: 45.0,
-                  longitude: 90.0
-FactoryBot.create :route_update,
-                  order: order1,
-                  date_and_time: 1.day.ago,
-                  latitude: 50.0,
-                  longitude: 130.5

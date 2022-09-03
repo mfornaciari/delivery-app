@@ -3,89 +3,41 @@
 require 'rails_helper'
 
 RSpec.describe WeightRange, type: :model do
-  describe '#valid?' do
-    context 'Presença:' do
-      it 'Falso quando intervalo de volume está em branco' do
-        wrange = described_class.new(volume_range: nil)
+  it { is_expected.to belong_to(:volume_range) }
 
-        wrange.valid?
+  it { is_expected.to validate_presence_of(:value).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:min_weight).with_message('não pode ficar em branco') }
+  it { is_expected.to validate_presence_of(:max_weight).with_message('não pode ficar em branco') }
 
-        expect(wrange.errors[:volume_range]).to include 'é obrigatório(a)'
-      end
+  it { is_expected.to validate_numericality_of(:min_weight).is_greater_than_or_equal_to(0) }
+  it { is_expected.to validate_numericality_of(:max_weight).is_greater_than(0) }
 
-      it 'Falso quando valor está em branco' do
-        wrange = described_class.new(value: '')
+  it 'must not allow minimum weight to be >= maximum weight' do
+    range = build :weight_range, max_weight: 5
 
-        wrange.valid?
+    expect(range).not_to allow_values(5, 6).for(:min_weight).with_message('deve ser menor que o peso máximo')
+    expect(range).to allow_value(4).for(:min_weight)
+  end
 
-        expect(wrange.errors[:value]).to include 'não pode ficar em branco'
-      end
+  context 'must not allow repetition' do
+    subject(:w_range) { build :weight_range }
+
+    before do
+      create :weight_range, volume_range: w_range.volume_range, min_weight: 0, max_weight: 2
+      w_range.volume_range.reload
     end
 
-    context 'Valor:' do
-      it 'Falso quando peso mínimo está em branco ou é < 0' do
-        empty_range = described_class.new(min_weight: '')
-        invalid_range = described_class.new(min_weight: -1)
-        valid_range = described_class.new(min_weight: 0)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:min_weight]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:min_weight]).to include 'deve ser maior ou igual a 0'
-        expect(valid_range.errors.include?(:min_weight)).to be false
-      end
-
-      it 'Falso quando peso máximo está em branco ou é < 1' do
-        empty_range = described_class.new(max_weight: '')
-        invalid_range = described_class.new(max_weight: 0)
-        valid_range = described_class.new(max_weight: 1)
-
-        [empty_range, invalid_range, valid_range].each(&:valid?)
-
-        expect(empty_range.errors[:max_weight]).to include 'não pode ficar em branco'
-        expect(invalid_range.errors[:max_weight]).to include 'deve ser maior que 0'
-        expect(valid_range.errors.include?(:max_weight)).to be false
-      end
-
-      it 'Falso quando peso mínimo >= peso máximo' do
-        first_invalid_range = described_class.new(min_weight: 5, max_weight: 5)
-        second_invalid_range = described_class.new(min_weight: 6, max_weight: 5)
-
-        [first_invalid_range, second_invalid_range].each(&:valid?)
-
-        expect(first_invalid_range.errors[:min_weight]).to include 'deve ser menor que o peso máximo'
-        expect(second_invalid_range.errors[:min_weight]).to include 'deve ser menor que o peso máximo'
-      end
+    it 'of minimum weight' do
+      expect(w_range).not_to allow_values(0, 1, 2)
+        .for(:min_weight).with_message('não pode estar contido em intervalos já registrados')
     end
 
-    context 'Singularidade:' do
-      it 'Falso quando peso mínimo está incluso em intervalos já cadastrados' do
-        express = create :express
-        vrange = create :volume_range, shipping_company: express
-        create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 10
-        invalid_range = described_class.new(volume_range: vrange, min_weight: 0)
-        valid_range = described_class.new(volume_range: vrange, min_weight: 11)
-
-        vrange.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:min_weight]).to include('não pode estar contido em intervalos já registrados')
-        expect(valid_range.errors.include?(:min_weight)).to be false
-      end
-
-      it 'Falso quando peso máximo está incluso em intervalos já cadastrados' do
-        express = create :express
-        vrange = create :volume_range, shipping_company: express
-        create :weight_range, volume_range: vrange, min_weight: 0, max_weight: 10
-        invalid_range = described_class.new(volume_range: vrange, max_weight: 10)
-        valid_range = described_class.new(volume_range: vrange, max_weight: 11)
-
-        vrange.reload
-        [invalid_range, valid_range].each(&:valid?)
-
-        expect(invalid_range.errors[:max_weight]).to include('não pode estar contido em intervalos já registrados')
-        expect(valid_range.errors.include?(:max_weight)).to be false
-      end
+    it 'of maximum weight' do
+      expect(w_range).not_to allow_values(1, 2)
+        .for(:max_weight).with_message('não pode estar contido em intervalos já registrados')
     end
+
+    it { is_expected.to allow_value(3).for(:min_weight) }
+    it { is_expected.to allow_value(3).for(:max_weight) }
   end
 end

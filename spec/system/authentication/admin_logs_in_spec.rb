@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe 'Administrador se autentica' do
-  it 'com sucesso' do
-    create :admin, email: 'admin@sistemadefrete.com.br', password: 'password'
+  let!(:admin) { create :admin, email: 'admin@sistemadefrete.com.br', password: 'password' }
 
+  it 'com sucesso' do
     visit root_path
     click_on 'Entrar (administrador)'
     fill_in 'E-mail', with: 'admin@sistemadefrete.com.br'
@@ -17,21 +17,11 @@ describe 'Administrador se autentica' do
     expect(page).to have_content 'admin@sistemadefrete.com.br'
     expect(page).to have_button 'Sair'
     expect(page).to have_link 'Transportadoras'
-  end
-
-  it 'e não vê mais links de autenticação' do
-    admin = create :admin
-
-    login_as admin, scope: :admin
-    visit root_path
-
     expect(page).not_to have_link 'Entrar (administrador)'
     expect(page).not_to have_link 'Entrar (usuário)'
   end
 
   it 'e faz logout' do
-    admin = create :admin
-
     login_as admin, scope: :admin
     visit root_path
     click_on 'Sair'

@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 describe 'Usuário de transportadora se autentica' do
-  it 'com sucesso' do
-    express = create :express
-    create :user, email: 'usuario@express.com.br', password: 'password'
+  let!(:express) { create :express }
+  let!(:user) { create :user, email: 'usuario@express.com.br', password: 'password' }
 
+  it 'com sucesso' do
     visit root_path
     click_on 'Entrar (usuário)'
     fill_in 'E-mail', with: 'usuario@express.com.br'
@@ -19,23 +19,11 @@ describe 'Usuário de transportadora se autentica' do
     expect(page).to have_button 'Sair'
     expect(page).to have_link 'Express'
     expect(page).not_to have_link 'Transportadoras'
-  end
-
-  it 'e não vê mais links de autenticação' do
-    create :express
-    user = create :user
-
-    login_as user, scope: :user
-    visit root_path
-
     expect(page).not_to have_link 'Entrar (administrador)'
     expect(page).not_to have_link 'Entrar (usuário)'
   end
 
   it 'e faz logout' do
-    create :express
-    user = create :user
-
     login_as user, scope: :user
     visit root_path
     click_on 'Sair'

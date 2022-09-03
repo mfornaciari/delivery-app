@@ -5,6 +5,6 @@ FactoryBot.define do
     min_weight { 0 }
     max_weight { 20 }
     value { 50 }
-    association :volume_range
+    volume_range
   end
 end

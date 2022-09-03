@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe 'Visitante cria uma conta' do
-  it 'com sucesso' do
-    express = create :express, email_domain: 'express.com.br'
+  let!(:express) { create :express, email_domain: 'express.com.br' }
 
+  it 'com sucesso' do
     visit new_user_session_path
     click_on 'Inscrever-se'
     fill_in 'E-mail', with: 'usuario@express.com.br'
@@ -20,8 +20,6 @@ describe 'Visitante cria uma conta' do
   end
 
   it 'com e-mail inválido' do
-    create :express, email_domain: 'express.com.br'
-
     visit new_user_session_path
     click_on 'Inscrever-se'
     fill_in 'E-mail', with: 'usuario@email.com'

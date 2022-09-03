@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe 'Usuário vê tabela de prazos da transportadora' do
-  it 'e não há intervalos de distância cadastrados' do
-    express = create :express
-    user = create :user
+  let!(:express) { create :express }
+  let(:user) { create :user }
 
-    login_as user, scope: :user
+  before { login_as user, scope: :user }
+
+  it 'e não há intervalos de distância cadastrados' do
     visit shipping_company_path(express)
 
     expect(page).to have_content 'Tabela de prazos'
@@ -18,12 +19,15 @@ describe 'Usuário vê tabela de prazos da transportadora' do
   end
 
   it 'e vê intervalos de distância' do
-    express = create :express
-    user = create :user
-    create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
-    create :time_distance_range, shipping_company: express, min_distance: 101, max_distance: 200, delivery_time: 3
+    create :time_distance_range, shipping_company: express,
+                                 min_distance: 0,
+                                 max_distance: 100,
+                                 delivery_time: 2
+    create :time_distance_range, shipping_company: express,
+                                 min_distance: 101,
+                                 max_distance: 200,
+                                 delivery_time: 3
 
-    login_as user, scope: :user
     visit shipping_company_path(express)
 
     within('section#delivery_times') do

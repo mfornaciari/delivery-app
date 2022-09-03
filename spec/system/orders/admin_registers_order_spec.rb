@@ -3,8 +3,18 @@
 require 'rails_helper'
 
 describe 'Administrador cria um novo pedido' do
+  let(:admin) { create :admin }
+
+  before { login_as admin, scope: :admin }
+
+  it 'sem realizar busca antes' do
+    visit new_order_path
+
+    expect(page).to have_current_path root_path
+    expect(page).to have_content 'Crie um pedido a partir de uma consulta de preços.'
+  end
+
   it 'a partir de uma busca de preços' do
-    admin = create :admin
     express = create :express, corporate_name: 'Express Transportes Ltda.'
     create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
     create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
@@ -17,7 +27,6 @@ describe 'Administrador cria um novo pedido' do
     create :weight_range, volume_range: a_jato_volume_range
     search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
 
-    login_as admin, scope: :admin
     visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
 
@@ -44,18 +53,7 @@ describe 'Administrador cria um novo pedido' do
     expect(page).to have_button 'Enviar pedido'
   end
 
-  it 'sem realizar busca' do
-    admin = create :admin
-
-    login_as admin, scope: :admin
-    visit new_order_path
-
-    expect(page).to have_current_path root_path
-    expect(page).to have_content 'Crie um pedido a partir de uma consulta de preços.'
-  end
-
   it 'com sucesso' do
-    admin = create :admin
     express = create :express
     create :time_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, delivery_time: 2
     create :price_distance_range, shipping_company: express, min_distance: 0, max_distance: 100, value: 500
@@ -64,7 +62,6 @@ describe 'Administrador cria um novo pedido' do
     search = create :budget_search, height: 100, width: 100, depth: 100, weight: 5, distance: 50, admin: admin
     allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
 
-    login_as admin, scope: :admin
     visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
     within('#pickup_address') do
@@ -98,7 +95,6 @@ describe 'Administrador cria um novo pedido' do
   end
 
   it 'com dados incompletos' do
-    admin = create :admin
     express = create :express
     create :time_distance_range, shipping_company: express
     create :price_distance_range, shipping_company: express
@@ -106,7 +102,6 @@ describe 'Administrador cria um novo pedido' do
     create :weight_range, volume_range: volume_range
     search = create :budget_search, admin: admin
 
-    login_as admin, scope: :admin
     visit budget_search_path(search)
     find('#express').click_on 'Enviar pedido'
     click_on 'Enviar pedido'
@@ -120,7 +115,7 @@ describe 'Administrador cria um novo pedido' do
       expect(page).to have_content 'Endereço não pode ficar em branco'
       expect(page).to have_content 'Cidade não pode ficar em branco'
     end
-    expect(page).to have_content 'Nome(a) do destinatário(a) não pode ficar em branco'
+    expect(page).to have_content 'Nome(a) do(a) destinatário(a) não pode ficar em branco'
     expect(page).to have_content 'Código do produto não pode ficar em branco'
   end
 end

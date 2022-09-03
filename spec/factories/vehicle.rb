@@ -7,6 +7,6 @@ FactoryBot.define do
     model { 'Uno' }
     production_year { 1992 }
     maximum_load { 100_000 }
-    association :shipping_company
+    association :shipping_company, factory: :express
   end
 end

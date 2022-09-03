@@ -4,35 +4,24 @@ require:
   - rubocop-performance
 
 AllCops:
-  TargetRubyVersion: 3.1
-  TargetRailsVersion: 7.0
   NewCops: enable
   Exclude:
-  - 'bin/**/*'
-  - 'vendor/**/*'
-  - 'db/**/*'
+  - bin/**/*
+  - vendor/**/*
+  - db/**/*
 
-Documentation:
+Style/Documentation:
   Enabled: false
-
 Style/HashSyntax:
   Enabled: false
 
-Metrics/BlockLength:
-  IgnoredMethods: ['describe', 'context']
-
 Layout/LineLength:
   Exclude:
-    - 'config/initializers/devise.rb'
+    - config/initializers/devise.rb
 
 RSpec/ExampleLength:
   Max: 40
-
 RSpec/MultipleExpectations:
   Enabled: false
-
-RSpec/FilePath:
-  Enabled: false
-
 RSpec/ContextWording:
   Enabled: false

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :order do
-    association :shipping_company, factory: :express
+    for_express
     pickup_address { association :address, addressable: instance, kind: :pickup }
     delivery_address { association :address, addressable: instance, kind: :delivery }
     recipient_name { 'João da Silva' }
@@ -16,6 +16,14 @@ FactoryBot.define do
     trait :without_addresses do
       pickup_address { nil }
       delivery_address { nil }
+    end
+
+    trait :for_express do
+      association :shipping_company, factory: :express
+    end
+
+    trait :for_a_jato do
+      association :shipping_company, factory: :a_jato
     end
   end
 end
