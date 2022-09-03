@@ -10,9 +10,12 @@ describe 'Usuário atualiza o status de um pedido' do
 
   context 'e aceita-o' do
     it 'com sucesso' do
-      create :vehicle, shipping_company: express, license_plate: 'BRA3R52'
-      create :vehicle, shipping_company: express, license_plate: 'ARG4523'
-      order = create :order, shipping_company: express, status: :pending
+      create :vehicle, shipping_company: express,
+                       license_plate: 'BRA3R52'
+      create :vehicle, shipping_company: express,
+                       license_plate: 'ARG4523'
+      order = create :order, shipping_company: express,
+                             status: :pending
 
       visit shipping_company_path(express)
       click_on 'Pedidos'
@@ -28,7 +31,8 @@ describe 'Usuário atualiza o status de um pedido' do
 
     it 'sem escolher veículo' do
       create :vehicle, shipping_company: express
-      order = create :order, shipping_company: express, status: :pending
+      order = create :order, shipping_company: express,
+                             status: :pending
 
       visit shipping_company_path(express)
       click_on 'Pedidos'
@@ -45,7 +49,8 @@ describe 'Usuário atualiza o status de um pedido' do
   end
 
   it 'e rejeita-o' do
-    order = create :order, shipping_company: express, status: :pending
+    order = create :order, shipping_company: express,
+                           status: :pending
 
     visit shipping_company_path(express)
     click_on 'Pedidos'
@@ -60,7 +65,9 @@ describe 'Usuário atualiza o status de um pedido' do
 
   it 'e finaliza-o' do
     vehicle = create :vehicle, shipping_company: express
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
 
     visit shipping_company_path(express)
     click_on 'Pedidos'

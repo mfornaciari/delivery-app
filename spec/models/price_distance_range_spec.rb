@@ -25,7 +25,9 @@ RSpec.describe PriceDistanceRange, type: :model do
     subject(:pd_range) { build :price_distance_range }
 
     before do
-      create :price_distance_range, shipping_company: pd_range.shipping_company, min_distance: 0, max_distance: 2
+      create :price_distance_range, shipping_company: pd_range.shipping_company,
+                                    min_distance: 0,
+                                    max_distance: 2
       pd_range.shipping_company.reload
     end
 

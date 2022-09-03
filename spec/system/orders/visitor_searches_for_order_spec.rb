@@ -30,7 +30,9 @@ describe 'Visitante busca status de pedido' do
   it 'informando um código incorreto' do
     vehicle = create :vehicle, shipping_company: express
     allow(SecureRandom).to receive(:alphanumeric).and_return('12345EDCBAABCDE')
-    create :order, shipping_company: express, vehicle: vehicle, status: :accepted
+    create :order, shipping_company: express,
+                   vehicle: vehicle,
+                   status: :accepted
 
     visit root_path
     fill_in 'Código do pedido', with: 'ABCDE12345ABCDE'
@@ -53,7 +55,9 @@ describe 'Visitante busca status de pedido' do
 
   it 'que foi finalizado' do
     vehicle = create :vehicle, shipping_company: express
-    order = create :order, shipping_company: express, vehicle: vehicle, status: :finished
+    order = create :order, shipping_company: express,
+                           vehicle: vehicle,
+                           status: :finished
 
     visit root_path
     fill_in 'Código do pedido', with: order.code

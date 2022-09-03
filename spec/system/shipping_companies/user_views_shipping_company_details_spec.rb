@@ -17,7 +17,10 @@ describe 'Usuário acessa a tela de detalhes da sua transportadora' do
                                                  corporate_name: 'Express Transportes Ltda.',
                                                  registration_number: 28_891_540_000_121,
                                                  email_domain: 'express.com.br'
-    create :address, addressable: express, line1: 'Avenida A, 10', city: 'Natal', state: :RN
+    create :address, addressable: express,
+                     line1: 'Avenida A, 10',
+                     city: 'Natal',
+                     state: :RN
     user = create :user, email: 'usuario@express.com.br'
 
     login_as user, scope: :user

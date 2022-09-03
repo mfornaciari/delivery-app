@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :address do
     kind { :company }
     association :addressable, factory: :express
-    sequence(:line1) { |n| "Rua Rio Verde, #{n}" }
+    sequence(:line1) { |number| "Rua Rio Verde, #{number}" }
     city { 'Rio de Janeiro' }
     state { :RJ }
 

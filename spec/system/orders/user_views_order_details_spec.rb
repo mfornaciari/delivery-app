@@ -4,10 +4,9 @@ require 'rails_helper'
 
 describe 'Usuário visualiza detalhes de um pedido' do
   let!(:express) { create :express }
+  let!(:order) { create :order, shipping_company: express }
 
   it 'sem estar autenticado' do
-    order = create :order, shipping_company: express
-
     visit order_path(order)
 
     expect(page).to have_current_path new_user_session_path
@@ -16,7 +15,6 @@ describe 'Usuário visualiza detalhes de um pedido' do
 
   it 'com sucesso' do
     user = create :user, email: 'user@express.com.br'
-    order = create :order, shipping_company: express
 
     login_as user, scope: :user
     visit shipping_company_path(express)

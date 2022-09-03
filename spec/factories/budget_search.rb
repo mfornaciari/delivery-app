@@ -7,6 +7,6 @@ FactoryBot.define do
     depth { 100 }
     weight { 5 }
     distance { 50 }
-    association :admin
+    admin
   end
 end

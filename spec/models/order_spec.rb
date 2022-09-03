@@ -10,7 +10,7 @@ RSpec.describe Order, type: :model do
   it { is_expected.to validate_presence_of(:product_code).with_message('não pode ficar em branco') }
 
   describe '#generate_code' do
-    subject(:order) { create :order, :for_express }
+    let(:order) { create :order, :for_express }
 
     it 'must create a 15-character alphanumeric code' do
       expect(order.code).to match(/\A[[:alnum:]]{15}\z/)

@@ -28,9 +28,13 @@ describe 'Usuário vê pedidos da sua transportadora' do
     it 'com sucesso' do
       vehicle = create :vehicle, shipping_company: express
       allow(SecureRandom).to receive(:alphanumeric).and_return('ABCDE12345ABCDE')
-      create :order, shipping_company: express, estimated_delivery_time: 2, value: 2_500
+      create :order, shipping_company: express,
+                     estimated_delivery_time: 2,
+                     value: 2_500
       allow(SecureRandom).to receive(:alphanumeric).and_return('12345ABCDE12345')
-      create :order, shipping_company: express, estimated_delivery_time: 4, value: 5_000, status: :accepted,
+      create :order, shipping_company: express,
+                     estimated_delivery_time: 4, value: 5_000,
+                     status: :accepted,
                      vehicle: vehicle
 
       visit shipping_company_path(express)

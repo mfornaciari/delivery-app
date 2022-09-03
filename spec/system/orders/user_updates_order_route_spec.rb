@@ -10,7 +10,9 @@ describe 'Usuário atualiza rota do pedido' do
   before { login_as user, scope: :user }
 
   it 'com sucesso' do
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
     current_time = Time.current
 
     visit shipping_company_path(express)
@@ -40,7 +42,9 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados incompletos' do
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
 
     visit order_path(order)
     click_on 'Atualizar rota de entrega'
@@ -52,7 +56,9 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com dados inválidos' do
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
 
     visit order_path(order)
     fill_in 'Latitude', with: '-90.1'
@@ -67,9 +73,12 @@ describe 'Usuário atualiza rota do pedido' do
   end
 
   it 'com data e hora anteriores à última atualização' do
-    order = create :order, shipping_company: express, status: :accepted, vehicle: vehicle
+    order = create :order, shipping_company: express,
+                           status: :accepted,
+                           vehicle: vehicle
     current_time = Time.current
-    create :route_update, order: order, date_and_time: current_time
+    create :route_update, order: order,
+                          date_and_time: current_time
 
     visit order_path(order)
     fill_in 'Data e hora', with: 1.second.before(current_time)
