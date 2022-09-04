@@ -1,0 +1,16 @@
+pt-BR:
+  price_creation_succeeded: Intervalo cadastrado com sucesso.
+  price_creation_failed: Intervalo não cadastrado.
+  max_volume_lower_than_min: deve ser maior que o volume mínimo
+  max_weight_lower_than_min: deve ser maior que o peso mínimo
+  activerecord:
+    models:
+      price: Preço
+    attributes:
+      price:
+        shipping_company: Transportadora
+        min_volume: Volume mínimo
+        max_volume: Volume máximo
+        min_weight: Peso máximo
+        max_weight: Peso máximo
+        value: Valor
