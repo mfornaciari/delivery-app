@@ -31,25 +31,31 @@ RSpec.describe Price, type: :model do
     expect(price).to allow_value(3).for(:max_weight)
   end
 
-  # context 'must not allow repetition' do
-  #   subject(:v_range) { build :volume_range }
+  context 'when other prices exist for the same company' do
+    let(:first_price) { create :price, min_volume: 0, max_volume: 2, min_weight: 0, max_weight: 2 }
 
-  #   before do
-  #     create :volume_range, shipping_company: v_range.shipping_company, min_volume: 0, max_volume: 2
-  #     v_range.shipping_company.reload
-  #   end
+    it 'does not allow repetition of weight when volume is repeated' do
+      price = build :price, shipping_company: first_price.shipping_company, min_volume: 2, max_volume: 3
+      first_price.shipping_company.reload
 
-  #   it 'of minimum volume' do
-  #     expect(v_range).not_to allow_values(0, 1, 2)
-  #       .for(:min_volume).with_message('não pode estar contido em intervalos já registrados')
-  #   end
+      expect(price).not_to allow_values(0, 1, 2)
+        .for(:min_weight).with_message('não pode estar contido em intervalos já registrados')
+      expect(price).not_to allow_values(0, 1, 2)
+        .for(:max_weight).with_message('não pode estar contido em intervalos já registrados')
+      expect(price).to allow_value(3).for(:min_weight)
+      expect(price).to allow_value(4).for(:max_weight)
+    end
 
-  #   it 'of maximum volume' do
-  #     expect(v_range).not_to allow_values(1, 2)
-  #       .for(:max_volume).with_message('não pode estar contido em intervalos já registrados')
-  #   end
+    it 'does not allow repetition of volume when weight is repeated' do
+      price = build :price, shipping_company: first_price.shipping_company, min_weight: 2, max_weight: 3
+      first_price.shipping_company.reload
 
-  #   it { is_expected.to allow_value(3).for(:min_volume) }
-  #   it { is_expected.to allow_value(3).for(:max_volume) }
-  # end
+      expect(price).not_to allow_values(0, 1, 2)
+        .for(:min_volume).with_message('não pode estar contido em intervalos já registrados')
+      expect(price).not_to allow_values(0, 1, 2)
+        .for(:max_volume).with_message('não pode estar contido em intervalos já registrados')
+      expect(price).to allow_value(3).for(:min_volume)
+      expect(price).to allow_value(4).for(:max_volume)
+    end
+  end
 end
